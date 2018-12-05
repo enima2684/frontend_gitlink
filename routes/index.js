@@ -1,22 +1,24 @@
 import React from "react";
 import { StyleSheet, View, Button } from "react-native";
 import {
+  createSwitchNavigator,
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer
 } from "react-navigation";
+import HomeScreen from "../views/HomeScreen";
 import FeedScreen from "../views/FeedScreen";
 import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 
+// Stack navigation for first tab, the Feed
 const FeedRoot = createStackNavigator({
   FeedList: {
     screen: FeedScreen,
     navigationOptions: {
       title: "Feed list",
-      // headerLeft: null,
       gesturesEnabled: false,
       headerRight: (
         <Button
@@ -35,6 +37,7 @@ const FeedRoot = createStackNavigator({
   }
 });
 
+// Tab navigation: 4 tabs
 const AppTabNavigator = createBottomTabNavigator(
   {
     Feed: FeedRoot,
@@ -62,6 +65,12 @@ const AppTabNavigator = createBottomTabNavigator(
   }
 );
 
-const AppContainer = createAppContainer(AppTabNavigator);
+// Switch Navigation: only user authentication procedure
+const AppNavigator = createSwitchNavigator({
+  Splash: HomeScreen,
+  MainApp: AppTabNavigator
+}, {initialRouteName: "Splash"});
+
+const AppContainer = createAppContainer(AppNavigator);
 
 export default AppContainer;
