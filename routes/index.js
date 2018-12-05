@@ -6,7 +6,7 @@ import {
   createBottomTabNavigator,
   createAppContainer
 } from "react-navigation";
-import HomeScreen from "../views/HomeScreen";
+import Login from "../views/Login";
 import FeedScreen from "../views/FeedScreen";
 import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
@@ -67,7 +67,7 @@ const AppTabNavigator = createBottomTabNavigator(
 
 // Switch Navigation: only user authentication procedure
 const AppNavigator = createSwitchNavigator({
-  Splash: HomeScreen,
+  Splash: Login,
   MainApp: AppTabNavigator
 }, {initialRouteName: "Splash"});
 
