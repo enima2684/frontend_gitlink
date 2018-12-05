@@ -58,7 +58,7 @@ const NotificationsRoot = createStackNavigator({
       title: "Notifications"
     }
   },
-  Thread: {
+  NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
       title: `Notification details`
@@ -68,12 +68,12 @@ const NotificationsRoot = createStackNavigator({
 
 const ProfileRoot = createStackNavigator({
   Profile: {
-    screen: NotificationsScreen,
+    screen: ProfileScreen,
     navigationOptions: {
       title: "Profile"
     }
   },
-  Details: {
+  ProfileDetails: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
       title: `Details`
