@@ -6,7 +6,7 @@ import {
   createBottomTabNavigator,
   createAppContainer
 } from "react-navigation";
-import Login from "../views/Login";
+import LoginScreen from "../views/LoginScreen";
 import FeedScreen from "../views/FeedScreen";
 import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
@@ -19,7 +19,6 @@ const FeedRoot = createStackNavigator({
     screen: FeedScreen,
     navigationOptions: {
       title: "Feed list",
-      gesturesEnabled: false,
       headerRight: (
         <Button
           onPress={() => alert("This is a button!")}
@@ -37,19 +36,58 @@ const FeedRoot = createStackNavigator({
   }
 });
 
+const MessagesRoot = createStackNavigator({
+  Messages: {
+    screen: MessagesScreen,
+    navigationOptions: {
+      title: "Messages"
+    }
+  },
+  Thread: {
+    screen: PostScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `Conversation`
+    })
+  }
+});
+
+const NotificationsRoot = createStackNavigator({
+  Notification: {
+    screen: NotificationsScreen,
+    navigationOptions: {
+      title: "Notifications"
+    }
+  },
+  Thread: {
+    screen: PostScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `Notification details`
+    })
+  }
+});
+
+const ProfileRoot = createStackNavigator({
+  Profile: {
+    screen: NotificationsScreen,
+    navigationOptions: {
+      title: "Profile"
+    }
+  },
+  Details: {
+    screen: PostScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `Details`
+    })
+  }
+});
+
 // Tab navigation: 4 tabs
 const AppTabNavigator = createBottomTabNavigator(
   {
     Feed: FeedRoot,
-    Messages: createStackNavigator({
-      screen: MessagesScreen
-    }),
-    Notification: createStackNavigator({
-      screen: NotificationsScreen
-    }),
-    Profile: createStackNavigator({
-      screen: ProfileScreen
-    })
+    Messages: MessagesRoot,
+    Notification: NotificationsRoot,
+    Profile: ProfileRoot
   },
   {
     tabBarOptions: {
@@ -66,10 +104,13 @@ const AppTabNavigator = createBottomTabNavigator(
 );
 
 // Switch Navigation: only user authentication procedure
-const AppNavigator = createSwitchNavigator({
-  Splash: Login,
-  MainApp: AppTabNavigator
-}, {initialRouteName: "Splash"});
+const AppNavigator = createSwitchNavigator(
+  {
+    LoginPage: LoginScreen,
+    MainApp: AppTabNavigator
+  },
+  { initialRouteName: "LoginPage" }
+);
 
 const AppContainer = createAppContainer(AppNavigator);
 
