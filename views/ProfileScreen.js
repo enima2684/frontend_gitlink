@@ -1,21 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export default class HomeScreen extends React.Component {
-  state = {
-    message: "hello"
-  };
-
-  handleButton = () => {
-    this.setState({
-      message: "button was clicked"
-    });
-  };
-
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.navigation.getParam("displayText")}</Text>
+        <Text>THIS IS JUST THE PROFILE PAGE!</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("Feed")}>
+          <Text>CLICK HERE TO GO TO FEED</Text>
+        </TouchableOpacity>
       </View>
     );
   }

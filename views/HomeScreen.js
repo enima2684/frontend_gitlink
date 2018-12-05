@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-} from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 
 export default class HomeScreen extends React.Component {
 
   handleButton = () => {
-    this.props.navigation.navigate('Feed');
+    this.props.navigation.navigate("MainApp");
   };
 
   render() {
