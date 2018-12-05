@@ -16,7 +16,7 @@ export default class Login extends Component {
         <View style={styles.catchphrase}>
           <H2 style={styles.loginH2}>Messages, Updates, Connects</H2>
           <Text style={styles.textLogin}>
-            An Application for every developer
+            An application for every developer
           </Text>
         </View>
         <View>
