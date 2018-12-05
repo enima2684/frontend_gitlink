@@ -1,88 +1,25 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Button,
-  FlatList,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-native";
+
+import FeedPost from "./FeedPost";
+import axios from "axios";
 
 export default class FeedScreen extends React.Component {
   state = {
+    loading: true,
     message: "hello",
-    countries: [
-      {
-        name: "Australia",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/au.png"
-      },
-      {
-        name: "Belgium",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/be.png"
-      },
-      {
-        name: "Bulgaria",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/bg.png"
-      },
-      {
-        name: "Canada",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/ca.png"
-      },
-      {
-        name: "Switzerland",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/ch.png"
-      },
-      {
-        name: "China",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/cn.png"
-      },
-      {
-        name: "Czech Republic",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/cz.png"
-      },
-      {
-        name: "Germany",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/de.png"
-      },
-      {
-        name: "Spain",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/es.png"
-      },
-      {
-        name: "Ethiopia",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/et.png"
-      },
-      {
-        name: "Croatia",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/hr.png"
-      },
-      {
-        name: "Hungary",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/hu.png"
-      },
-      {
-        name: "Italy",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/it.png"
-      },
-      {
-        name: "Jamaica",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/jm.png"
-      },
-      {
-        name: "Romania",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/ro.png"
-      },
-      {
-        name: "Russia",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/ru.png"
-      },
-      {
-        name: "United States",
-        imageSrc: "https://play.nativescript.org/dist/assets/img/flags/us.png"
-      }
-    ]
+    posts: [],
   };
+
+  async componentWillMount() {
+    const response = await axios.get(
+      "https://api.github.com/users/griev04/events/public"
+    );
+    this.setState({
+      posts: response.data,
+      loading: false,
+    });
+  }
 
   handleButton = () => {
     this.setState({
@@ -90,43 +27,35 @@ export default class FeedScreen extends React.Component {
     });
   };
 
-  handleListTap(item){
-    this.props.navigation.navigate('Post', {
-      name: item.name,
-      imageSrc: item.imageSrc,
-    })
+  buildPost(item){
+    let displayText;
+    switch (item.type) {
+      case 'WatchEvent':
+        displayText = <Text>{item.actor.login} {payload.action} watching {repo.name} at {created_at}</Text>;
+        break;
+      case 'CreateEvent':
+        displayText = <Text>{item.actor.login} created {payload.ref_typ} {payload.ref} in {repo.name} at {created_at}</Text>;
+        break;
+      default:
+        displayText = <Text>{item.actor.login} did something else: {item.type}</Text>
+        break;
+    }
+    // console.log(displayText);
+    return displayText;
   }
 
   render() {
-    console.log("HELLO");
+
     return (
       <View style={styles.container}>
-        <Text>FEED</Text>
+        <Text>FEED!!!!!</Text>
+        {this.state.loading && <ActivityIndicator size="large" color="#00ff00" />}
         <FlatList
-          ItemSeparatorComponent={() => (
-            <View
-              style={{ height: 1, width: "100%", backgroundColor: "lightgray" }}
-            />
-          )}
-          data={this.state.countries}
-          keyExtractor={item => item.name}
+          ItemSeparatorComponent={() => <View style={styles.listItem} />}
+          data={this.state.posts}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 10
-              }}
-              onPress={() => this.handleListTap(item)}
-            >
-              <Image
-                style={{ width: 50, height: 50, borderRadius: 25 }}
-                source={{
-                  uri: item.imageSrc
-                }}
-              />
-              <Text style={{ padding: 20 }}>{item.name}</Text>
-            </TouchableOpacity>
+            <FeedPost item={item} navigation={this.props.navigation} />
           )}
         />
       </View>
@@ -137,6 +66,7 @@ export default class FeedScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
-  }
+    backgroundColor: "lightgray"
+  },
+  listItem: { height: 1, width: "100%", backgroundColor: "lightgray" }
 });

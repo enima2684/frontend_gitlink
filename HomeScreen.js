@@ -1,9 +1,7 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
   Button,
 } from "react-native";
 
@@ -14,14 +12,13 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
-    console.log("HELLO");
     return (
       <View style={styles.container}>
         <Button
           onPress={this.handleButton}
           title="LOG IN"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+          accessibilityLabel="Click me to log in"
         />
       </View>
     );

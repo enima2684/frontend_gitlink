@@ -15,7 +15,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.navigation.getParam("name")}</Text>
+        <Text>{this.props.navigation.getParam("displayText")}</Text>
       </View>
     );
   }
