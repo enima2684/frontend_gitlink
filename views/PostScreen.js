@@ -1,43 +1,38 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
-import FeedPost from "./FeedPost";
+import PostText from "../components/PostText";
 
 export default class PostScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired
   };
 
-  render() {
-    return this.props.navigation.getParam("renderedPost");
-    // const item = this.props.navigation.getParam("item");
-    // const displayText = this.props.navigation.getParam("displayText");
-    // return (
-    //   <View style={styles.container}>
-    //     <View style={styles.postData}>
-    //       <TouchableOpacity
-    //         onPress={() => this.props.navigation.navigate("Profile")}
-    //       >
-    //         <Image
-    //           style={styles.profilePicture}
-    //           source={{
-    //             uri: item.actor.avatar_url
-    //           }}
-    //         />
-    //       </TouchableOpacity>
-    //       <Text style={styles.postText}>{displayText}</Text>
-    //     </View>
+  handleProfileTap(feedEvent) {
+    // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
+    const githubId = feedEvent.actor.id;
+    const githubLogin = feedEvent.actor.login;
+    this.props.navigation.navigate("OtherUserProfile", {
+      githubId: githubId,
+      githubName: githubLogin
+    });
+  }
 
-    //     <View style={styles.postInteraction}>
-    //       <TouchableOpacity>
-    //         <Text>Like</Text>
-    //       </TouchableOpacity>
-    //       <TouchableOpacity onPress={() => {}}>
-    //         <Text>Comment</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // );
+  render() {
+    const feedEvent = this.props.navigation.getParam("feedEvent");
+    return (
+      <View>
+        <TouchableOpacity onPress={() => this.handleProfileTap(feedEvent)}>
+          <Image
+            style={styles.profilePicture}
+            source={{
+              uri: feedEvent.actor.avatar_url
+            }}
+          />
+        </TouchableOpacity>
+        <PostText feedEvent={feedEvent} />
+      </View>
+    );
   }
 }
 

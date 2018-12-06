@@ -15,6 +15,7 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
+import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -24,7 +25,7 @@ const FeedStack = createStackNavigator({
   Post: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.item.actor.login}'s post`
+      title: `${navigation.state.params.feedEvent.actor.login}'s post`
     })
   },
   Search: {
@@ -32,6 +33,12 @@ const FeedStack = createStackNavigator({
     navigationOptions: {
       title: "Search"
     }
+  },
+  OtherUserProfile: {
+    screen: OtherUserProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubName}'s profile`
+    })
   }
 });
 
