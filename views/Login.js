@@ -16,7 +16,7 @@ export default class Login extends Component {
         <View style={styles.catchphrase}>
           <H2 style={styles.loginH2}>Messages, Updates, Connects</H2>
           <Text style={styles.textLogin}>
-            An Application for every developer
+            An application for every developer
           </Text>
         </View>
         <View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     alignSelf: "stretch",
     width: undefined,
-    height: undefined
+    height: undefined,
   },
   loginH1: {
     fontSize: 75,
