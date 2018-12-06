@@ -15,7 +15,7 @@ export default class SearchScreen extends React.Component {
           style={{marginTop: 40, padding: 10, width: "90%", height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(text) => this.setState({text})}
           value={this.state.text}
-          autoFocus="true"
+          autoFocus={true}
         />
       </View>
     );
