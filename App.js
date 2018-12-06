@@ -1,13 +1,10 @@
-import React from "react";
-import { Route, NativeRouter, Switch } from "react-router-native";
-import Login from "./views/Login";
+import React,{Component} from 'react';
+import Navigator from './routes';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <NativeRouter>
-        <Route path="/" component={Login} />
-      </NativeRouter>
-    );
-  }
+export default class App extends Component{
+    render(){
+        return(
+            <Navigator/>
+        )
+    }
 }
