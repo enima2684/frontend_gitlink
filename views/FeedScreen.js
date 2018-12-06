@@ -5,38 +5,49 @@ import {
   FlatList,
   ActivityIndicator,
   ScrollView,
+  Button,
+  Icon,
+  Platform
 } from "react-native";
 import FeedPost from "./FeedPost";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 // Temporary mockdata for development used in componentWillMount()
 import data from "../mockData";
 
 export default class FeedScreen extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object.isRequired
+  };
 
   state = {
     loading: true,
-    message: "hello",
     posts: []
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Feed List",
+      headerRight: (
+        <Button
+          title="Search"
+          onPress={() => navigation.navigate("Search")}
+          color="#9cdaef"
+        />
+      )
+    };
+  };
+
   async componentWillMount() {
-    // DO NOT DELETE AXIOS GET REQUEST
-    // const response = await axios.get(
-    //   "https://api.github.com/users/griev04/events/public"
-    // );
-    const response = {data};
+    // Temporary mock data:
+    const response = { data };
+
     this.setState({
       posts: response.data,
       loading: false
     });
   }
-
-  handleButton = () => {
-    this.setState({
-      message: "button was clicked"
-    });
-  };
 
   render() {
     return (
@@ -49,7 +60,7 @@ export default class FeedScreen extends React.Component {
           data={this.state.posts}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <FeedPost item={item} navigation={this.props.navigation} />
+            <FeedPost feedEvent={item} navigation={this.props.navigation} />
           )}
         />
       </ScrollView>

@@ -1,21 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 
 export default class PostScreen extends React.Component {
-  state = {
-    message: "hello"
-  };
-  handleListTap(item, userAction='details') {
-    this.props.navigation.navigate("Post", {
-      displayText: this.buildPost(item),
-      item: item,
-      userAction: userAction,
-    });
-  }
-  handleButton = () => {
-    this.setState({
-      message: "button was clicked"
-    });
+  static propTypes = {
+    navigation: PropTypes.object.isRequired
   };
 
   render() {
@@ -26,7 +15,7 @@ export default class PostScreen extends React.Component {
         <View style={styles.postData}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("Profile")}
-            >
+          >
             <Image
               style={styles.profilePicture}
               source={{
@@ -41,7 +30,7 @@ export default class PostScreen extends React.Component {
           <TouchableOpacity>
             <Text>Like</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.handleListTap(item, "comment")}>
+          <TouchableOpacity onPress={() => {}}>
             <Text>Comment</Text>
           </TouchableOpacity>
         </View>

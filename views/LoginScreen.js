@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { H1, H2, Container, Button } from "native-base";
 import { StyleSheet, Text, View, Image } from "react-native";
 
-export default class Login extends Component {
+export default class LoginScreen extends Component {
 
   handleButton = () => {
     this.props.navigation.navigate("MainApp");
@@ -25,7 +25,7 @@ export default class Login extends Component {
           </Text>
         </View>
         <View>
-          <Button style={styles.loginButton} onPress={this.handleButton}>
+          <Button style={styles.loginButton} onPress={this.handleButton} title="Log In Via GitHub">
             <Text style={styles.textLogin}>Log In Via GitHub</Text>
           </Button>
         </View>

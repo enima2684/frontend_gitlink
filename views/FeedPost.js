@@ -1,76 +1,86 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 
-function buildPost(item) {
+function buildPost(feedEvent) {
   let displayText;
-  switch (item.type) {
+  switch (feedEvent.type) {
     case "WatchEvent":
-      displayText = `${item.actor.login} ${item.payload.action} watching ${
-        item.repo.name
-      } at ${item.created_at}`;
+      displayText = `${feedEvent.actor.login} ${
+        feedEvent.payload.action
+      } watching ${feedEvent.repo.name} at ${feedEvent.created_at}`;
       break;
     case "CreateEvent":
-      displayText = `${item.actor.login} created ${item.payload.ref_type} ${
-        item.payload.ref
-      } in ${item.payload.master_branch} inside the repo ${
-        item.repo.name
-      } at ${item.created_at}`;
+      displayText = `${feedEvent.actor.login} created ${
+        feedEvent.payload.ref_type
+      } ${feedEvent.payload.ref} in ${
+        feedEvent.payload.master_branch
+      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
       break;
 
     case "ForkEvent":
-      displayText = `${item.actor.login} forked ${item.repo.name} of ${
-        item.org.login
-      } at ${item.created_at}`;
+      displayText = `${feedEvent.actor.login} forked ${
+        feedEvent.repo.name
+      } of ${feedEvent.org.login} at ${feedEvent.created_at}`;
       break;
     case "PushEvent":
-      displayText = `${item.actor.login} commited ${item.payload.before} to ${
-        item.payload.ref
-      } in ${item.payload.master_branch} inside the repo ${
-        item.repo.name
-      } at ${item.created_at}`;
+      displayText = `${
+        feedEvent.actor.login
+      } commited ${feedEvent.payload.before.substring(0, 7)} to ${
+        feedEvent.payload.ref
+      } in ${feedEvent.payload.master_branch} inside the repo ${
+        feedEvent.repo.name
+      } at ${feedEvent.created_at}`;
       break;
     case "PullRequestEvent":
-      displayText = `${item.actor.login} created ${item.payload.ref_type} ${
-        item.payload.ref
-      } in ${item.payload.master_branch} inside the repo ${
-        item.repo.name
-      } at ${item.created_at}`;
+      displayText = `${feedEvent.actor.login} created ${
+        feedEvent.payload.ref_type
+      } ${feedEvent.payload.ref} in ${
+        feedEvent.payload.master_branch
+      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
       break;
 
     default:
-      displayText = `${item.actor.login} did something else: ${item.type}`;
+      displayText = `${feedEvent.actor.login} did something else: ${
+        feedEvent.type
+      }`;
       break;
   }
   return displayText;
 }
 
-export default class FeedScreen extends React.Component {
-  
+export default class FeedPost extends React.Component {
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+    feedEvent: PropTypes.object.isRequired
+  };
+
   /**
-   * 
-   * @param {*} item 
+   *
+   * @param {*} item
    * @param {*} userAction user clicks on post or on comment button. Possible values: details, comment
    */
-  handleListTap(item, userAction='details') {
+  handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
-      displayText: buildPost(item),
-      item: item,
-      userAction: userAction,
+      displayText: buildPost(feedEvent),
+      item: feedEvent,
+      userAction: userAction
     });
   }
 
   render() {
-    const displayText = buildPost(this.props.item);
+    const { feedEvent } = this.props;
+    const displayText = buildPost(feedEvent);
     return (
       <View style={styles.post}>
         <TouchableOpacity
           style={styles.postData}
-          onPress={() => this.handleListTap(this.props.item)}
+          onPress={() => this.handleListTap(feedEvent)}
         >
           <Image
             style={styles.profilePicture}
             source={{
-              uri: this.props.item.actor.avatar_url
+              uri: feedEvent.actor.avatar_url
             }}
           />
           <Text style={styles.postText}>{displayText}</Text>
@@ -79,7 +89,9 @@ export default class FeedScreen extends React.Component {
           <TouchableOpacity>
             <Text>Like</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.handleListTap(this.props.item, 'comment')}>
+          <TouchableOpacity
+            onPress={() => this.handleListTap(feedEvent, "comment")}
+          >
             <Text>Comment</Text>
           </TouchableOpacity>
         </View>
