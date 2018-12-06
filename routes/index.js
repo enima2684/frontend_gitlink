@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Button } from "react-native";
 import {
   createSwitchNavigator,
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer
 } from "react-navigation";
-import { Ionicons } from "@expo/vector-icons";
+import Octicons from "@expo/vector-icons/Octicons";
+// import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
 import FeedScreen from "../views/FeedScreen";
@@ -87,7 +87,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: FeedStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-home" color={tintColor} size={24} />
+          <Octicons name="mark-github" color={tintColor} size={24} />
         )
       })
     },
@@ -95,7 +95,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: MessagesStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-chatbubbles" color={tintColor} size={24} />
+          <Octicons name="comment-discussion" color={tintColor} size={24} />
         )
       })
     },
@@ -103,7 +103,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: NotificationsStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-notifications" color={tintColor} size={24} />
+          <Octicons name="bell" color={tintColor} size={24} />
         )
       })
     },
@@ -111,7 +111,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: ProfileStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="md-person" color={tintColor} size={24} />
+          <Octicons name="octoface" color={tintColor} size={24} />
         )
       })
     }
@@ -119,7 +119,7 @@ const AppTabNavigator = createBottomTabNavigator(
   {
     tabBarOptions: {
       activeTintColor: "tomato",
-      inactiveTintColor: "gray",
+      inactiveTintColor: "black",
       style: {
         // height: 50,
       },
