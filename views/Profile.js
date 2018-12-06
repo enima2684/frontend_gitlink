@@ -41,29 +41,38 @@ export default class Profile extends Component {
           </View>
           <H1 style={styles.H1}>{login}</H1>
           <View style={styles.profileHeaderButton}>
-            <Button style={styles.profileButton}>
+            <TouchableOpacity
+              onPress={() => this.props.navigate("Thread")}
+              style={styles.profileButton}
+            >
               <Text>Follow</Text>
-            </Button>
-            <Button style={styles.profileButton}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.profileButton}>
               <Text>Send Message</Text>
-            </Button>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.profileIcon}>
           <View style={styles.oneProfileIcon}>
-            <Octicons name="repo" size={50} color="#0080FF" />
-            <Text>Repositories</Text>
-            <H1>{public_repos}</H1>
+            <TouchableOpacity onPress={() => this.props.navigate("Repo-List")}>
+              <Octicons name="repo" size={50} color="#0080FF" />
+              <Text>Repositories</Text>
+              <H1>{public_repos}</H1>
+            </TouchableOpacity>
           </View>
           <View style={styles.oneProfileIcon}>
-            <Octicons name="broadcast" size={50} color="#0080FF" />
-            <Text>Followers</Text>
-            <H1>{followers}</H1>
+            <TouchableOpacity onPress={() => this.props.navigate("Followers")}>
+              <Octicons name="broadcast" size={50} color="#0080FF" />
+              <Text>Followers</Text>
+              <H1>{followers}</H1>
+            </TouchableOpacity>
           </View>
           <View style={styles.oneProfileIcon}>
-            <Octicons name="organization" size={50} color="#0080FF" />
-            <Text>Following</Text>
-            <H1>{following}</H1>
+            <TouchableOpacity onPress={() => this.props.navigate("Following")}>
+              <Octicons name="organization" size={50} color="#0080FF" />
+              <Text>Following</Text>
+              <H1>{following}</H1>
+            </TouchableOpacity>
           </View>
         </View>
       </Container>
@@ -113,28 +122,29 @@ const styles = StyleSheet.create({
   profileButton: {
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#b9de7c",
-
+    borderRadius: 20,
     borderColor: "#8cc342",
     borderLeftWidth: 2,
     borderRightWidth: 2,
     borderTopWidth: 2,
     borderBottomWidth: 2,
-    width: "40%"
+    width: "40%",
+    height: "40%"
   },
   profileIcon: {
-    marginTop: "10%",
-    height: "40%",
-    width: "100%",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around"
+    justifyContent: "space-evenly",
+    height: "50%"
   },
   oneProfileIcon: {
+    paddingTop: "10%",
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "50%",
-    marginTop: "10%"
+    width: "50%"
   }
 });
