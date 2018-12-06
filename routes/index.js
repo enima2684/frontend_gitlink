@@ -45,7 +45,7 @@ const MessagesStack = createStackNavigator({
   Thread: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Conversation`
+      title: `Conversation with BLAH`
     })
   }
 });
@@ -60,7 +60,7 @@ const NotificationsStack = createStackNavigator({
   NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Notification details`
+      title: `Notification BLAH details`
     })
   }
 });

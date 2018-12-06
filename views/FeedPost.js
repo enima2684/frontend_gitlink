@@ -2,58 +2,108 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 
-function buildPost(feedEvent) {
-  let displayText;
-  switch (feedEvent.type) {
-    case "WatchEvent":
-      displayText = `${feedEvent.actor.login} ${
-        feedEvent.payload.action
-      } watching ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-    case "CreateEvent":
-      displayText = `${feedEvent.actor.login} created ${
-        feedEvent.payload.ref_type
-      } ${feedEvent.payload.ref} in ${
-        feedEvent.payload.master_branch
-      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-
-    case "ForkEvent":
-      displayText = `${feedEvent.actor.login} forked ${
-        feedEvent.repo.name
-      } of ${feedEvent.org.login} at ${feedEvent.created_at}`;
-      break;
-    case "PushEvent":
-      displayText = `${
-        feedEvent.actor.login
-      } commited ${feedEvent.payload.before.substring(0, 7)} to ${
-        feedEvent.payload.ref
-      } in ${feedEvent.payload.master_branch} inside the repo ${
-        feedEvent.repo.name
-      } at ${feedEvent.created_at}`;
-      break;
-    case "PullRequestEvent":
-      displayText = `${feedEvent.actor.login} created ${
-        feedEvent.payload.ref_type
-      } ${feedEvent.payload.ref} in ${
-        feedEvent.payload.master_branch
-      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-
-    default:
-      displayText = `${feedEvent.actor.login} did something else: ${
-        feedEvent.type
-      }`;
-      break;
-  }
-  return displayText;
-}
 
 export default class FeedPost extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     feedEvent: PropTypes.object.isRequired
   };
+  
+  buildPostSpecificText(feedEvent) {
+    let displayText;
+    switch (feedEvent.type) {
+      case "WatchEvent":
+        displayText = (
+          <Text style={styles.textContent}>
+            <Text style={styles.bold}>{feedEvent.payload.action}</Text> watching{" "}
+            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+          </Text>
+        );
+        break;
+  
+      case "CreateEvent":
+        displayText = (
+          <Text style={styles.textContent}>
+            created <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
+            in <Text style={styles.bold}> {feedEvent.payload.master_branch}</Text>{" "}
+            inside the repo{" "}
+            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+          </Text>
+        );
+        break;
+      case "ForkEvent":
+        displayText = (
+          <Text style={styles.textContent}>
+            forked <Text style={styles.bold}>{feedEvent.repo.name}</Text> of{" "}
+            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+          </Text>
+        );
+        break;
+      case "PushEvent":
+        displayText = (
+          <Text style={styles.textContent}>
+            committed to <Text style={styles.bold}>{feedEvent.payload.ref}</Text>{" "}
+            branch in <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+          </Text>
+        );
+        break;
+      case "PullRequestEvent":
+        displayText = (
+          <Text style={styles.textContent}>
+            created{" "}
+            <Text style={styles.bold}>
+              {feedEvent.payload.ref_type} {feedEvent.payload.ref}
+            </Text>{" "}
+            in <Text style={styles.bold}> {feedEvent.payload.master_branch}</Text>
+            inside the repo{" "}
+            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+          </Text>
+        );
+        break;
+      default:
+        displayText = (
+          <Text style={styles.textContent}>
+            did something else: <Text style={styles.bold}>{feedEvent.type}</Text>
+          </Text>
+        );
+        break;
+    }
+    return displayText;
+  }
+  
+  buildPost(feedEvent) {
+    const displayText = this.buildPostSpecificText(feedEvent);
+    const finalCode = (
+      <View style={styles.postContainer}>
+        <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
+          <Image
+            style={styles.profilePicture}
+            source={{
+              uri: feedEvent.actor.avatar_url
+            }}
+          />
+        </TouchableOpacity>
+        <View style={styles.rightPost}>
+          <View style={styles.postHeader}>
+            <Text style={styles.bold}>{feedEvent.actor.login}</Text>
+            <Text>2m ago</Text>
+          </View>
+          <View style={styles.postText}>{displayText}</View>
+          <View style={styles.postInteraction}>
+            <TouchableOpacity>
+              <Text>Like</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.handleListTap(feedEvent, "comment")}
+            >
+              <Text>Comment</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+    return finalCode;
+  }
 
   /**
    *
@@ -62,7 +112,7 @@ export default class FeedPost extends React.Component {
    */
   handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
-      displayText: buildPost(feedEvent),
+      renderedPost: this.buildPost(feedEvent),
       item: feedEvent,
       userAction: userAction
     });
@@ -70,50 +120,25 @@ export default class FeedPost extends React.Component {
 
   render() {
     const { feedEvent } = this.props;
-    const displayText = buildPost(feedEvent);
-    return (
-      <View style={styles.post}>
-        <TouchableOpacity
-          style={styles.postData}
-          onPress={() => this.handleListTap(feedEvent)}
-        >
-          <Image
-            style={styles.profilePicture}
-            source={{
-              uri: feedEvent.actor.avatar_url
-            }}
-          />
-          <Text style={styles.postText}>{displayText}</Text>
-        </TouchableOpacity>
-        <View style={styles.postInteraction}>
-          <TouchableOpacity>
-            <Text>Like</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.handleListTap(feedEvent, "comment")}
-          >
-            <Text>Comment</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+    const postHTML = this.buildPost(feedEvent);
+    return postHTML;
   }
 }
 
 const styles = StyleSheet.create({
-  post: {
+  postContainer: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    width: "100%",
+    flexDirection: "row"
   },
-  postInteraction: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 5
+  rightPost: {
+    width: "80%"
   },
-  postData: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 5
+
+  topPart: {
+    flex: 1,
+    flexDirection: "row"
   },
   profilePicture: {
     width: 50,
@@ -122,5 +147,26 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 10
   },
-  postText: { width: "80%" }
+  postHeader: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: 10,
+    paddingBottom: 5
+    // marginBottom: 10,
+  },
+  postText: {
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  postInteraction: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
+  },
+  bold: {
+    fontWeight: "bold"
+  }
 });
