@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     alignSelf: "stretch",
     width: undefined,
-    height: undefined
+    height: undefined,
   },
   loginH1: {
     fontSize: 75,
