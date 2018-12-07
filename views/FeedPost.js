@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingTop: 10,
-    paddingBottom: 5
+    paddingBottom: 5,
+    width: "100%"
     // marginBottom: 10,
   },
   postText:{
