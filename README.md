@@ -15,8 +15,10 @@ export const env = {
 ```
 
 
-| Variable  | Description  |
-|-----------|--------------|
-| BACKEND_URL  |   Url to the backend for all the http requests  |
-| CLIENT_ID | Client id of the github Oauth |
+| Variable      | Description  |
+|---------------|--------------|
+| BACKEND_URL   |   Url to the backend for all the http requests  |
+| CLIENT_ID     | Client id of the github Oauth |
 | CLIENT_SECRET | secret ket for the client |
+
+

@@ -17,7 +17,9 @@ import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 
 // Temporary mockdata for development used in componentWillMount()
-import data from "../mockData";
+// import data from "../mockData";
+import requestBuilder from "../lib/request";
+const req = requestBuilder();
 
 export default class FeedScreen extends React.Component {
   static propTypes = {
@@ -45,20 +47,30 @@ export default class FeedScreen extends React.Component {
     };
   };
 
-  async fetchData() {
-    // TEMPORARY MOCK DATA
-    const response = { data };
-    // const response = await axios.get("https://api.github.com/users/griev04/events/public");
+  /**
+   * Fetches from the server all the feeds of the user
+   * @return {Promise<void>}
+   */
+  async fetchPosts() {
+    try{
+      let response = await req.get('/posts');
+      return response.data
+    }
+    catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+  }
+
+  async componentWillMount() {
+
+    let posts = await this.fetchPosts();
 
     this.setState({
-      posts: response.data,
+      posts,
       loading: false,
       refreshing: false
     });
-  }
-
-  componentWillMount() {
-    this.fetchData();
   }
 
   _onRefresh = () => {
@@ -96,8 +108,6 @@ export default class FeedScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-    // height: "100%"
-    // backgroundColor: "lightgray"
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }
