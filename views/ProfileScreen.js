@@ -6,8 +6,8 @@ export default class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>THIS IS JUST THE PROFILE PAGE!</Text>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("Feed")}>
-          <Text>CLICK HERE TO GO TO FEED</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("UserRepositories")}>
+          <Text>CLICK HERE TO GO TO Repo</Text>
         </TouchableOpacity>
       </View>
     );
