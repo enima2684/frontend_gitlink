@@ -15,6 +15,7 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
+import RepoListScreen from '../views/RepoListScreen';
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -72,12 +73,12 @@ const ProfileStack = createStackNavigator({
       title: "Profile"
     }
   },
-  ProfileDetails: {
-    screen: PostScreen,
-    navigationOptions: ({ navigation }) => ({
-      title: `Details`
-    })
-  }
+  UserRepositories: {
+    screen: RepoListScreen,
+    navigationOptions: {
+      title: `Repositories`
+    }
+  },
 });
 
 // Tab navigation: 4 tabs

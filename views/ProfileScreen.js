@@ -57,7 +57,7 @@ export default class ProfileScreen extends Component {
           <H1 style={styles.H1}>{login}</H1>
           <View style={styles.profileHeaderButton}>
             <TouchableOpacity
-              onPress={() => this.props.navigate("Thread")}
+              onPress={() => this.props.navigation.navigate("Thread")}
               style={styles.profileButton}
             >
               <Text>Follow</Text>
@@ -69,21 +69,21 @@ export default class ProfileScreen extends Component {
         </View>
         <View style={styles.profileIconContainer}>
           <View>
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigate("Repo-List")}>
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigation.navigate("UserRepositories")}>
               <Octicons name="repo" size={50} color="#0080FF" />
               <Text>Repositories</Text>
               <H1>{public_repos}</H1>
             </TouchableOpacity>
           </View>
           <View >
-            <TouchableOpacity style={styles.oneProfileIcon}onPress={() => this.props.navigate("Followers")}>
+            <TouchableOpacity style={styles.oneProfileIcon}onPress={() => this.props.navigation.navigate("Followers")}>
               <Octicons name="broadcast" size={50} color="#0080FF" />
               <Text>Followers</Text>
               <H1>{followers}</H1>
             </TouchableOpacity>
           </View>
           <View >
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigate("Following")}>
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigation.navigate("Following")}>
               <Octicons name="organization" size={50} color="#0080FF" />
               <Text>Following</Text>
               <H1>{following}</H1>
