@@ -36,7 +36,7 @@ export default class RepoListScreen extends Component {
                   onPress={() => this.props.navigation.navigate("Profile")}>
                       <View style={styles.repoList}>
                       <View>
-                      <Octicons name="repo" size={50} />
+                      <Octicons name="repo" size={50} color="#9cdaef" />
                     </View>
                     <View style={styles.repoMidlle}>
                       <Text style={styles.repoName}> {oneRepo.name}</Text>
@@ -46,7 +46,7 @@ export default class RepoListScreen extends Component {
                         <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
                       </View>
                     </View>
-                    <Octicons name="chevron-right" size={50}></Octicons>
+                    <Octicons name="chevron-right" size={25} color="#b8e9f7"></Octicons>
                       </View>
                     </TouchableOpacity>
                   </ListItem>
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent:"space-between",
+        alignItems:"center",
         width: "100%"
     },
     repoName:{
