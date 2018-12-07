@@ -4,7 +4,7 @@ import { Image, TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 
-export default class Profile extends Component {
+export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
 
