@@ -8,4 +8,4 @@ npm-debug.*
 .env.js
 .DS_Store
 .idea/
-.env.js
+env.js

@@ -1,4 +1,4 @@
-gitimport React from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
