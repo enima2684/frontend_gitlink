@@ -39,7 +39,7 @@ export default class RepoListScreen extends Component {
                       <Octicons name="repo" size={50} />
                     </View>
                     <View style={styles.repoMidlle}>
-                      <Text> {oneRepo.name}</Text>
+                      <Text style={styles.repoName}> {oneRepo.name}</Text>
                       <View style={styles.repoMiddile2}>
                         <Text> {oneRepo.created_at.slice(0, 10)}</Text>
                         <Text> {oneRepo.language}</Text>
@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent:"space-between",
         width: "100%"
+    },
+    repoName:{
+        fontSize: 20,
+        lineHeight: 25,
+        paddingBottom: "4%"
     },
     repoMidlle:{
         display: "flex",
