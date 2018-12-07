@@ -52,23 +52,23 @@ export default class Profile extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.profileIcon}>
-          <View style={styles.oneProfileIcon}>
-            <TouchableOpacity onPress={() => this.props.navigate("Repo-List")}>
+        <View style={styles.profileIconContainer}>
+          <View>
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigate("Repo-List")}>
               <Octicons name="repo" size={50} color="#0080FF" />
               <Text>Repositories</Text>
               <H1>{public_repos}</H1>
             </TouchableOpacity>
           </View>
-          <View style={styles.oneProfileIcon}>
-            <TouchableOpacity onPress={() => this.props.navigate("Followers")}>
+          <View >
+            <TouchableOpacity style={styles.oneProfileIcon}onPress={() => this.props.navigate("Followers")}>
               <Octicons name="broadcast" size={50} color="#0080FF" />
               <Text>Followers</Text>
               <H1>{followers}</H1>
             </TouchableOpacity>
           </View>
-          <View style={styles.oneProfileIcon}>
-            <TouchableOpacity onPress={() => this.props.navigate("Following")}>
+          <View >
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigate("Following")}>
               <Octicons name="organization" size={50} color="#0080FF" />
               <Text>Following</Text>
               <H1>{following}</H1>
@@ -89,6 +89,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#9cdaee4d",
     height: "50%",
     width: "100%"
+  },
+  profileIconContainer:{
+    flexDirection: "row",
+    flexGrow: 1,
+    flexWrap: "wrap",
+    width: "100%",
+    justifyContent: "space-around"
   },
   profileHeader: {
     marginTop: 10,
@@ -142,9 +149,11 @@ const styles = StyleSheet.create({
   },
   oneProfileIcon: {
     paddingTop: "10%",
+    paddingLeft:"10%",
+    paddingRight:"10%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "50%"
+    width: "100%"
   }
 });
