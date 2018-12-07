@@ -62,19 +62,23 @@ export default class FeedScreen extends React.Component {
     }
   }
 
-  async componentWillMount() {
-
+  async updatePosts(){
     let posts = await this.fetchPosts();
     this.setState({
       posts,
       loading: false,
       refreshing: false
     });
+
+  }
+
+  componentWillMount() {
+    this.updatePosts();
   }
 
   _onRefresh = async () => {
     this.setState({ refreshing: true });
-    this.fetchPosts();
+    this.updatePosts();
   };
 
   render() {

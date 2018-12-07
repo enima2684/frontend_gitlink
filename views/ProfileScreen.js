@@ -3,7 +3,6 @@ import { Container, H1, H3, Button } from "native-base";
 import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
-import {Button} from "native-base";
 import {authService} from "../lib/Authentication";
 
 
