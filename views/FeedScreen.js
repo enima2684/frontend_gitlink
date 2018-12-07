@@ -13,13 +13,12 @@ import {
 } from "react-native";
 import FeedPost from "./FeedPost";
 import PropTypes from "prop-types";
-import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 
 // Temporary mockdata for development used in componentWillMount()
 // import data from "../mockData";
 import requestBuilder from "../lib/request";
-const req = requestBuilder();
+
 
 export default class FeedScreen extends React.Component {
   static propTypes = {
@@ -53,8 +52,9 @@ export default class FeedScreen extends React.Component {
    */
   async fetchPosts() {
     try{
-      let response = await req.get('/posts');
-      return response.data
+      const req = await requestBuilder();
+      let response = await req.get('/posts/currentUser');
+      return response.data.posts
     }
     catch(err){
       console.log(err);
@@ -65,7 +65,6 @@ export default class FeedScreen extends React.Component {
   async componentWillMount() {
 
     let posts = await this.fetchPosts();
-
     this.setState({
       posts,
       loading: false,
@@ -73,9 +72,9 @@ export default class FeedScreen extends React.Component {
     });
   }
 
-  _onRefresh = () => {
+  _onRefresh = async () => {
     this.setState({ refreshing: true });
-    this.fetchData();
+    this.fetchPosts();
   };
 
   render() {
