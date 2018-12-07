@@ -48,7 +48,7 @@ export default class FeedScreen extends React.Component {
   async fetchData() {
     // TEMPORARY MOCK DATA
     const response = { data };
-    // const response = await axios.get("https://api.github.com/users/griev04/events/public");
+    // const response = await axios.get("https://api.github.com/users/griev04/received_events/public");
 
     this.setState({
       posts: response.data,

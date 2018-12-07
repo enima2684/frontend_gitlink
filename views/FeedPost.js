@@ -81,11 +81,12 @@ const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
     backgroundColor: "#fff",
-    width: "100%",
-    flexDirection: "row"
+    width: "96%",
+    flexDirection: "row",
+    paddingLeft: "2%"
   },
   rightPost: {
-    width: "80%"
+    flexShrink: 1
   },
 
   topPart: {
@@ -110,11 +111,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5
     // marginBottom: 10,
   },
-  postText: {
-    width: "100%",
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap"
+  postText:{
+    flexShrink: 1,
+    flexWrap: "wrap",
   },
   postInteraction: {
     flexDirection: "row",
