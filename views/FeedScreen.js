@@ -1,4 +1,4 @@
-import React from "react";
+gitimport React from "react";
 import {
   StyleSheet,
   View,
@@ -13,11 +13,12 @@ import {
 } from "react-native";
 import FeedPost from "./FeedPost";
 import PropTypes from "prop-types";
-import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 
 // Temporary mockdata for development used in componentWillMount()
-import data from "../mockData";
+// import data from "../mockData";
+import requestBuilder from "../lib/request";
+
 
 export default class FeedScreen extends React.Component {
   static propTypes = {
@@ -45,25 +46,39 @@ export default class FeedScreen extends React.Component {
     };
   };
 
-  async fetchData() {
-    // TEMPORARY MOCK DATA
-    const response = { data };
-    // const response = await axios.get("https://api.github.com/users/griev04/received_events/public");
+  /**
+   * Fetches from the server all the feeds of the user
+   * @return {Promise<void>}
+   */
+  async fetchPosts() {
+    try{
+      const req = await requestBuilder();
+      let response = await req.get('/posts/currentUser');
+      return response.data.posts
+    }
+    catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+  }
 
+  async updatePosts(){
+    let posts = await this.fetchPosts();
     this.setState({
-      posts: response.data,
+      posts,
       loading: false,
       refreshing: false
     });
+
   }
 
   componentWillMount() {
-    this.fetchData();
+    this.updatePosts();
   }
 
-  _onRefresh = () => {
+  _onRefresh = async () => {
     this.setState({ refreshing: true });
-    this.fetchData();
+    this.updatePosts();
   };
 
   render() {
@@ -95,9 +110,7 @@ export default class FeedScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // height: "100%"
-    // backgroundColor: "lightgray"
+    flex: 1
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }
