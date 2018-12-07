@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
 import { Container, H1, List, ListItem  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -9,7 +9,8 @@ export default class RepoListScreen extends Component {
     super(props);
 
     this.state = {
-      oneUserRepo: []
+      oneUserRepo: [],
+      loading: true,
     };
   }
   componentDidMount() {
@@ -17,7 +18,7 @@ export default class RepoListScreen extends Component {
       .get(`https://api.github.com/users/nrlfrh/repos`)
       .then(response => {
         console.log(response.data);
-        this.setState({ oneUserRepo: response.data });
+        this.setState({ oneUserRepo: response.data, loading: false });
       })
       .catch(err => {
         console.log(err);
@@ -27,6 +28,9 @@ export default class RepoListScreen extends Component {
     const { oneUserRepo } = this.state;
     return (
       <Container>
+        {this.state.loading && (
+          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+        )}
         <ScrollView>
           <List>
             {oneUserRepo.map(oneRepo => {

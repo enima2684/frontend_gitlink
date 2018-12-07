@@ -1,13 +1,34 @@
 import React, { Component } from "react";
 import { H1, H2, Container, Button } from "native-base";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import Octicons from "@expo/vector-icons/Octicons";
+
+import {authService} from "../lib/Authentication";
 
 export default class LoginScreen extends Component {
 
-  handleButton = () => {
-    this.props.navigation.navigate("MainApp");
+  handleLogin = async () => {
+
+    try{
+      await authService.login();
+
+      Alert.alert("Welcome to GitLink !", "Happy to see you again! 🎉🎉🎉");
+      this.props.navigation.navigate("MainApp");
+
+    } catch(err){
+      console.log(err);
+      alert(err);
+    }
   };
+
+  async componentDidMount(){
+    const loggedIn = await authService.isLoggedIn();
+    if(loggedIn){
+      console.log("user already logged in");
+      Alert.alert("Already logged in", `Welcome back ${loggedIn} ! 👏`);
+      this.props.navigation.navigate("MainApp");
+    }
+  }
   
   render() {
     return (
@@ -28,7 +49,7 @@ export default class LoginScreen extends Component {
         <View style={styles.loginEnd}>
         <View>
           <Button style={styles.loginButton}
-          onPress={this.handleButton} title="Log In Via GitHub">
+          onPress={this.handleLogin} title="Log In Via GitHub">
             <Octicons name="mark-github" size={30}></Octicons>
             <Text style={styles.loginText}>Log In Via GitHub</Text>
           </Button>
