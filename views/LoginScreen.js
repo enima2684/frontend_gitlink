@@ -1,12 +1,33 @@
 import React, { Component } from "react";
 import { H1, H2, Container, Button } from "native-base";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
+
+import {authService} from "../lib/Authentication";
 
 export default class LoginScreen extends Component {
 
-  handleButton = () => {
-    this.props.navigation.navigate("MainApp");
+  handleLogin = async () => {
+
+    try{
+      await authService.login();
+
+      Alert.alert("Welcome to GitLink !", "Happy to see you again! 🎉🎉🎉");
+      this.props.navigation.navigate("MainApp");
+
+    } catch(err){
+      console.log(err);
+      alert(err);
+    }
   };
+
+  async componentDidMount(){
+    const loggedIn = await authService.isLoggedIn();
+    if(loggedIn){
+      console.log("user already logged in");
+      Alert.alert("Welcome back !", "You were already logged in 😉");
+      this.props.navigation.navigate("MainApp");
+    }
+  }
   
   render() {
     return (
@@ -18,17 +39,18 @@ export default class LoginScreen extends Component {
           />
           <H1 style={styles.loginH1}>GitLink</H1>
         </View>
+        <View>
+          <Button style={styles.loginButton} onPress={this.handleLogin} title="Log In Via GitHub">
+            <Text style={styles.textLogin}>Log In Via GitHub</Text>
+          </Button>
+        </View>
         <View style={styles.catchphrase}>
           <H2 style={styles.loginH2}>Messages, Updates, Connects</H2>
           <Text style={styles.textLogin}>
             An application for every developer
           </Text>
         </View>
-        <View>
-          <Button style={styles.loginButton} onPress={this.handleButton} title="Log In Via GitHub">
-            <Text style={styles.textLogin}>Log In Via GitHub</Text>
-          </Button>
-        </View>
+
       </Container>
     );
   }
