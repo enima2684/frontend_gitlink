@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Container, H1, H3, Button } from "native-base";
-import { Image, TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
+
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -22,6 +24,19 @@ export default class ProfileScreen extends Component {
         console.log(err);
       });
   }
+
+  logout = async ()=>{
+    try{
+      await authService.logout();
+      Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
+      this.props.navigation.navigate("LoginPage");
+    } catch (err) {
+      console.log(err);
+      Alert.alert("error", 'Oups! Something went wrong on the logout');
+      throw err
+    }
+  };
+
   render() {
     const {
       avatar_url,
@@ -75,6 +90,7 @@ export default class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
+        <Button danger onPress={this.logout}><Text>Logout</Text></Button>
       </Container>
     );
   }
