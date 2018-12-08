@@ -10,8 +10,8 @@ export default class LoginScreen extends Component {
   handleLogin = async () => {
 
     try{
-      await authService.login();
 
+      await authService.login();
       Alert.alert("Welcome to GitLink !", "Happy to see you again! 🎉🎉🎉");
       this.props.navigation.navigate("MainApp");
 
