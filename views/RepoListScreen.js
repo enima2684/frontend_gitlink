@@ -38,7 +38,7 @@ export default class RepoListScreen extends Component {
         <ScrollView>
           <List>
             {oneUserRepos.map(oneRepo => (
-                  <ListItem key={oneRepo._id}>
+                  <ListItem key={oneRepo.id}>
                     <TouchableOpacity style={styles.oneRepo} onPress={()=>this.goToCode(oneRepo.html_url)}>
                       <View style={styles.repoList}>
                         <View>

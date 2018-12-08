@@ -6,7 +6,6 @@ export default class CodeScreen extends Component{
     return (
       <WebView
         source={{uri: this.props.navigation.getParam('repo_html_url') + '?files=1'}}
-        style={{marginTop: 20}}
       />
     )
   }
