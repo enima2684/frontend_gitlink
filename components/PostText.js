@@ -23,10 +23,10 @@ export default class PostText extends React.Component {
       case "CreateEvent":
         displayText = (
           <Text style={styles.textContent}>
-            created <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
-            in <Text style={styles.bold}> {feedEvent.payload.master_branch}</Text>{" "}
+            created a <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
+            in <Text style={styles.bold}>{feedEvent.payload.master_branch}</Text>{" "}
             inside the repo{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
           </Text>
         );
         break;
@@ -41,21 +41,19 @@ export default class PostText extends React.Component {
       case "PushEvent":
         displayText = (
           <Text style={styles.textContent}>
-            committed to <Text style={styles.bold}>{feedEvent.payload.ref}</Text>{" "}
-            branch in <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+            committed to the <Text style={styles.bold}>{feedEvent.payload.ref.split("/").pop()}</Text>{" "}
+            branch in <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
           </Text>
         );
         break;
       case "PullRequestEvent":
         displayText = (
           <Text style={styles.textContent}>
-            created{" "}
             <Text style={styles.bold}>
-              {feedEvent.payload.ref_type} {feedEvent.payload.ref}
+              {feedEvent.payload.action}
             </Text>{" "}
-            in <Text style={styles.bold}> {feedEvent.payload.master_branch}</Text>
-            inside the repo{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+            a pull request inside the repo{" "}
+            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
           </Text>
         );
         break;
