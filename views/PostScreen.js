@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 import PostText from "../components/PostText";
 import Octicons from "@expo/vector-icons/Octicons";
 import CommentPost from "../components/CommentPost";
+import moment from "moment";
 
 export default class PostScreen extends React.Component {
   static propTypes = {
@@ -65,7 +66,7 @@ export default class PostScreen extends React.Component {
           <View style={styles.postBox}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>2 min ago</Text>
+              <Text>{moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
             </View>
             <PostText feedEvent={feedEvent} />
           </View>
@@ -121,23 +122,23 @@ export default class PostScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    width: "100%",
+    paddingTop: 10,
+    backgroundColor: "#fff",
+    padding: "2%"
+  },
   commentContainer: {
-    flexShrink: 1
+    flexShrink: 1,
   },
   commentSection: {
     flexShrink: 1,
-    flexGrow: 0
-  },
-  mainContainer: {
-    flex: 1,
-    justifyContent: "flex-start",
-    backgroundColor: "#fff",
-    width: "96%",
-    paddingLeft: "2%",
-    paddingTop: 10
+    flexGrow: 0,
   },
   postContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+    backgroundColor: "#fff",
   },
   postBox: {
     flexShrink: 1,
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   postInteraction: {
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 10
+    padding: "1%"
   },
   bold: {
     fontWeight: "bold"
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexShrink: 1,
     height: 40,
-    marginBottom: 10
+    marginBottom: "1%"
   },
   input: {
     padding: 10,

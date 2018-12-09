@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 export default class CommentPost extends Component {
   static propTypes = {
@@ -34,7 +35,7 @@ export default class CommentPost extends Component {
         <View style={styles.rightPost}>
           <View style={styles.postHeader}>
             <Text style={styles.bold}>{comment.actor.login}</Text>
-            <Text>2m ago</Text>
+            <Text>{moment(comment.createdAt, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
           </View>
           <View style={styles.postText}>
             <Text>{comment.commentText}</Text>
@@ -48,10 +49,9 @@ export default class CommentPost extends Component {
 const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    width: "96%",
+    width: "100%",
     flexDirection: "row",
-    paddingLeft: "2%"
+    padding: "1%"
   },
   rightPost: {
     flexShrink: 1

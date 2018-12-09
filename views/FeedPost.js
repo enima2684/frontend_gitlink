@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
+import moment from "moment";
 
 import PostText from "../components/PostText";
 
@@ -51,7 +52,7 @@ export default class FeedPost extends React.Component {
         commentText:
           "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
         _id: "389ufj93u893ur8f3jhq89",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 19:00:10Z"
       },
       {
         actor: {
@@ -63,7 +64,7 @@ export default class FeedPost extends React.Component {
         commentText:
           "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
         _id: "389ufj93u893ur8f3jhq90",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 20:06:10Z"
       },
       {
         actor: {
@@ -77,7 +78,7 @@ export default class FeedPost extends React.Component {
         commentText:
           "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
         _id: "389ufj93u893ur8f3jhq96",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 20:15:10Z"
       },
       {
         actor: {
@@ -89,7 +90,7 @@ export default class FeedPost extends React.Component {
         commentText:
           "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
         _id: "389ufj93u893ur8f3jhq92",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 20:03:10Z"
       }
     ];
     feedEvent.likes = [
@@ -102,7 +103,7 @@ export default class FeedPost extends React.Component {
           avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
         },
         _id: "389ufj93u893ur9f3jhq98",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 20:02:10Z"
       },
       {
         actor: {
@@ -112,7 +113,7 @@ export default class FeedPost extends React.Component {
           avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
         },
         _id: "389ufj93u893ur9f3jhq93",
-        createdAt: "20181209"
+        createdAt: "2018-12-09 20:00:10Z"
       }
     ];
     return (
@@ -132,7 +133,7 @@ export default class FeedPost extends React.Component {
           <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>2min ago</Text>
+              <Text>{moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
             </View>
             <View style={styles.postText}>
               <PostText feedEvent={feedEvent} />
@@ -168,10 +169,7 @@ export default class FeedPost extends React.Component {
 const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    width: "96%",
     flexDirection: "row",
-    paddingLeft: "2%"
   },
   rightPost: {
     flexShrink: 1
