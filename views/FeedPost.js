@@ -19,7 +19,6 @@ export default class FeedPost extends React.Component {
   handleListTap(feedEvent, userAction = "details") {
     console.log(feedEvent.actor);
     this.props.navigation.navigate("Post", {
-      // renderedPost: this.buildPost(feedEvent),
       feedEvent: feedEvent,
       userAction: userAction
     });
@@ -38,9 +37,90 @@ export default class FeedPost extends React.Component {
 
   render() {
     const { feedEvent } = this.props;
+    // PLACEHOLDER FOR COMMENTS INSIDE AN EVENT (DATA COMES FROM FEEDEVENT IN THE FEEDLIST)
+    feedEvent.comments = [
+      {
+        actor: {
+          id: 18719688,
+          login: "griev04",
+          display_login: "griev04",
+          gravatar_id: "",
+          url: "https://api.github.com/users/griev04",
+          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
+        },
+        commentText:
+          "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
+        _id: "389ufj93u893ur8f3jhq89",
+        createdAt: "20181209"
+      },
+      {
+        actor: {
+          id: 43408092,
+          login: "nrlfrh",
+          url: "https://api.github.com/users/nrlfrh",
+          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
+        },
+        commentText:
+          "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
+        _id: "389ufj93u893ur8f3jhq90",
+        createdAt: "20181209"
+      },
+      {
+        actor: {
+          id: 18719688,
+          login: "griev04",
+          display_login: "griev04",
+          gravatar_id: "",
+          url: "https://api.github.com/users/griev04",
+          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
+        },
+        commentText:
+          "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
+        _id: "389ufj93u893ur8f3jhq96",
+        createdAt: "20181209"
+      },
+      {
+        actor: {
+          id: 43408092,
+          login: "nrlfrh",
+          url: "https://api.github.com/users/nrlfrh",
+          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
+        },
+        commentText:
+          "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
+        _id: "389ufj93u893ur8f3jhq92",
+        createdAt: "20181209"
+      }
+    ];
+    feedEvent.likes = [
+      {
+        actor: {
+          id: 18719688,
+          login: "griev04",
+          gravatar_id: "",
+          url: "https://api.github.com/users/griev04",
+          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
+        },
+        _id: "389ufj93u893ur9f3jhq98",
+        createdAt: "20181209"
+      },
+      {
+        actor: {
+          id: 43408092,
+          login: "nrlfrh",
+          url: "https://api.github.com/users/nrlfrh",
+          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
+        },
+        _id: "389ufj93u893ur9f3jhq93",
+        createdAt: "20181209"
+      }
+    ];
     return (
       <View style={styles.postContainer}>
-        <TouchableOpacity onPress={() => this.handleProfileTap(feedEvent)} style={styles.pictureContainer}>
+        <TouchableOpacity
+          onPress={() => this.handleProfileTap(feedEvent)}
+          style={styles.pictureContainer}
+        >
           <Image
             style={styles.picture}
             source={{
@@ -60,13 +140,21 @@ export default class FeedPost extends React.Component {
           </TouchableOpacity>
           <View style={styles.postInteraction}>
             <TouchableOpacity style={styles.flexRow}>
-              <Octicons name="squirrel" color={"tomato"} />
+              <Text>
+                {feedEvent.likes.length > 0 ? `${feedEvent.likes.length} ` : ""}
+              </Text>
+              <Octicons name="thumbsup" color={"tomato"} />
               <Text> Like</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.handleListTap(feedEvent, "comment")}
               style={styles.flexRow}
             >
+              <Text>
+                {feedEvent.comments.length > 0
+                  ? `${feedEvent.comments.length} `
+                  : ""}
+              </Text>
               <Octicons name="comment" color={"tomato"} />
               <Text> Comment</Text>
             </TouchableOpacity>
@@ -112,9 +200,9 @@ const styles = StyleSheet.create({
     width: "100%"
     // marginBottom: 10,
   },
-  postText:{
+  postText: {
     flexShrink: 1,
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   postInteraction: {
     flexDirection: "row",
@@ -126,6 +214,6 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   }
 });

@@ -15,7 +15,7 @@ export default class PostText extends React.Component {
         displayText = (
           <Text style={styles.textContent}>
             <Text style={styles.bold}>{feedEvent.payload.action}</Text> watching{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
           </Text>
         );
         break;
@@ -34,7 +34,7 @@ export default class PostText extends React.Component {
         displayText = (
           <Text style={styles.textContent}>
             forked <Text style={styles.bold}>{feedEvent.repo.name}</Text> of{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name}</Text>
+            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
           </Text>
         );
         break;
