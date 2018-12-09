@@ -1,81 +1,173 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import Octicons from "@expo/vector-icons/Octicons";
 import PropTypes from "prop-types";
-
 
 export default class PostText extends React.Component {
   static propTypes = {
     feedEvent: PropTypes.object.isRequired
   };
-  
+
   buildPostSpecificText(feedEvent) {
     let displayText;
+    let iconName;
+    const iconColor = "#8cc342";
     switch (feedEvent.type) {
       case "WatchEvent":
+        iconName = "eye";
         displayText = (
-          <Text style={styles.textContent}>
-            <Text style={styles.bold}>{feedEvent.payload.action}</Text> watching{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Octicons
+                style={styles.icon}
+                name={iconName}
+                color={iconColor}
+                size={30}
+              />
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text>{" "}
+                watching{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+          </View>
         );
         break;
-  
+
       case "CreateEvent":
+        iconName = "plus";
         displayText = (
-          <Text style={styles.textContent}>
-            created a <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
-            in <Text style={styles.bold}>{feedEvent.payload.master_branch}</Text>{" "}
-            inside the repo{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                created a{" "}
+                <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text> in{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.payload.master_branch}
+                </Text>{" "}
+                inside the repo{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
         );
         break;
+
       case "ForkEvent":
+        iconName = "repo-forked";
         displayText = (
-          <Text style={styles.textContent}>
-            forked <Text style={styles.bold}>{feedEvent.repo.name}</Text> of{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                forked <Text style={styles.bold}>{feedEvent.repo.name}</Text> of{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
         );
         break;
+
       case "PushEvent":
+        iconName = "repo-push";
         displayText = (
-          <Text style={styles.textContent}>
-            committed to the <Text style={styles.bold}>{feedEvent.payload.ref.split("/").pop()}</Text>{" "}
-            branch in <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                committed to the{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.payload.ref.split("/").pop()}
+                </Text>{" "}
+                branch in{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
         );
         break;
+
       case "PullRequestEvent":
+        iconName = "git-pull-request";
         displayText = (
-          <Text style={styles.textContent}>
-            <Text style={styles.bold}>
-              {feedEvent.payload.action}
-            </Text>{" "}
-            a pull request inside the repo{" "}
-            <Text style={styles.bold}> {feedEvent.repo.name.split("/").pop()}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text> a
+                pull request inside the repo{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
         );
         break;
+
       default:
+        iconName = "mark-github";
         displayText = (
-          <Text style={styles.textContent}>
-            did something else: <Text style={styles.bold}>{feedEvent.type}</Text>
-          </Text>
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                did something else:{" "}
+                <Text style={styles.bold}>{feedEvent.type}</Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
         );
         break;
     }
     return displayText;
   }
-  
-  
 
   /**
    *
    * @param {*} item
    * @param {*} userAction user clicks on post or on comment button. Possible values: details, comment
    */
-  
+
   render() {
     const { feedEvent } = this.props;
     return this.buildPostSpecificText(feedEvent);
@@ -83,47 +175,15 @@ export default class PostText extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  postContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    width: "100%",
-    flexDirection: "row"
-  },
-  rightPost: {
-    width: "80%"
-  },
-
-  topPart: {
-    flex: 1,
-    flexDirection: "row"
-  },
-  profilePicture: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginLeft: 5,
-    marginRight: 10
-  },
-  postHeader: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: 10,
-    paddingBottom: 5
-    // marginBottom: 10,
-  },
-  postText: {
-    width: "100%",
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap"
-  },
-  postInteraction: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  },
   bold: {
     fontWeight: "bold"
-  }
+  },
+  outerContainer: {
+    flexDirection: "row",
+  },
+  textContainer: {
+    flexWrap: "wrap",
+    width: "90%",
+  },
+  icon: {}
 });
