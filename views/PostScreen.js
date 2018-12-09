@@ -63,7 +63,10 @@ export default class PostScreen extends React.Component {
             />
           </TouchableOpacity>
           <View style={styles.postBox}>
-            <Text style={styles.bold}>{feedEvent.actor.login}</Text>
+            <View style={styles.postHeader}>
+              <Text style={styles.bold}>{feedEvent.actor.login}</Text>
+              <Text>2 min ago</Text>
+            </View>
             <PostText feedEvent={feedEvent} />
           </View>
         </View>
@@ -140,6 +143,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexWrap: "wrap"
   },
+  postHeader: { flexDirection: "row", justifyContent: "space-between" },
   postInteraction: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexShrink: 1,
     height: 40,
-    marginBottom: 10,
+    marginBottom: 10
   },
   input: {
     padding: 10,

@@ -132,7 +132,7 @@ export default class FeedPost extends React.Component {
           <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>2m ago</Text>
+              <Text>2min ago</Text>
             </View>
             <View style={styles.postText}>
               <PostText feedEvent={feedEvent} />
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 5,
     width: "100%"
-    // marginBottom: 10,
   },
   postText: {
     flexShrink: 1,
