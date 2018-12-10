@@ -16,7 +16,6 @@ export default class SearchScreen extends React.Component {
     };
   }
 
-
   async querySearchUsers(query){
     try{
       let response = await axios.get(`https://api.github.com/search/users?q=${query}`);
@@ -51,22 +50,25 @@ export default class SearchScreen extends React.Component {
 
   render() {
 
-
     let userResultHTML = this.state.resultUsers.map(user => (
       <ListItem bordered key={user.id} style={styles.innerListItem} thumbnail>
-        <Left>
-          <Thumbnail round small source={{ uri: user.avatar_url }} />
-        </Left>
+          <Left style={styles.noPadding}>
+            <Button style={styles.noPadding} transparent>
+              <Thumbnail round small source={{ uri: user.avatar_url }} />
+            </Button>
+          </Left>
 
-        <Body>
-          <Text>{user.login}</Text>
-        </Body>
+          <Body style={styles.noPadding}>
+            <Button style={styles.noPadding} transparent>
+              <Text style={styles.text}>{user.login}</Text>
+            </Button>
+          </Body>
 
-        <Right>
-          <Button style={styles.goToButton} transparent>
-            <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
-          </Button>
-        </Right>
+          <Right style={styles.noPadding}>
+            <Button style={styles.noPadding} transparent>
+              <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
+            </Button>
+          </Right>
 
       </ListItem>
     ));
@@ -82,7 +84,7 @@ export default class SearchScreen extends React.Component {
         </Body>
 
         <Right>
-          <Button style={styles.goToButton} transparent>
+          <Button style={styles.noPadding} transparent>
             <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
           </Button>
         </Right>
@@ -185,12 +187,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: 0,
   },
-  goToButton: {
+  noPadding: {
     paddingBottom: 0,
     paddingTop: 0,
-    flex: 1
   },
   arrowIcon: {
     backgroundColor: "#fff",
+  },
+  text: {
+    color: "#202020"
   }
 });
