@@ -16,6 +16,7 @@ import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
+import OneRepositoryScreen from "../views/OneRepositoryScreen";
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -78,6 +79,12 @@ const ProfileStack = createStackNavigator({
     navigationOptions: {
       title: `Repositories`
     }
+  },
+  OneRepositories: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
   },
 });
 

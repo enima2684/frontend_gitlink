@@ -9,7 +9,7 @@ export default class RepoListScreen extends Component {
     super(props);
 
     this.state = {
-      oneUserRepo: [],
+      userRepos: [],
       loading: true,
     };
   }
@@ -17,15 +17,14 @@ export default class RepoListScreen extends Component {
     axios
       .get(`https://api.github.com/users/nrlfrh/repos`)
       .then(response => {
-        console.log(response.data);
-        this.setState({ oneUserRepo: response.data, loading: false });
+        this.setState({ userRepos: response.data, loading: false });
       })
       .catch(err => {
         console.log(err);
       });
   }
   render() {
-    const { oneUserRepo } = this.state;
+    const { userRepos } = this.state;
     return (
       <Container>
         {this.state.loading && (
@@ -33,11 +32,14 @@ export default class RepoListScreen extends Component {
         )}
         <ScrollView>
           <List>
-            {oneUserRepo.map(oneRepo => {
+            {userRepos.map(oneRepo => {
               return (
-                  <ListItem key={oneRepo._id}>
+                  <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo} 
-                  onPress={() => this.props.navigation.navigate("Profile")}>
+                  onPress={() => this.props.navigation.navigate("OneRepositories", {
+                      repoId : oneRepo.id,
+                      repoName: oneRepo.name,
+                  })}>
                       <View style={styles.repoList}>
                       <View>
                       <Octicons name="repo" size={50} color="#9cdaef" />
