@@ -48,33 +48,47 @@ export default class SearchScreen extends React.Component {
     this.querySearchRepos(this.state.query);
   };
 
+  handleOnPressUser = () => {
+
+  };
+
+  handleOnPressRepo = () => {
+
+  };
+
   render() {
 
     let userResultHTML = this.state.resultUsers.map(user => (
-      <ListItem bordered key={user.id} style={styles.innerListItem} thumbnail>
-          <Left style={styles.noPadding}>
-            <Button style={styles.noPadding} transparent>
+      <ListItem
+        key={user.id}
+        style={styles.innerListItem}
+        button
+        thumbnail
+        onPress={this.handleOnPressUser}>
+
+          <Left>
               <Thumbnail round small source={{ uri: user.avatar_url }} />
-            </Button>
           </Left>
 
-          <Body style={styles.noPadding}>
-            <Button style={styles.noPadding} transparent>
+          <Body>
               <Text style={styles.text}>{user.login}</Text>
-            </Button>
           </Body>
 
-          <Right style={styles.noPadding}>
-            <Button style={styles.noPadding} transparent>
+          <Right>
               <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
-            </Button>
           </Right>
 
       </ListItem>
     ));
 
     let repoResultHTML = this.state.resultRepos.map(repo => (
-      <ListItem bordered key={repo.id} style={styles.innerListItem} thumbnail>
+      <ListItem
+        key={repo.id}
+        style={styles.innerListItem}
+        button
+        thumbnail
+        onPress={this.handleOnPressRepo}>
+
         <Left>
           <Thumbnail round small source={{ uri: repo.owner.avatar_url }} />
         </Left>
@@ -84,9 +98,7 @@ export default class SearchScreen extends React.Component {
         </Body>
 
         <Right>
-          <Button style={styles.noPadding} transparent>
             <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
-          </Button>
         </Right>
 
       </ListItem>
