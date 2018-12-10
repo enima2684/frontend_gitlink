@@ -1,4 +1,5 @@
 import React from "react";
+import {Text} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -22,8 +23,7 @@ import CodeScreen from "../views/CodeScreen";
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
   FeedList: {
-    // screen: FeedScreen
-    screen: SearchScreen
+    screen: FeedScreen
   },
   Post: {
     screen: PostScreen,
@@ -34,7 +34,7 @@ const FeedStack = createStackNavigator({
   Search: {
     screen: SearchScreen,
     navigationOptions: {
-      title: "Search"
+      title: "search"
     }
   },
   OtherUserProfile: {
