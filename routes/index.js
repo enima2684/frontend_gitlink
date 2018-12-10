@@ -22,7 +22,8 @@ import CodeScreen from "../views/CodeScreen";
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
   FeedList: {
-    screen: FeedScreen
+    // screen: FeedScreen
+    screen: SearchScreen
   },
   Post: {
     screen: PostScreen,
