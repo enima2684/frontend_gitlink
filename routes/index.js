@@ -34,7 +34,7 @@ const FeedStack = createStackNavigator({
   Search: {
     screen: SearchScreen,
     navigationOptions: {
-      title: "search"
+      title: "Search"
     }
   },
   OtherUserProfile: {
@@ -42,8 +42,7 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubName}'s profile`
     })
-  },
-
+  }
 });
 
 const MessagesStack = createStackNavigator({
