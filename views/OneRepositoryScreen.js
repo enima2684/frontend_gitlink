@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import { Container, H1, List, ListItem, H2, Thumbnail } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
-import { MarkdownView } from 'react-native-markdown-view'
+import { MarkdownView } from "react-native-markdown-view";
 
 export default class OneRepositoryScreen extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class OneRepositoryScreen extends Component {
     this.state = {
       repo: {},
       contributor: [],
-    //   readme: "",
+      //   readme: "",
       loading: true
     };
   }
@@ -32,9 +32,9 @@ export default class OneRepositoryScreen extends Component {
       const contributors = await axios.get(
         `https://api.github.com/repos/griev04/backend_gitlink/contributors`
       );
-    //   const readme = await axios.post(
-    //     `https://api.github.com/markdown`
-    //   );
+      //   const readme = await axios.post(
+      //     `https://api.github.com/markdown`
+      //   );
       this.setState({
         repo: repos.data,
         contributor: contributors.data,
@@ -57,18 +57,40 @@ export default class OneRepositoryScreen extends Component {
         ) : (
           <ScrollView>
             <Container>
-              <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>OWNER</H1>
+              <View style={styles.ownerWrapper}>
+                <H1 style={styles.textStyleOwner}>OWNER</H1>
                 <View style={styles.ownerHeader}>
                   <View style={styles.oneHeader}>
                     <Thumbnail
-                      round
+                      round large
                       source={{ uri: oneRepo.owner.avatar_url }}
                     />
                   </View>
                   <View style={styles.oneHeader}>
                     <H2> {oneRepo.owner.login}</H2>
                   </View>
+                  <View style={styles.ownerBottom}>
+                  <View>
+                      <Octicons name="repo-forked"></Octicons>
+                      <Text>{oneRepo.forks_count}</Text>
+                  </View>
+                  <View>
+                      <Octicons name="eye"></Octicons>
+                      <Text>{oneRepo.watchers_count}</Text>
+                  </View>
+                  <View>
+                      <Octicons name="star"></Octicons>
+                      <Text>{oneRepo.stargazers_count}</Text>
+                  </View>
+                  </View>
+                  
+                </View>
+              </View>
+              <View style={styles.wrapper}>
+                <H1 style={styles.textStyle}>SOURCE</H1>
+                <View style={styles.oneHeader}>
+                  <Octicons name="file-symlink-directory" size={40} />
+                  <Text>Code</Text>
                 </View>
               </View>
               <View style={styles.wrapper}>
@@ -79,25 +101,15 @@ export default class OneRepositoryScreen extends Component {
                       <ListItem key={oneContributor.id}>
                         <View>
                           <Thumbnail
-                            round
+                            round small
                             source={{ uri: oneContributor.avatar_url }}
                           />
                         </View>
-                        <H2> {oneContributor.login}</H2>
+                        <H2 style={styles.textSize}> {oneContributor.login}</H2>
                       </ListItem>
                     );
                   })}
                 </List>
-              </View>
-              <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>SOURCE</H1>
-                <View style={styles.oneHeader}>
-                    <Octicons name="file-symlink-directory" size={40} />
-                    <Text>Code</Text>
-                </View>
-              </View>
-              <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>README</H1>
               </View>
             </Container>
           </ScrollView>
@@ -108,6 +120,14 @@ export default class OneRepositoryScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  ownerWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    paddingBottom: "5%",
+    paddingLeft: "3%",
+    backgroundColor: "#9cdaee4d",
+    height: "25%"
+  },
   wrapper: {
     display: "flex",
     flexDirection: "column",
@@ -116,13 +136,29 @@ const styles = StyleSheet.create({
   },
   ownerHeader: {
     display: "flex",
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
+    paddingBottom: "10%"
   },
-  oneHeader:{
-      paddingLeft: "3%"
+  textStyleOwner: {
+    color: "#47a9ff",
+    alignSelf: "center"
   },
-  textStyle:{
-      color:"#47a9ff",
+  oneHeader: {
+    paddingBottom: "5%"
+  },
+  ownerBottom:{
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+      width: "100%"
+  },
+  textStyle: {
+    color: "#47a9ff"
+  },
+  textSize: {
+    fontSize: 15,
+    lineHeight: 30,
   }
 });
