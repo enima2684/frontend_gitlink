@@ -73,12 +73,12 @@ export default class PostScreen extends React.Component {
         </View>
         <View style={styles.postInteraction}>
           <TouchableOpacity style={styles.flexRow}>
-            <Text>{likes.length > 0 ? `${likes.length} ` : ""}</Text>
+            <Text>{feedEvent._doc ? `${feedEvent._doc.likes.length} ` : ""}</Text>
             <Octicons name="thumbsup" color={"#b8e9f7"} />
             <Text> Like</Text>
           </TouchableOpacity>
           <View style={styles.flexRow}>
-            <Text>{comments.length > 0 ? `${comments.length} ` : ""}</Text>
+            <Text>{feedEvent._doc ? `${feedEvent._doc.comments.length} ` : ""}</Text>
             <Octicons name="comment" color={"#b8e9f7"} />
             <Text> Comment</Text>
           </View>

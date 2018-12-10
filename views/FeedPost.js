@@ -142,7 +142,7 @@ export default class FeedPost extends React.Component {
           <View style={styles.postInteraction}>
             <TouchableOpacity style={styles.flexRow}>
               <Text>
-                {feedEvent.likes.length > 0 ? `${feedEvent.likes.length} ` : ""}
+                {feedEvent._doc ? `${feedEvent._doc.likes.length} ` : ""}
               </Text>
               <Octicons name="thumbsup" color={"#8cc342"} />
               <Text> Like</Text>
@@ -152,9 +152,7 @@ export default class FeedPost extends React.Component {
               style={styles.flexRow}
             >
               <Text>
-                {feedEvent.comments.length > 0
-                  ? `${feedEvent.comments.length} `
-                  : ""}
+                {feedEvent._doc ? `${feedEvent._doc.comments.length} ` : ""}
               </Text>
               <Octicons name="comment" color={"#8cc342"} />
               <Text> Comment</Text>
