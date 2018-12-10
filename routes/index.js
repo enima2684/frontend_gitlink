@@ -42,7 +42,8 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubName}'s profile`
     })
-  }
+  },
+
 });
 
 const MessagesStack = createStackNavigator({

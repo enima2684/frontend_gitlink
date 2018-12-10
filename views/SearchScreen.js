@@ -48,12 +48,15 @@ export default class SearchScreen extends React.Component {
     this.querySearchRepos(this.state.query);
   };
 
-  handleOnPressUser = () => {
-
+  handleOnPressUser = (githubId, githubLogin) => {
+    this.props.navigation.navigate('OtherUserProfile', {
+      githubId: githubId,
+      githubName: githubLogin
+    })
   };
 
   handleOnPressRepo = () => {
-
+    alert("NAVIGATION HAS TO BE IMPLEMENTED ONCE WE HAVE A REPO VIEW")
   };
 
   render() {
@@ -64,8 +67,7 @@ export default class SearchScreen extends React.Component {
         style={styles.innerListItem}
         button
         thumbnail
-        onPress={this.handleOnPressUser}>
-
+        onPress={() => this.handleOnPressUser(user.id, user.login)}>
           <Left>
               <Thumbnail round small source={{ uri: user.avatar_url }} />
           </Left>
@@ -77,7 +79,6 @@ export default class SearchScreen extends React.Component {
           <Right>
               <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
           </Right>
-
       </ListItem>
     ));
 
