@@ -15,6 +15,7 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
+import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import CodeScreen from "../views/CodeScreen";
 
@@ -26,7 +27,7 @@ const FeedStack = createStackNavigator({
   Post: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.item.actor.login}'s post`
+      title: `${navigation.state.params.feedEvent.actor.login}'s post`
     })
   },
   Search: {
@@ -34,6 +35,12 @@ const FeedStack = createStackNavigator({
     navigationOptions: {
       title: "Search"
     }
+  },
+  OtherUserProfile: {
+    screen: OtherUserProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubName}'s profile`
+    })
   }
 });
 
@@ -47,7 +54,7 @@ const MessagesStack = createStackNavigator({
   Thread: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Conversation`
+      title: `Conversation with BLAH`
     })
   }
 });
@@ -62,7 +69,7 @@ const NotificationsStack = createStackNavigator({
   NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Notification details`
+      title: `Notification BLAH details`
     })
   }
 });
@@ -126,7 +133,7 @@ const AppTabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: "tomato",
+      activeTintColor: "#8cc342",
       inactiveTintColor: "black",
       style: {
         // height: 50,
