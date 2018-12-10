@@ -2,13 +2,15 @@ import React from "react";
 import { StyleSheet, View, TextInput, Image, ScrollView } from "react-native";
 import axios from "axios"
 import Octicons from "@expo/vector-icons/Octicons";
-import { Container, Header, Content, Card, CardItem, Text, Body, Right, Icon } from "native-base";
+import { Card, CardItem, Text, Body, Right, Icon, List, ListItem, Thumbnail, Left, Button, Spinner } from "native-base";
 
 export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       query: "",
+      userIsLoading: false,
+      repoIsLoading: false,
       resultUsers: [],
       resultRepos: [],
     };
@@ -24,8 +26,8 @@ export default class SearchScreen extends React.Component {
       ]);
 
       let [resultUsers, resultRepos] = [
-        response_users.data.items,
-        response_repos.data.items
+        response_users.data.items.slice(0, 8),
+        response_repos.data.items.slice(0, 8)
       ];
 
       this.setState({resultUsers, resultRepos})
@@ -35,19 +37,48 @@ export default class SearchScreen extends React.Component {
 
 
     let userResultHTML = this.state.resultUsers.map(user => (
-      <CardItem bordered key={user.id} style={styles.innerCardItem}>
-        <Text>{user.login}</Text>
-        <Icon name="ios-arrow-forward" />
-      </CardItem>
-    ));
+      <ListItem bordered key={user.id} style={styles.innerListItem} thumbnail>
+        <Left>
+          <Thumbnail round small source={{ uri: user.avatar_url }} />
+        </Left>
 
+        <Body>
+          <Text>{user.login}</Text>
+        </Body>
+
+        <Right>
+          <Button style={styles.goToButton} transparent>
+            <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
+          </Button>
+        </Right>
+
+      </ListItem>
+    ));
 
     let repoResultHTML = this.state.resultRepos.map(repo => (
-      <Text key={repo.id}>{repo.name}</Text>
+      <ListItem bordered key={repo.id} style={styles.innerListItem} thumbnail>
+        <Left>
+          <Thumbnail round small source={{ uri: repo.owner.avatar_url }} />
+        </Left>
+
+        <Body>
+          <Text>{repo.name}</Text>
+        </Body>
+
+        <Right>
+          <Button style={styles.goToButton} transparent>
+            <Octicons style={styles.arrowIcon} name="triangle-right" size={16} />
+          </Button>
+        </Right>
+
+      </ListItem>
     ));
 
+
     return (
+
       <View style={styles.container}>
+
 
         {/*SEARCHBAR*/}
         <View style={styles.searchBar}>
@@ -70,9 +101,12 @@ export default class SearchScreen extends React.Component {
           </CardItem>
 
           <CardItem bordered>
-            <Card transparent style={styles.innerCard}>
-              {userResultHTML}
-            </Card>
+            <List transparent style={styles.innerList}>
+              {this.state.userIsLoading ?
+                <Spinner/> :
+                userResultHTML
+              }
+            </List>
           </CardItem>
           {/*--------------------------------------*/}
           <CardItem header bordered>
@@ -80,14 +114,19 @@ export default class SearchScreen extends React.Component {
           </CardItem>
 
           <CardItem bordered>
-            <Card>
-            {repoResultHTML}
-            </Card>
+            <List transparent style={styles.innerList}>
+              {this.state.repoIsLoading ?
+                <Spinner/> :
+                repoResultHTML
+              }
+            </List>
           </CardItem>
+
           </ScrollView>
         </Card>
 
       </View>
+
     );
   }
 }
@@ -99,6 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: "2.5%",
     paddingRight: "2.5%",
+    paddingBottom: "5%",
   },
   searchBar: {
     borderColor: "gray",
@@ -117,13 +157,22 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10
   },
-  innerCard:{
+  innerList:{
     width: "100%"
   },
-  innerCardItem: {
+  innerListItem: {
     width: "100%",
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginLeft: 0,
+  },
+  goToButton: {
+    paddingBottom: 0,
+    paddingTop: 0,
+    flex: 1
+  },
+  arrowIcon: {
+    backgroundColor: "#fff",
   }
 });
