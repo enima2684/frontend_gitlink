@@ -9,8 +9,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   FlatList,
-  Button
 } from "react-native";
+import {Button} from "native-base";
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -71,34 +71,31 @@ export default class PostScreen extends React.Component {
             <PostText feedEvent={feedEvent} />
           </View>
         </View>
-        <View style={styles.postInteraction}>
-          <TouchableOpacity style={styles.flexRow}>
-            <Text>{likes.length > 0 ? `${likes.length} ` : ""}</Text>
-            <Octicons name="thumbsup" color={"#b8e9f7"} />
-            <Text> Like</Text>
-          </TouchableOpacity>
-          <View style={styles.flexRow}>
-            <Text>{comments.length > 0 ? `${comments.length} ` : ""}</Text>
-            <Octicons name="comment" color={"#b8e9f7"} />
-            <Text> Comment</Text>
-          </View>
-        </View>
+
 
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
+
             <TextInput
               style={styles.input}
               onChangeText={commentBox => this.setState({ commentBox })}
-              value={this.state.commentBox}
+              value={this.state.query}
               autoFocus={this.state.focusKeyboard}
             />
-            <Button
-              onPress={this.submitComment}
-              title="Submit"
-              color="#b8e9f7"
-              accessibilityLabel="Submit a comment"
-              style={styles.button}
-            />
+            <Button transparent onPress={this.submitComment}><Octicons size={24} name="pencil" color={"#8cc342"}/></Button>
+
+          </View>
+          <View style={styles.postInteraction}>
+            <TouchableOpacity style={styles.flexRow}>
+              <Text>{likes.length > 0 ? `${likes.length} ` : ""}</Text>
+              <Octicons name="thumbsup" color={"#b8e9f7"} />
+              <Text> Like</Text>
+            </TouchableOpacity>
+            <View style={styles.flexRow}>
+              <Text>{comments.length > 0 ? `${comments.length} ` : ""}</Text>
+              <Octicons name="comment" color={"#b8e9f7"} />
+              <Text> Comment</Text>
+            </View>
           </View>
           <ScrollView style={styles.commentSection}>
             <View>
@@ -165,21 +162,19 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   commentBar: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    flexShrink: 1,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: "100%",
     height: 40,
-    marginBottom: "1%"
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   input: {
-    padding: 10,
     width: "80%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1
   },
   button: {
     width: "20%"
-  }
+  },
 });
