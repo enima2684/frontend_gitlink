@@ -62,7 +62,6 @@ export default class OneRepositoryScreen extends Component {
   render() {
     let {repo} = this.state;
     repo.contributors = this.state.contributors;
-    repo.language = "javascript";
 
     if(this.state.isLoading){
       return <Spinner/>
