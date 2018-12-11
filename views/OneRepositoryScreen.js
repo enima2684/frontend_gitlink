@@ -81,12 +81,10 @@ export default class OneRepositoryScreen extends Component {
             </View>
 
             <View style={styles.titleContainer}>
-
               <Button transparent style={styles.title} onPress={()=>this.handleOnPressOwner(repo.owner.login)}>
                 <Thumbnail large source={{uri: repo.owner.avatar_url}} />
                 <H3>{repo.owner.login}</H3>
               </Button>
-
             </View>
 
 
@@ -203,7 +201,6 @@ const styles = StyleSheet.create({
     color: "#8cc342"
   },
 
-
   body: {
     paddingBottom: 20
   },
@@ -215,12 +212,5 @@ const styles = StyleSheet.create({
 
   source__element__text:{
     paddingLeft: 10
-  },
-  collaborators:{
-
   }
-
-
-
-
 });
