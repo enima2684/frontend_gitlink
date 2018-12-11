@@ -47,7 +47,7 @@ export default class PostScreen extends React.Component {
     });
   }
 
-  submitComment() {}
+  submitComment = () => {};
 
   render() {
     const { comments, likes } = this.state;
@@ -81,6 +81,7 @@ export default class PostScreen extends React.Component {
               onChangeText={commentBox => this.setState({ commentBox })}
               value={this.state.query}
               autoFocus={this.state.focusKeyboard}
+              onSubmitEditing={this.submitComment}
             />
             <Button transparent onPress={this.submitComment}><Octicons size={24} name="pencil" color={"#8cc342"}/></Button>
 
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     padding: "2%"
   },
   commentContainer: {
+    paddingTop: 10,
     flexShrink: 1,
   },
   commentSection: {
@@ -155,9 +157,9 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   profilePicture: {
-    width: 75,
-    height: 75,
-    borderRadius: 100,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginLeft: 5,
     marginRight: 10
   },
