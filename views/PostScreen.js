@@ -16,6 +16,7 @@ import PostText from "../components/PostText";
 import CommentPost from "../components/CommentPost";
 import moment from "moment";
 import PostInteractionSection from "../components/PostInteractionSections";
+import requestBuilder from "../lib/request";
 
 export default class PostScreen extends React.Component {
   static propTypes = {
@@ -23,9 +24,9 @@ export default class PostScreen extends React.Component {
   };
   state = {
     feedEvent: this.props.navigation.getParam("feedEvent"),
-    commentBox: ""
+    commentContent: ""
   }
-  
+
   componentWillMount() {
     const focusKeyboard =
     this.props.navigation.getParam("userAction") == "comment" ? true : false;
@@ -34,10 +35,23 @@ export default class PostScreen extends React.Component {
     });
   }
 
-  submitComment() {}
+  submitComment = async () => {
+    try {
+      const feedId = this.props.navigation.getParam("feedEvent").id;
+      const {commentContent} = this.state;
+
+      const req = await requestBuilder();
+      
+      let response = await req.post('/posts/comments', {feedId, commentContent});
+      return response.data;
+    }
+    catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+  }
 
   render() {
-    const { comments, likes } = this.state;
     const {feedEvent} = this.state;
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
@@ -65,8 +79,8 @@ export default class PostScreen extends React.Component {
           <View style={styles.commentBar}>
             <TextInput
               style={styles.input}
-              onChangeText={commentBox => this.setState({ commentBox })}
-              value={this.state.commentBox}
+              onChangeText={commentContent => this.setState({ commentContent })}
+              value={this.state.commentContent}
               autoFocus={this.state.focusKeyboard}
             />
             <Button
@@ -81,8 +95,8 @@ export default class PostScreen extends React.Component {
             <View>
               <FlatList
                 ItemSeparatorComponent={() => <View style={styles.listItem} />}
-                data={comments}
-                keyExtractor={item => item._id}
+                data={feedEvent.comments}
+                keyExtractor={item => item.timestamp}
                 renderItem={({ item }) => (
                   <CommentPost
                     comment={item}
@@ -137,7 +151,7 @@ const styles = StyleSheet.create({
   profilePicture: {
     width: 75,
     height: 75,
-    borderRadius: 37.5,
+    borderRadius: 100,
     marginLeft: 5,
     marginRight: 10
   },
