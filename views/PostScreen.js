@@ -25,6 +25,7 @@ export default class PostScreen extends React.Component {
   };
   state = {
     feedEvent: this.props.navigation.getParam("feedEvent"),
+    comments: this.props.navigation.getParam("feedEvent").comments.reverse(),
     commentContent: ""
   }
 
@@ -37,34 +38,36 @@ export default class PostScreen extends React.Component {
   }
 
   submitComment = async () => {
-    try {
-      const feedId = this.props.navigation.getParam("feedEvent").id;
-      let {commentContent, feedEvent} = this.state;
+    if (this.state.commentContent !== "") {
+      try {
+        const feedId = this.props.navigation.getParam("feedEvent").id;
+        let {commentContent, feedEvent} = this.state;
 
-      // Send comment to server and retrieve user data
-      const req = await requestBuilder();
-      
-      let response = await req.post('/posts/comments', {feedId, commentContent});      
-      let user = await req.get('/users/current');
+        // Send comment to server and retrieve user data
+        const req = await requestBuilder();
+        
+        let response = await req.post('/posts/comments', {feedId, commentContent});      
+        let user = await req.get('/users/current');
 
-      // Create comment for display
-      const {avatar_url, login, id} = user.data.user;
-      let newComment = {
-        avatar_url,
-        login,
-        userId: id,
-        timestamp: new Date(),
-        comment: commentContent,
+        // Create comment for display
+        const {avatar_url, login, id} = user.data.user;
+        let newComment = {
+          avatar_url,
+          login,
+          userId: id,
+          timestamp: new Date(),
+          comment: commentContent,
+        }
+
+        let comments =  this.state.comments ? [newComment, ...this.state.comments] : [newComment];
+        // feedEvent.comments = commentsArray;
+        this.setState({feedEvent, comments, commentContent: ""});
+        return response.data;
       }
-
-      let commentsArray =  feedEvent.comments ? [newComment, ...feedEvent.comments] : [newComment];
-      feedEvent.comments = commentsArray;
-      this.setState(feedEvent)
-      return response.data;
-    }
-    catch(err){
-      console.log(err);
-      alert(err.message);
+      catch(err){
+        console.log(err);
+        alert(err.message);
+      }
     }
   }
 
@@ -97,6 +100,7 @@ export default class PostScreen extends React.Component {
 
             <TextInput
               style={styles.input}
+              placeholder="Type your comment here.."
               onChangeText={commentContent => this.setState({ commentContent })}
               value={this.state.commentContent}
               autoFocus={this.state.focusKeyboard}
@@ -110,7 +114,7 @@ export default class PostScreen extends React.Component {
             <View>
               <FlatList
                 ItemSeparatorComponent={() => <View style={styles.listItem} />}
-                data={feedEvent.comments}
+                data={this.state.comments}
                 keyExtractor={item => item.timestamp}
                 renderItem={({ item }) => (
                   <CommentPost
