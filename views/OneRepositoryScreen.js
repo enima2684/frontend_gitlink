@@ -58,7 +58,7 @@ export default class OneRepositoryScreen extends Component {
           <ScrollView>
             <Container>
               <View style={styles.ownerWrapper}>
-                <H1 style={styles.textStyleOwner}>OWNER</H1>
+                <H1 style={styles.textStyleOwner}>Owner</H1>
                 <View style={styles.ownerHeader}>
                   <View style={styles.oneHeader}>
                     <Thumbnail
@@ -71,30 +71,30 @@ export default class OneRepositoryScreen extends Component {
                     <H2> {oneRepo.owner.login}</H2>
                   </View>
                   <View style={styles.ownerBottom}>
-                    <View>
-                      <Octicons name="repo-forked" />
+                    <View style={styles.styleIcon}>
+                      <Octicons name="repo-forked" size={20}/>
                       <Text>{oneRepo.forks_count}</Text>
                     </View>
                     <View>
-                      <Octicons name="eye" />
+                      <Octicons name="eye" size={20}/>
                       <Text>{oneRepo.watchers_count}</Text>
                     </View>
                     <View>
-                      <Octicons name="star" />
+                      <Octicons name="star" size={20}/>
                       <Text>{oneRepo.stargazers_count}</Text>
                     </View>
                   </View>
                 </View>
               </View>
               <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>SOURCE</H1>
+                <H1 style={styles.textStyle}>Source</H1>
                 <View style={styles.oneHeader}>
                   <Octicons name="file-symlink-directory" size={40} />
                   <Text>Code</Text>
                 </View>
               </View>
               <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>CONTRIBUTORS</H1>
+                <H1 style={styles.textStyle}>Contributors</H1>
                 <List>
                   {oneRepoContributors.map(oneContributor => {
                     return (
@@ -123,7 +123,7 @@ export default class OneRepositoryScreen extends Component {
 const styles = StyleSheet.create({
   ownerWrapper: {
     width: "100%",
-    height: "30%",
+    height: "35%",
     resizeMode: "contain",
     display: "flex",
     flexDirection: "column",
@@ -159,6 +159,12 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: "#47a9ff"
+  },
+  styleIcon:{
+      display:"flex",
+      flexDirection:"column",
+      justifyContent:"center",
+      alignItems:"center"
   },
   textSize: {
     fontSize: 15,

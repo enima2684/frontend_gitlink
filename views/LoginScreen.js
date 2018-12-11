@@ -50,7 +50,7 @@ export default class LoginScreen extends Component {
         <View>
           <Button style={styles.loginButton}
           onPress={this.handleLogin} title="Log In Via GitHub">
-            <Octicons name="mark-github" size={30}></Octicons>
+            <Octicons name="mark-github" size={25}></Octicons>
             <Text style={styles.loginText}>Log In Via GitHub</Text>
           </Button>
         </View>
