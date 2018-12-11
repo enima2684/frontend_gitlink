@@ -48,6 +48,16 @@ export default class ProfileScreen extends Component {
     return connectedUser === usernameAskedProfile
   }
 
+  handleOnPressRepos = async () => {
+    // const connectedUser = await authService.isLoggedIn();
+    // const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
+
+    this.props.navigation.navigate("Repositories", {
+      reposOwner: this.state.oneUser.login
+      // reposOwner: usernameAskedProfile
+    });
+  };
+
   render() {
     const {
       avatar_url,
@@ -88,7 +98,7 @@ export default class ProfileScreen extends Component {
         </View>
         <View style={styles.profileIconContainer}>
           <View>
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigation.navigate("Repositories")}>
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={this.handleOnPressRepos}>
               <Octicons name="repo" size={50} color="#0080FF" />
               <Text>Repositories</Text>
               <H1>{public_repos}</H1>

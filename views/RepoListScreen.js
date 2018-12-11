@@ -21,8 +21,8 @@ export default class RepoListScreen extends Component {
       const currentUser = await authService.isLoggedIn();
       const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
 
-      const req         = requestBuilder();
-      const response      = await req.get(`/users/${reposOwner}/repos`);
+      const req         = await requestBuilder();
+      const response     = await req.get(`/users/${reposOwner}/repos`);
 
       this.setState({ oneUserRepos: response.data, loading: false });
 
@@ -38,7 +38,7 @@ export default class RepoListScreen extends Component {
     return (
       <Container>
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+          <ActivityIndicator size="large" color="#00ff00" padding="20%" />
         )}
         <ScrollView>
           <List>
