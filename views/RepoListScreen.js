@@ -32,7 +32,6 @@ export default class RepoListScreen extends Component {
     }
   }
 
-
   render() {
     const { oneUserRepos } = this.state;
     return (
