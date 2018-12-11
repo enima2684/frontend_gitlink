@@ -56,7 +56,10 @@ export default class SearchScreen extends React.Component {
   };
 
   handleOnPressRepo = () => {
-    alert("NAVIGATION HAS TO BE IMPLEMENTED ONCE WE HAVE A REPO VIEW")
+    this.props.navigation.navigate('OneRepository', {
+      githubId: githubId,
+      githubName: githubLogin
+    });
   };
 
   render() {

@@ -89,7 +89,7 @@ const ProfileStack = createStackNavigator({
       title: `Repositories`
     }
   },
-  OneRepositories: {
+  OneRepository: {
     screen: OneRepositoryScreen,
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.repoName}`
