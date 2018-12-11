@@ -51,6 +51,13 @@ export default class OneRepositoryScreen extends Component {
   goToCode = ()=>{
     this.props.navigation.navigate("Code",{repo_html_url: this.state.repo.html_url});
   };
+  goToReadme = ()=>{
+    this.props.navigation.navigate("Readme",{repo_html_url: this.state.repo.html_url});
+  };
+
+  handleOnPressOwner = (githubLogin) => {
+    this.props.navigation.navigate("OtherUserProfile", {githubLogin})
+  };
 
   render() {
     let {repo} = this.state;
@@ -73,9 +80,13 @@ export default class OneRepositoryScreen extends Component {
               <H3>{(repo.language) && repo.language}</H3>
             </View>
 
-            <View style={styles.title}>
-              <Thumbnail large source={{uri: repo.owner.avatar_url}} />
-              <H3>{repo.owner.login}</H3>
+            <View style={styles.titleContainer}>
+
+              <Button transparent style={styles.title} onPress={()=>this.handleOnPressOwner(repo.owner.login)}>
+                <Thumbnail large source={{uri: repo.owner.avatar_url}} />
+                <H3>{repo.owner.login}</H3>
+              </Button>
+
             </View>
 
 
@@ -106,7 +117,7 @@ export default class OneRepositoryScreen extends Component {
               <CardItem header>
                 <Text>Source</Text>
               </CardItem>
-              <CardItem button onPress={() => alert("REAMDE")}>
+              <CardItem button onPress={this.goToReadme}>
                 <Body style={styles.source__element}>
                   <Octicons name="file" size={20}/>
                   <Text style={styles.source__element__text}>Readme</Text>
@@ -144,7 +155,6 @@ export default class OneRepositoryScreen extends Component {
 
             ))}
           </Card>
-
           </View>
         </ScrollView>
       </Container>
@@ -155,7 +165,7 @@ export default class OneRepositoryScreen extends Component {
 const styles = StyleSheet.create({
 
   header: {
-    height: "50%",
+    height: 300,
     width: "100%",
     backgroundColor: "#9cdaee4d",
     display: "flex",
@@ -164,11 +174,17 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
 
+  titleContainer: {
+    // height: "40%",
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
   title: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    height: 80,
   },
 
   stats: {
@@ -189,7 +205,7 @@ const styles = StyleSheet.create({
 
 
   body: {
-
+    paddingBottom: 20
   },
   source__element:{
     display: "flex",
