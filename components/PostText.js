@@ -18,12 +18,6 @@ export default class PostText extends React.Component {
         displayText = (
           <View style={styles.outerContainer}>
             <View style={styles.textContainer}>
-              <Octicons
-                style={styles.icon}
-                name={iconName}
-                color={iconColor}
-                size={30}
-              />
               <Text>
                 <Text style={styles.bold}>{feedEvent.payload.action}</Text>{" "}
                 watching{" "}
@@ -33,6 +27,12 @@ export default class PostText extends React.Component {
                 </Text>
               </Text>
             </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
           </View>
         );
         break;
@@ -179,11 +179,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   outerContainer: {
-    flexDirection: "row",
+    flexDirection: "row"
   },
   textContainer: {
     flexWrap: "wrap",
-    width: "90%",
+    width: "88%"
   },
   icon: {}
 });

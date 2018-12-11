@@ -13,37 +13,24 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
-import Octicons from "@expo/vector-icons/Octicons";
 import CommentPost from "../components/CommentPost";
 import moment from "moment";
+import PostInteractionSection from "../components/PostInteractionSections";
 
 export default class PostScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired
   };
-
-  constructor(props) {
-    super(props);
-    const feedEvent = this.props.navigation.getParam("feedEvent");
-    const { comments, likes } = feedEvent;
-    this.state = { commentBox: "", comments, likes };
+  state = {
+    feedEvent: this.props.navigation.getParam("feedEvent"),
+    commentBox: ""
   }
-
+  
   componentWillMount() {
     const focusKeyboard =
-      this.props.navigation.getParam("userAction") == "comment" ? true : false;
+    this.props.navigation.getParam("userAction") == "comment" ? true : false;
     this.setState({
       focusKeyboard: focusKeyboard
-    });
-  }
-
-  handleProfileTap(feedEvent) {
-    // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
-    const githubId = feedEvent.actor.id;
-    const githubLogin = feedEvent.actor.login;
-    this.props.navigation.navigate("OtherUserProfile", {
-      githubId: githubId,
-      githubName: githubLogin
     });
   }
 
@@ -51,11 +38,12 @@ export default class PostScreen extends React.Component {
 
   render() {
     const { comments, likes } = this.state;
-    const feedEvent = this.props.navigation.getParam("feedEvent");
+    const {feedEvent} = this.state;
+    const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
         <View style={styles.postContainer}>
-          <TouchableOpacity onPress={() => this.handleProfileTap(feedEvent)}>
+          <TouchableOpacity onPress={() => handleProfileTap(feedEvent)}>
             <Image
               style={styles.profilePicture}
               source={{
@@ -71,18 +59,7 @@ export default class PostScreen extends React.Component {
             <PostText feedEvent={feedEvent} />
           </View>
         </View>
-        <View style={styles.postInteraction}>
-          <TouchableOpacity style={styles.flexRow}>
-            <Text>{feedEvent._doc ? `${feedEvent._doc.likes.length} ` : ""}</Text>
-            <Octicons name="thumbsup" color={"#b8e9f7"} />
-            <Text> Like</Text>
-          </TouchableOpacity>
-          <View style={styles.flexRow}>
-            <Text>{feedEvent._doc ? `${feedEvent._doc.comments.length} ` : ""}</Text>
-            <Octicons name="comment" color={"#b8e9f7"} />
-            <Text> Comment</Text>
-          </View>
-        </View>
+        <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation}/>
 
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
@@ -160,7 +137,7 @@ const styles = StyleSheet.create({
   profilePicture: {
     width: 75,
     height: 75,
-    borderRadius: 100,
+    borderRadius: 37.5,
     marginLeft: 5,
     marginRight: 10
   },

@@ -54,6 +54,7 @@ export default class FeedScreen extends React.Component {
     try{
       const req = await requestBuilder();
       let response = await req.get('/posts/currentUser');
+      console.log(response.data.posts);
       return response.data.posts
     }
     catch(err){
