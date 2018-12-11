@@ -18,7 +18,6 @@ export default class FeedPost extends React.Component {
    * @param {*} userAction user clicks on post or on comment button. Possible values: details, comment
    */
   handleListTap(feedEvent, userAction = "details") {
-    console.log(feedEvent.actor);
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
       userAction: userAction
@@ -26,13 +25,12 @@ export default class FeedPost extends React.Component {
   }
 
   handleProfileTap(feedEvent) {
-    console.log(feedEvent.actor);
     // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
     const githubId = feedEvent.actor.id;
     const githubLogin = feedEvent.actor.login;
     this.props.navigation.navigate("OtherUserProfile", {
       githubId: githubId,
-      githubName: githubLogin
+      githubLogin
     });
   }
 

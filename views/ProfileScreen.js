@@ -11,10 +11,11 @@ export default class ProfileScreen extends Component {
     super(props);
 
     this.state = {
-      oneUser: ""
+      oneUser: {},
+      isMyProfile: true,
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     axios
       .get(`https://api.github.com/users/nrlfrh`)
       .then(response => {
@@ -23,6 +24,10 @@ export default class ProfileScreen extends Component {
       .catch(err => {
         console.log(err);
       });
+
+    // check if render my profile or other's profile
+    let isMyProfile = await this.isItMyProfile();
+    this.setState({isMyProfile});
   }
 
   logout = async ()=>{
@@ -37,6 +42,12 @@ export default class ProfileScreen extends Component {
     }
   };
 
+  async isItMyProfile(){
+    const connectedUser = await authService.isLoggedIn();
+    const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
+    return connectedUser === usernameAskedProfile
+  }
+
   render() {
     const {
       avatar_url,
@@ -45,6 +56,7 @@ export default class ProfileScreen extends Component {
       followers,
       following
     } = this.state.oneUser;
+
     return (
       <Container>
         <View style={styles.oneProfile}>
@@ -55,17 +67,24 @@ export default class ProfileScreen extends Component {
             />
           </View>
           <H1 style={styles.H1}>{login}</H1>
-          <View style={styles.profileHeaderButton}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Thread")}
-              style={styles.profileButton}
-            >
-              <Text>Follow</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.profileButton}>
-              <Text>Send Message</Text>
-            </TouchableOpacity>
-          </View>
+
+          {
+            (!this.state.isMyProfile) &&
+            (
+              <View style={styles.profileHeaderButton}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("Thread")}
+                  style={styles.profileButton}
+                >
+                  <Text>Follow</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.profileButton}>
+                  <Text>Send Message</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
+
         </View>
         <View style={styles.profileIconContainer}>
           <View>

@@ -4,6 +4,9 @@ import axios from "axios"
 import Octicons from "@expo/vector-icons/Octicons";
 import { Card, CardItem, Text, Body, Right, Icon, List, ListItem, Thumbnail, Left, Button, Spinner } from "native-base";
 
+import requestBuilder from "../lib/request";
+
+
 export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -18,22 +21,30 @@ export default class SearchScreen extends React.Component {
 
   async querySearchUsers(query){
     try{
-      let response = await axios.get(`https://api.github.com/search/users?q=${query}`);
-        let resultUsers = response.data.items.slice(0, Math.min(8, response.data.items.length));
+      const req = await requestBuilder();
+      let response = await req.get('/users/search', {
+        params: {query}
+      });
+      let resultUsers = response.data.items.slice(0, Math.min(8, response.data.items.length));
       this.setState({resultUsers, userIsLoading: false})
     } catch (err) {
       Alert.alert('Search Limit Reached', 'You have reached the maximum number of searches per minute allowed. Please wait a moment, or subscribe to our premium plan 😉');
+      console.log(err);
       this.setState({userIsLoading: false})
     }
   }
 
   async querySearchRepos(query){
     try{
-      let response = await axios.get(`https://api.github.com/search/repositories?q=${query}`);
+      const req = await requestBuilder();
+      let response = await req.get('/repos/search', {
+        params: {query}
+      });
       let resultRepos = response.data.items.slice(0, Math.min(8, response.data.items.length));
       this.setState({resultRepos, repoIsLoading: false});
     } catch (err) {
       Alert.alert('Search Limit Reached', 'You have reached the maximum number of searches per minute allowed. Please wait a moment, or subscribe to our premium plan 😉');
+      console.log(err);
       this.setState({repoIsLoading: false})
     }
   }
@@ -51,12 +62,15 @@ export default class SearchScreen extends React.Component {
   handleOnPressUser = (githubId, githubLogin) => {
     this.props.navigation.navigate('OtherUserProfile', {
       githubId: githubId,
-      githubName: githubLogin
+      githubLogin
     })
   };
 
   handleOnPressRepo = () => {
-    alert("NAVIGATION HAS TO BE IMPLEMENTED ONCE WE HAVE A REPO VIEW")
+    this.props.navigation.navigate('OneRepository', {
+      githubId: githubId,
+      githubLogin
+    });
   };
 
   render() {
@@ -110,7 +124,6 @@ export default class SearchScreen extends React.Component {
 
       <View style={styles.container}>
 
-
         {/*SEARCHBAR*/}
         <View style={styles.searchBar}>
           <TextInput
@@ -118,6 +131,7 @@ export default class SearchScreen extends React.Component {
             onChangeText={this.handleSearchBarInput}
             value={this.state.query}
             autoFocus={true}
+            onSubmitEditing={this.handleOnSubmitSearch}
           />
           <Button transparent onPress={this.handleOnSubmitSearch}><Octicons size={20} name="search"  /></Button>
 

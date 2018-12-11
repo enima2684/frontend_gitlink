@@ -16,7 +16,6 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
-import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
@@ -39,9 +38,9 @@ const FeedStack = createStackNavigator({
     }
   },
   OtherUserProfile: {
-    screen: OtherUserProfileScreen,
+    screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubName}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`
     })
   }
 });
@@ -80,7 +79,7 @@ const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      title: "Profile"
+      title: "My Profile"
     }
   },
   UserRepositories: {
@@ -89,7 +88,7 @@ const ProfileStack = createStackNavigator({
       title: `Repositories`
     }
   },
-  OneRepositories: {
+  OneRepository: {
     screen: OneRepositoryScreen,
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.repoName}`
