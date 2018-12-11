@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import {
   ScrollView,
   View,
-  Text,
   StyleSheet,
   ActivityIndicator,
   Alert
 } from "react-native";
-import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3 } from "native-base";
+import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3, Card, CardItem, Text, Body, Right, Icon, Content } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import requestBuilder from "../lib/request";
 
@@ -65,47 +64,89 @@ export default class OneRepositoryScreen extends Component {
 
     return (
       <Container>
+        <ScrollView>
 
-        <View style={styles.header}>
+          <View style={styles.header}>
 
-          <View style={styles.title}>
-            <H1>{repo.name}</H1>
-            <H3>{(repo.language) && repo.language}</H3>
-          </View>
-
-          <View style={styles.title}>
-            <Thumbnail large source={{uri: repo.owner.avatar_url}} />
-            <H3>{repo.owner.login}</H3>
-          </View>
-
-
-          <View style={styles.stats}>
-
-            <View style={styles.stat}>
-              <Text>{repo.watchers_count}</Text>
-              <Octicons name="eye" size={20}/>
+            <View style={styles.title}>
+              <H1>{repo.name}</H1>
+              <H3>{(repo.language) && repo.language}</H3>
             </View>
 
-            <View style={styles.stat}>
-              <Text>{repo.forks_count}</Text>
-              <Octicons name="repo-forked" size={20}/>
+            <View style={styles.title}>
+              <Thumbnail large source={{uri: repo.owner.avatar_url}} />
+              <H3>{repo.owner.login}</H3>
             </View>
 
-            <View style={styles.stat}>
-              <Text>{repo.stargazers_count}</Text>
-              <Octicons name="star" size={20}/>
+
+            <View style={styles.stats}>
+
+              <View style={styles.stat}>
+                <Text style={{fontWeight: "700"}}>{repo.watchers_count}</Text>
+                <Octicons name="eye" size={20} color={"#8cc342"}/>
+              </View>
+
+              <View style={styles.stat}>
+                <Text style={{fontWeight: "700"}}>{repo.forks_count}</Text>
+                <Octicons name="repo-forked" size={20} color={"#8cc342"}/>
+              </View>
+
+              <View style={styles.stat}>
+                <Text style={{fontWeight: "700"}}>{repo.stargazers_count}</Text>
+                <Octicons name="star" size={20} color={"#8cc342"}/>
+              </View>
+
             </View>
 
           </View>
 
+          <View style={styles.body}>
 
+            <Card style={styles.source}>
+              <CardItem header>
+                <Text>Source</Text>
+              </CardItem>
+              <CardItem button onPress={() => alert("REAMDE")}>
+                <Body style={styles.source__element}>
+                  <Octicons name="file" size={20}/>
+                  <Text style={styles.source__element__text}>Readme</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
 
-        </View>
+              <CardItem button onPress={this.goToCode}>
+                <Body style={styles.source__element}>
+                  <Octicons name="code" size={20}/>
+                  <Text style={styles.source__element__text}>Code</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
+          </Card>
 
-        <View style={styles.body}>
+          <Card style={styles.collaborators}>
+            <CardItem header>
+              <Text>Collaborators ({repo.contributors.length})</Text>
+            </CardItem>
+            {repo.contributors.map(contributor => (
+              <CardItem key={contributor.id} button onPress={() => this.handleOnPressContributor(contributor.login)}>
+                <Body style={styles.source__element}>
+                  <Thumbnail round small source={{uri: contributor.avatar_url}}/>
+                  <Text style={styles.source__element__text}>{contributor.login}</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
 
-        </View>
+            ))}
+          </Card>
 
+          </View>
+        </ScrollView>
       </Container>
     );
   }
@@ -142,12 +183,28 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    color: "#8cc342"
   },
+
 
   body: {
 
+  },
+  source__element:{
+    display: "flex",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+
+  source__element__text:{
+    paddingLeft: 10
+  },
+  collaborators:{
+
   }
+
+
 
 
 });
