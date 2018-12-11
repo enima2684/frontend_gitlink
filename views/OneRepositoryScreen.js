@@ -2,17 +2,14 @@ import React, { Component } from "react";
 import {
   ScrollView,
   View,
-  TouchableOpacity,
   Text,
   StyleSheet,
   ActivityIndicator,
-  Image,
   Alert
 } from "react-native";
 import axios from "axios";
 import { Container, H1, List, ListItem, H2, Thumbnail, Button } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
-import { MarkdownView } from "react-native-markdown-view";
 
 export default class OneRepositoryScreen extends Component {
   constructor(props) {
