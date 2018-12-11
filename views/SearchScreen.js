@@ -62,12 +62,15 @@ export default class SearchScreen extends React.Component {
   handleOnPressUser = (githubId, githubLogin) => {
     this.props.navigation.navigate('OtherUserProfile', {
       githubId: githubId,
-      githubName: githubLogin
+      githubLogin
     })
   };
 
   handleOnPressRepo = () => {
-    alert("NAVIGATION HAS TO BE IMPLEMENTED ONCE WE HAVE A REPO VIEW")
+    this.props.navigation.navigate('OneRepository', {
+      githubId: githubId,
+      githubLogin
+    });
   };
 
   render() {

@@ -41,7 +41,7 @@ export default class RepoListScreen extends Component {
               return (
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
-                  onPress={() => this.props.navigation.navigate("OneRepositories", {
+                  onPress={() => this.props.navigation.navigate("OneRepository", {
                       repoId : oneRepo.id,
                       repoName: oneRepo.name,
                   })}>

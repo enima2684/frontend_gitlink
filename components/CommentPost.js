@@ -14,7 +14,7 @@ export default class CommentPost extends Component {
     const githubLogin = comment.actor.login;
     this.props.navigation.navigate("OtherUserProfile", {
       githubId: githubId,
-      githubName: githubLogin
+      githubLogin
     });
   }
 
