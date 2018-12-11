@@ -37,9 +37,14 @@ export default class RepoListScreen extends Component {
         )}
         <ScrollView>
           <List>
-            {oneUserRepos.map(oneRepo => (
+            {oneUserRepos.map(oneRepo => {
+              return (
                   <ListItem key={oneRepo.id}>
-                    <TouchableOpacity style={styles.oneRepo} onPress={()=>this.goToCode(oneRepo.html_url)}>
+                  <TouchableOpacity style={styles.oneRepo}
+                  onPress={() => this.props.navigation.navigate("OneRepositories", {
+                      repoId : oneRepo.id,
+                      repoName: oneRepo.name,
+                  })}>
                       <View style={styles.repoList}>
                         <View>
                           <Octicons name="repo" size={50} color="#9cdaef" />
@@ -56,7 +61,7 @@ export default class RepoListScreen extends Component {
                       </View>
                     </TouchableOpacity>
                   </ListItem>
-                )
+                )}
             )}
           </List>
         </ScrollView>
