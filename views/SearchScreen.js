@@ -50,6 +50,8 @@ export default class SearchScreen extends React.Component {
   }
 
   handleSearchBarInput = query => {
+    console.log("👾👾👾👾👾👾👾👾");
+    console.log(query);
     this.setState({query});
   };
 
@@ -128,6 +130,7 @@ export default class SearchScreen extends React.Component {
             onChangeText={this.handleSearchBarInput}
             value={this.state.query}
             autoFocus={true}
+            onSubmitEditing={this.handleOnSubmitSearch}
           />
           <Button transparent onPress={this.handleOnSubmitSearch}><Octicons size={20} name="search"  /></Button>
 
