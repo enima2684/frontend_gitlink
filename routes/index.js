@@ -1,4 +1,5 @@
 import React from "react";
+import {Text} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -15,8 +16,10 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
+import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
+import CodeScreen from "../views/CodeScreen";
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -26,7 +29,7 @@ const FeedStack = createStackNavigator({
   Post: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.item.actor.login}'s post`
+      title: `${navigation.state.params.feedEvent.actor.login}'s post`
     })
   },
   Search: {
@@ -34,6 +37,12 @@ const FeedStack = createStackNavigator({
     navigationOptions: {
       title: "Search"
     }
+  },
+  OtherUserProfile: {
+    screen: OtherUserProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubName}'s profile`
+    })
   }
 });
 
@@ -47,7 +56,7 @@ const MessagesStack = createStackNavigator({
   Thread: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Conversation`
+      title: `Conversation with BLAH`
     })
   }
 });
@@ -62,7 +71,7 @@ const NotificationsStack = createStackNavigator({
   NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Notification details`
+      title: `Notification BLAH details`
     })
   }
 });
@@ -85,6 +94,12 @@ const ProfileStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.repoName}`
     })
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
   },
 });
 
@@ -126,7 +141,7 @@ const AppTabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: "tomato",
+      activeTintColor: "#8cc342",
       inactiveTintColor: "black",
       style: {
         // height: 50,

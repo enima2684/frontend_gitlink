@@ -9,7 +9,7 @@ export default class RepoListScreen extends Component {
     super(props);
 
     this.state = {
-      userRepos: [],
+      oneUserRepos: [],
       loading: true,
     };
   }
@@ -17,14 +17,19 @@ export default class RepoListScreen extends Component {
     axios
       .get(`https://api.github.com/users/nrlfrh/repos`)
       .then(response => {
-        this.setState({ userRepos: response.data, loading: false });
+        this.setState({ oneUserRepos: response.data, loading: false });
       })
       .catch(err => {
         console.log(err);
       });
   }
+
+  goToCode = (repo_html_url)=>{
+    this.props.navigation.navigate("Code",{repo_html_url});
+  };
+
   render() {
-    const { userRepos } = this.state;
+    const { oneUserRepos } = this.state;
     return (
       <Container>
         {this.state.loading && (
@@ -32,32 +37,32 @@ export default class RepoListScreen extends Component {
         )}
         <ScrollView>
           <List>
-            {userRepos.map(oneRepo => {
+            {oneUserRepos.map(oneRepo => {
               return (
                   <ListItem key={oneRepo.id}>
-                  <TouchableOpacity style={styles.oneRepo} 
+                  <TouchableOpacity style={styles.oneRepo}
                   onPress={() => this.props.navigation.navigate("OneRepositories", {
                       repoId : oneRepo.id,
                       repoName: oneRepo.name,
                   })}>
                       <View style={styles.repoList}>
-                      <View>
-                      <Octicons name="repo" size={50} color="#9cdaef" />
-                    </View>
-                    <View style={styles.repoMidlle}>
-                      <Text style={styles.repoName}> {oneRepo.name}</Text>
-                      <View style={styles.repoMiddile2}>
-                        <Text> {oneRepo.created_at.slice(0, 10)}</Text>
-                        <Text> {oneRepo.language}</Text>
-                        <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
-                      </View>
-                    </View>
-                    <Octicons name="chevron-right" size={25} color="#b8e9f7"></Octicons>
+                        <View>
+                          <Octicons name="repo" size={50} color="#9cdaef" />
+                        </View>
+                        <View style={styles.repoMidlle}>
+                          <Text style={styles.repoName}> {oneRepo.name}</Text>
+                          <View style={styles.repoMiddile2}>
+                            <Text> {oneRepo.created_at.slice(0, 10)}</Text>
+                            <Text> {oneRepo.language}</Text>
+                            <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
+                          </View>
+                        </View>
+                        <Octicons name="chevron-right" size={25} color="#b8e9f7"/>
                       </View>
                     </TouchableOpacity>
                   </ListItem>
-              );
-            })}
+                )}
+            )}
           </List>
         </ScrollView>
       </Container>
