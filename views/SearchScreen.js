@@ -66,10 +66,9 @@ export default class SearchScreen extends React.Component {
     })
   };
 
-  handleOnPressRepo = () => {
+  handleOnPressRepo = (repoName, repoOwnerLogin) => {
     this.props.navigation.navigate('OneRepository', {
-      githubId: githubId,
-      githubLogin
+      repoName, repoOwnerLogin
     });
   };
 
@@ -102,7 +101,7 @@ export default class SearchScreen extends React.Component {
         style={styles.innerListItem}
         button
         thumbnail
-        onPress={this.handleOnPressRepo}>
+        onPress={() => this.handleOnPressRepo(repo.name, repo.owner.login)}>
 
         <Left>
           <Thumbnail round small source={{ uri: repo.owner.avatar_url }} />

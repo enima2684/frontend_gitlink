@@ -42,7 +42,7 @@ export default class RepoListScreen extends Component {
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
                   onPress={() => this.props.navigation.navigate("OneRepository", {
-                      repoId : oneRepo.id,
+                      repoOwnerLogin : oneRepo.owner.login,
                       repoName: oneRepo.name,
                   })}>
                       <View style={styles.repoList}>

@@ -27,22 +27,24 @@ export default class OneRepositoryScreen extends Component {
   }
   async componentWillMount() {
     try {
+
+      const repoName       = this.props.navigation.getParam('repoName');
+      const repoOwnerLogin = this.props.navigation.getParam('repoOwnerLogin');
+
       const repos = await axios.get(
-        `https://api.github.com/repos/griev04/backend_gitlink`
+        `https://api.github.com/repos/${repoOwnerLogin}/${repoName}`
       );
       const contributors = await axios.get(
-        `https://api.github.com/repos/griev04/backend_gitlink/contributors`
+        `https://api.github.com/repos/${repoOwnerLogin}/${repoName}/contributors`
       );
-      //   const readme = await axios.post(
-      //     `https://api.github.com/markdown`
-      //   );
+
       this.setState({
         repo: repos.data,
         contributors: contributors.data,
         // readme: readme.data,
         loading: false
       });
-    } catch (err) {
+    } catch(err) {
       Alert.alert('Oups, Something went wrong', err.message);
       console.log(err);
     }
