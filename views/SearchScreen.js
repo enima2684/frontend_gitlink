@@ -50,8 +50,6 @@ export default class SearchScreen extends React.Component {
   }
 
   handleSearchBarInput = query => {
-    console.log("👾👾👾👾👾👾👾👾");
-    console.log(query);
     this.setState({query});
   };
 
