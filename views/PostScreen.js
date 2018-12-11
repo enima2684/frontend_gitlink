@@ -9,14 +9,15 @@ import {
   TextInput,
   KeyboardAvoidingView,
   FlatList,
-  Button
 } from "react-native";
+import {Button} from "native-base";
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
 import CommentPost from "../components/CommentPost";
 import moment from "moment";
 import PostInteractionSection from "../components/PostInteractionSections";
 import requestBuilder from "../lib/request";
+import Octicons from "@expo/vector-icons/Octicons";
 
 export default class PostScreen extends React.Component {
   static propTypes = {
@@ -38,16 +39,15 @@ export default class PostScreen extends React.Component {
   submitComment = async () => {
     try {
       const feedId = this.props.navigation.getParam("feedEvent").id;
-      const {commentContent} = this.state;
+      let {commentContent, feedEvent} = this.state;
 
+      // Send comment to server and retrieve user data
       const req = await requestBuilder();
       
-      let response = await req.post('/posts/comments', {feedId, commentContent});
-
-      let {feedEvent} = this.state;
-
-      
+      let response = await req.post('/posts/comments', {feedId, commentContent});      
       let user = await req.get('/users/current');
+
+      // Create comment for display
       const {avatar_url, login, id} = user.data.user;
       let newComment = {
         avatar_url,
@@ -57,7 +57,7 @@ export default class PostScreen extends React.Component {
         comment: commentContent,
       }
 
-      let commentsArray =  feedEvent.comments ? [...feedEvent.comments,newComment] : [newComment];
+      let commentsArray =  feedEvent.comments ? [newComment, ...feedEvent.comments] : [newComment];
       feedEvent.comments = commentsArray;
       this.setState(feedEvent)
       return response.data;
@@ -94,20 +94,18 @@ export default class PostScreen extends React.Component {
 
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
+
             <TextInput
               style={styles.input}
               onChangeText={commentContent => this.setState({ commentContent })}
               value={this.state.commentContent}
               autoFocus={this.state.focusKeyboard}
+              onSubmitEditing={this.submitComment}
             />
-            <Button
-              onPress={this.submitComment}
-              title="Submit"
-              color="#b8e9f7"
-              accessibilityLabel="Submit a comment"
-              style={styles.button}
-            />
+            <Button transparent onPress={this.submitComment}><Octicons size={24} name="pencil" color={"#8cc342"}/></Button>
+
           </View>
+          
           <ScrollView style={styles.commentSection}>
             <View>
               <FlatList
@@ -166,28 +164,26 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   profilePicture: {
-    width: 75,
-    height: 75,
-    borderRadius: 100,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginLeft: 5,
     marginRight: 10
   },
   commentBar: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    flexShrink: 1,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: "100%",
     height: 40,
-    marginBottom: "1%"
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   input: {
-    padding: 10,
     width: "80%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1
   },
   button: {
     width: "20%"
-  }
+  },
 });

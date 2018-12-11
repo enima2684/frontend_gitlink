@@ -1,4 +1,5 @@
 import React from "react";
+import {Text} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -15,8 +16,8 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
-import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
+import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
 
 // Stack navigation for first tab, the Feed
@@ -37,9 +38,9 @@ const FeedStack = createStackNavigator({
     }
   },
   OtherUserProfile: {
-    screen: OtherUserProfileScreen,
+    screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubName}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`
     })
   }
 });
@@ -78,7 +79,7 @@ const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      title: "Profile"
+      title: "My Profile"
     }
   },
   UserRepositories: {
@@ -86,6 +87,12 @@ const ProfileStack = createStackNavigator({
     navigationOptions: {
       title: `Repositories`
     }
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
   },
   Code: {
     screen: CodeScreen,
