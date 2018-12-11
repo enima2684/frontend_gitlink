@@ -16,6 +16,7 @@ export default class ProfileScreen extends Component {
       isMyProfile: true,
     };
   }
+
   async componentDidMount() {
     try{
       const req = await requestBuilder();
@@ -40,18 +41,6 @@ export default class ProfileScreen extends Component {
 
   }
 
-  logout = async ()=>{
-    try{
-      await authService.logout();
-      Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
-      this.props.navigation.navigate("LoginPage");
-    } catch (err) {
-      console.log(err);
-      Alert.alert("error", 'Oups! Something went wrong on the logout');
-      throw err
-    }
-  };
-
   async isItMyProfile(){
     const connectedUser = await authService.isLoggedIn();
     const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
@@ -66,6 +55,7 @@ export default class ProfileScreen extends Component {
       followers,
       following
     } = this.state.oneUser;
+
 
     return (
       <Container>
@@ -119,7 +109,7 @@ export default class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Button danger onPress={this.logout}><Text>Logout</Text></Button>
+        
       </Container>
     );
   }
