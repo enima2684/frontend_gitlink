@@ -24,10 +24,6 @@ export default class RepoListScreen extends Component {
       });
   }
 
-  goToCode = (repo_html_url)=>{
-    this.props.navigation.navigate("Code",{repo_html_url});
-  };
-
   render() {
     const { oneUserRepos } = this.state;
     return (
@@ -42,7 +38,7 @@ export default class RepoListScreen extends Component {
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
                   onPress={() => this.props.navigation.navigate("OneRepository", {
-                      repoId : oneRepo.id,
+                      repoOwnerLogin : oneRepo.owner.login,
                       repoName: oneRepo.name,
                   })}>
                       <View style={styles.repoList}>

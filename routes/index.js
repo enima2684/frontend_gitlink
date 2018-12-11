@@ -1,5 +1,4 @@
 import React from "react";
-import {Text} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -7,7 +6,6 @@ import {
   createAppContainer
 } from "react-navigation";
 import Octicons from "@expo/vector-icons/Octicons";
-// import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
 import FeedScreen from "../views/FeedScreen";
@@ -42,7 +40,19 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubLogin}'s profile`
     })
-  }
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
+  },
 });
 
 const MessagesStack = createStackNavigator({
