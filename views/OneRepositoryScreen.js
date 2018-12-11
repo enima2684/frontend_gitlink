@@ -62,7 +62,8 @@ export default class OneRepositoryScreen extends Component {
                 <View style={styles.ownerHeader}>
                   <View style={styles.oneHeader}>
                     <Thumbnail
-                      round large
+                      round
+                      large
                       source={{ uri: oneRepo.owner.avatar_url }}
                     />
                   </View>
@@ -70,20 +71,19 @@ export default class OneRepositoryScreen extends Component {
                     <H2> {oneRepo.owner.login}</H2>
                   </View>
                   <View style={styles.ownerBottom}>
-                  <View>
-                      <Octicons name="repo-forked"></Octicons>
+                    <View>
+                      <Octicons name="repo-forked" />
                       <Text>{oneRepo.forks_count}</Text>
-                  </View>
-                  <View>
-                      <Octicons name="eye"></Octicons>
+                    </View>
+                    <View>
+                      <Octicons name="eye" />
                       <Text>{oneRepo.watchers_count}</Text>
-                  </View>
-                  <View>
-                      <Octicons name="star"></Octicons>
+                    </View>
+                    <View>
+                      <Octicons name="star" />
                       <Text>{oneRepo.stargazers_count}</Text>
+                    </View>
                   </View>
-                  </View>
-                  
                 </View>
               </View>
               <View style={styles.wrapper}>
@@ -101,7 +101,8 @@ export default class OneRepositoryScreen extends Component {
                       <ListItem key={oneContributor.id}>
                         <View>
                           <Thumbnail
-                            round small
+                            round
+                            small
                             source={{ uri: oneContributor.avatar_url }}
                           />
                         </View>
@@ -121,12 +122,14 @@ export default class OneRepositoryScreen extends Component {
 
 const styles = StyleSheet.create({
   ownerWrapper: {
+    width: "100%",
+    height: "30%",
+    resizeMode: "contain",
     display: "flex",
     flexDirection: "column",
     paddingBottom: "5%",
     paddingLeft: "3%",
-    backgroundColor: "#9cdaee4d",
-    height: "25%"
+    backgroundColor: "#9cdaee4d"
   },
   wrapper: {
     display: "flex",
@@ -147,18 +150,18 @@ const styles = StyleSheet.create({
   oneHeader: {
     paddingBottom: "5%"
   },
-  ownerBottom:{
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      width: "100%"
+  ownerBottom: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%"
   },
   textStyle: {
     color: "#47a9ff"
   },
   textSize: {
     fontSize: 15,
-    lineHeight: 30,
+    lineHeight: 30
   }
 });
