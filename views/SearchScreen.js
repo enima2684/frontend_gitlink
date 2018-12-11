@@ -36,7 +36,7 @@ export default class SearchScreen extends React.Component {
 
   async querySearchRepos(query){
     try{
-      // let response = await axios.get(`https://api.github.com/search/repositories?q=${query}`);
+      const req = await requestBuilder();
       let response = await req.get('/repos/search', {
         params: {query}
       });
@@ -44,6 +44,7 @@ export default class SearchScreen extends React.Component {
       this.setState({resultRepos, repoIsLoading: false});
     } catch (err) {
       Alert.alert('Search Limit Reached', 'You have reached the maximum number of searches per minute allowed. Please wait a moment, or subscribe to our premium plan 😉');
+      console.log(err);
       this.setState({repoIsLoading: false})
     }
   }
@@ -119,7 +120,6 @@ export default class SearchScreen extends React.Component {
     return (
 
       <View style={styles.container}>
-
 
         {/*SEARCHBAR*/}
         <View style={styles.searchBar}>
