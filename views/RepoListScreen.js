@@ -22,7 +22,7 @@ export default class RepoListScreen extends Component {
       const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
 
       const req         = await requestBuilder();
-      const response     = await req.get(`/users/${reposOwner}/repos`);
+      const response    = await req.get(`/users/${reposOwner}/repos`);
 
       this.setState({ oneUserRepos: response.data, loading: false });
 
