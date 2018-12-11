@@ -43,7 +43,7 @@ export default class PostScreen extends React.Component {
     const githubLogin = feedEvent.actor.login;
     this.props.navigation.navigate("OtherUserProfile", {
       githubId: githubId,
-      githubName: githubLogin
+      githubLogin
     });
   }
 

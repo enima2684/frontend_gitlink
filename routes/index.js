@@ -39,9 +39,9 @@ const FeedStack = createStackNavigator({
     }
   },
   OtherUserProfile: {
-    screen: OtherUserProfileScreen,
+    screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubName}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`
     })
   }
 });
@@ -80,7 +80,7 @@ const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      title: "Profile"
+      title: "My Profile"
     }
   },
   UserRepositories: {
