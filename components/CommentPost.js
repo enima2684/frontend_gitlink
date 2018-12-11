@@ -35,7 +35,7 @@ export default class CommentPost extends Component {
         <View style={styles.rightPost}>
           <View style={styles.postHeader}>
             <Text style={styles.bold}>{comment.login}</Text>
-            <Text>{moment(comment.createdAt, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
+            <Text>{moment(comment.timestamp, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
           </View>
           <View style={styles.postText}>
             <Text>{comment.comment}</Text>

@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export default class OtherUserProfileScreen extends React.Component {
   render() {
-    console.log('HERE');
     return (
       <View style={styles.container}>
         <Text>THIS IS JUST THE PROFILE OF {this.props.navigation.getParam("githubName")} with id {this.props.navigation.getParam("githubId")}</Text>

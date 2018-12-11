@@ -41,7 +41,6 @@ export default class PostInteractionSection extends React.Component {
   }
 
   handleListTap(feedEvent, userAction = "details") {
-    console.log(feedEvent.actor);
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
       userAction: userAction

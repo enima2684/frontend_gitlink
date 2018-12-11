@@ -43,6 +43,23 @@ export default class PostScreen extends React.Component {
       const req = await requestBuilder();
       
       let response = await req.post('/posts/comments', {feedId, commentContent});
+
+      let {feedEvent} = this.state;
+
+      
+      let user = await req.get('/users/current');
+      const {avatar_url, login, id} = user.data.user;
+      let newComment = {
+        avatar_url,
+        login,
+        userId: id,
+        timestamp: new Date(),
+        comment: commentContent,
+      }
+
+      let commentsArray =  feedEvent.comments ? [...feedEvent.comments,newComment] : [newComment];
+      feedEvent.comments = commentsArray;
+      this.setState(feedEvent)
       return response.data;
     }
     catch(err){
