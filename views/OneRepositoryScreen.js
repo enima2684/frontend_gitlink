@@ -10,7 +10,7 @@ import {
   Alert
 } from "react-native";
 import axios from "axios";
-import { Container, H1, List, ListItem, H2, Thumbnail } from "native-base";
+import { Container, H1, List, ListItem, H2, Thumbnail, Button } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import { MarkdownView } from "react-native-markdown-view";
 
@@ -49,17 +49,27 @@ export default class OneRepositoryScreen extends Component {
       console.log(err);
     }
   }
+
+  handleOnPressContributor(githubLogin){
+    this.props.navigation.navigate('OtherUserProfile', {
+      githubLogin
+    })
+  }
+
+  goToCode = ()=>{
+    this.props.navigation.navigate("Code",{repo_html_url: this.state.repo.html_url});
+  };
+
   render() {
     const oneRepo = this.state.repo;
     const oneRepoContributors = this.state.contributors;
-    // const oneReadMe = this.state.readme;
 
     return (
       <Container>
         {this.state.loading ? (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         ) : (
-          <ScrollView>
+
             <Container>
               <View style={styles.ownerWrapper}>
                 <H1 style={styles.textStyleOwner}>Owner</H1>
@@ -92,17 +102,18 @@ export default class OneRepositoryScreen extends Component {
               </View>
               <View style={styles.wrapper}>
                 <H1 style={styles.textStyle}>Source</H1>
-                <View style={styles.oneHeader}>
-                  <Octicons name="file-symlink-directory" size={40} />
+                <Button transparent style={styles.oneHeader} onPress={this.goToCode}>
+                  <Octicons name="file-symlink-directory" size={30} />
                   <Text>Code</Text>
-                </View>
+                </Button>
               </View>
               <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>Contributors</H1>
+                <H1 style={styles.textStyle}>Contributors ({oneRepoContributors.length})</H1>
+                <ScrollView>
                 <List>
                   {oneRepoContributors.map(oneContributor => {
                     return (
-                      <ListItem key={oneContributor.id}>
+                      <ListItem button key={oneContributor.id} onPress={() => this.handleOnPressContributor(oneContributor.login)}>
                         <View>
                           <Thumbnail
                             round
@@ -115,9 +126,10 @@ export default class OneRepositoryScreen extends Component {
                     );
                   })}
                 </List>
-              </View>
+                </ScrollView>
+            </View>
             </Container>
-          </ScrollView>
+
         )}
       </Container>
     );

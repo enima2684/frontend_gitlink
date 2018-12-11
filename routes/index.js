@@ -46,7 +46,13 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.repoName}`
     })
-  }
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
+  },
 });
 
 const MessagesStack = createStackNavigator({

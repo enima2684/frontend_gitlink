@@ -24,10 +24,6 @@ export default class RepoListScreen extends Component {
       });
   }
 
-  goToCode = (repo_html_url)=>{
-    this.props.navigation.navigate("Code",{repo_html_url});
-  };
-
   render() {
     const { oneUserRepos } = this.state;
     return (
