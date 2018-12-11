@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Image
+  Image,
+  Alert
 } from "react-native";
 import axios from "axios";
 import { Container, H1, List, ListItem, H2, Thumbnail } from "native-base";
@@ -19,7 +20,7 @@ export default class OneRepositoryScreen extends Component {
 
     this.state = {
       repo: {},
-      contributor: [],
+      contributors: [],
       //   readme: "",
       loading: true
     };
@@ -37,17 +38,18 @@ export default class OneRepositoryScreen extends Component {
       //   );
       this.setState({
         repo: repos.data,
-        contributor: contributors.data,
+        contributors: contributors.data,
         // readme: readme.data,
         loading: false
       });
     } catch (err) {
+      Alert.alert('Oups, Something went wrong', err.message);
       console.log(err);
     }
   }
   render() {
     const oneRepo = this.state.repo;
-    const oneRepoContributors = this.state.contributor;
+    const oneRepoContributors = this.state.contributors;
     // const oneReadMe = this.state.readme;
 
     return (
