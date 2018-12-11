@@ -7,9 +7,9 @@ import {
   ActivityIndicator,
   Alert
 } from "react-native";
-import axios from "axios";
 import { Container, H1, List, ListItem, H2, Thumbnail, Button } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
+import requestBuilder from "../lib/request";
 
 export default class OneRepositoryScreen extends Component {
   constructor(props) {
@@ -24,20 +24,18 @@ export default class OneRepositoryScreen extends Component {
   }
   async componentWillMount() {
     try {
-
       const repoName       = this.props.navigation.getParam('repoName');
       const repoOwnerLogin = this.props.navigation.getParam('repoOwnerLogin');
 
-      const repos = await axios.get(
-        `https://api.github.com/repos/${repoOwnerLogin}/${repoName}`
-      );
-      const contributors = await axios.get(
-        `https://api.github.com/repos/${repoOwnerLogin}/${repoName}/contributors`
-      );
+      let req = await requestBuilder();
+      const [repos, contributors] = await Promise.all([
+        req.get(`/repos/${repoOwnerLogin}/${repoName}`),
+        req.get(`/repos/${repoOwnerLogin}/${repoName}/contributors`)
+      ]);
 
       this.setState({
-        repo: repos.data,
-        contributors: contributors.data,
+        repo: repos.data.repo,
+        contributors: contributors.data.contributors,
         // readme: readme.data,
         loading: false
       });
