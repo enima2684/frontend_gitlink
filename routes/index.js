@@ -47,6 +47,12 @@ const FeedStack = createStackNavigator({
       title: `${navigation.state.params.repoName}`
     })
   },
+  Repositories: {
+    screen: RepoListScreen,
+    navigationOptions: {
+      title: `Repositories`
+    }
+  },
   Code: {
     screen: CodeScreen,
     navigationOptions: {
@@ -92,7 +98,7 @@ const ProfileStack = createStackNavigator({
       title: "My Profile"
     }
   },
-  UserRepositories: {
+  Repositories: {
     screen: RepoListScreen,
     navigationOptions: {
       title: `Repositories`

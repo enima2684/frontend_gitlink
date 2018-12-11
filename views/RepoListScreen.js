@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
-import axios from "axios";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { Container, H1, List, ListItem  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
+import requestBuilder from "../lib/request";
 
 export default class RepoListScreen extends Component {
   constructor(props) {
@@ -13,16 +14,24 @@ export default class RepoListScreen extends Component {
       loading: true,
     };
   }
-  componentDidMount() {
-    axios
-      .get(`https://api.github.com/users/nrlfrh/repos`)
-      .then(response => {
-        this.setState({ oneUserRepos: response.data, loading: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+  async componentDidMount() {
+    try{
+
+      const currentUser = await authService.isLoggedIn();
+      const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
+
+      const req         = requestBuilder();
+      const response      = await req.get(`/users/${reposOwner}/repos`);
+
+      this.setState({ oneUserRepos: response.data, loading: false });
+
+    } catch(err){
+      console.log(err);
+      Alert.alert('Oups! Something went wrong!', err.message);
+    }
   }
+
 
   render() {
     const { oneUserRepos } = this.state;
