@@ -8,9 +8,9 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  FlatList,
+  FlatList
 } from "react-native";
-import {Button} from "native-base";
+import { Button } from "native-base";
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
 import CommentPost from "../components/CommentPost";
@@ -25,13 +25,15 @@ export default class PostScreen extends React.Component {
   };
   state = {
     feedEvent: this.props.navigation.getParam("feedEvent"),
-    comments: this.props.navigation.getParam("feedEvent").comments.reverse(),
+    comments: this.props.navigation.getParam("feedEvent").comments
+      ? this.props.navigation.getParam("feedEvent").comments.reverse()
+      : [],
     commentContent: ""
-  }
+  };
 
   componentWillMount() {
     const focusKeyboard =
-    this.props.navigation.getParam("userAction") == "comment" ? true : false;
+      this.props.navigation.getParam("userAction") == "comment" ? true : false;
     this.setState({
       focusKeyboard: focusKeyboard
     });
@@ -41,38 +43,42 @@ export default class PostScreen extends React.Component {
     if (this.state.commentContent !== "") {
       try {
         const feedId = this.props.navigation.getParam("feedEvent").id;
-        let {commentContent, feedEvent} = this.state;
+        let { commentContent, feedEvent } = this.state;
 
         // Send comment to server and retrieve user data
         const req = await requestBuilder();
-        
-        let response = await req.post('/posts/comments', {feedId, commentContent});      
-        let user = await req.get('/users/current');
+
+        let response = await req.post("/posts/comments", {
+          feedId,
+          commentContent
+        });
+        let user = await req.get("/users/current");
 
         // Create comment for display
-        const {avatar_url, login, id} = user.data.user;
+        const { avatar_url, login, id } = user.data.user;
         let newComment = {
           avatar_url,
           login,
           userId: id,
           timestamp: new Date(),
-          comment: commentContent,
-        }
+          comment: commentContent
+        };
 
-        let comments =  this.state.comments ? [newComment, ...this.state.comments] : [newComment];
+        let comments = this.state.comments
+          ? [newComment, ...this.state.comments]
+          : [newComment];
         // feedEvent.comments = commentsArray;
-        this.setState({feedEvent, comments, commentContent: ""});
+        this.setState({ feedEvent, comments, commentContent: "" });
         return response.data;
-      }
-      catch(err){
+      } catch (err) {
         console.log(err);
         alert(err.message);
       }
     }
-  }
+  };
 
   render() {
-    const {feedEvent} = this.state;
+    const { feedEvent } = this.state;
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
@@ -88,16 +94,20 @@ export default class PostScreen extends React.Component {
           <View style={styles.postBox}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>{moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
+              <Text>
+                {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+              </Text>
             </View>
             <PostText feedEvent={feedEvent} />
           </View>
         </View>
-        <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation}/>
+        <PostInteractionSection
+          feedEvent={feedEvent}
+          navigation={this.props.navigation}
+        />
 
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
-
             <TextInput
               style={styles.input}
               placeholder="Type your comment here.."
@@ -106,10 +116,11 @@ export default class PostScreen extends React.Component {
               autoFocus={this.state.focusKeyboard}
               onSubmitEditing={this.submitComment}
             />
-            <Button transparent onPress={this.submitComment}><Octicons size={24} name="pencil" color={"#8cc342"}/></Button>
-
+            <Button transparent onPress={this.submitComment}>
+              <Octicons size={24} name="pencil" color={"#8cc342"} />
+            </Button>
           </View>
-          
+
           <ScrollView style={styles.commentSection}>
             <View>
               <FlatList
@@ -140,15 +151,15 @@ const styles = StyleSheet.create({
     padding: "2%"
   },
   commentContainer: {
-    flexShrink: 1,
+    flexShrink: 1
   },
   commentSection: {
     flexShrink: 1,
-    flexGrow: 0,
+    flexGrow: 0
   },
   postContainer: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   },
   postBox: {
     flexShrink: 1,
@@ -182,12 +193,12 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center",
+    alignItems: "center"
   },
   input: {
-    width: "80%",
+    width: "80%"
   },
   button: {
     width: "20%"
-  },
+  }
 });
