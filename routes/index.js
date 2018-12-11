@@ -16,7 +16,6 @@ import PostScreen from "../views/PostScreen";
 import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
-import OtherUserProfileScreen from "../views/OtherUserProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
