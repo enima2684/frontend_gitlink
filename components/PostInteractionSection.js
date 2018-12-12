@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from "react-native";
 
 import PropTypes from "prop-types";
 import requestBuilder from "../lib/request";
@@ -20,8 +20,7 @@ class PostInteractionSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontLoaded: false,
-      posts: []
+      fontLoaded: false
     };
   }
 
@@ -64,7 +63,7 @@ class PostInteractionSection extends React.Component {
 
       } catch (err) {
         console.log(err);
-        alert(err.message);
+        Alert.alert("Oups, something went wrong !", err.message);
       }
     }
   }
@@ -81,7 +80,7 @@ class PostInteractionSection extends React.Component {
           style={styles.flexRow}
           onPress={() => this.handleLikeTap(feedEventToDisplay)}
         >
-          {this.state.fontLoaded ? (
+          {this.state.fontLoaded && (
             <Text>
               {numberOfLikes > 0 ? `${numberOfLikes} ` : ""}
               <FontAwesome
@@ -90,7 +89,7 @@ class PostInteractionSection extends React.Component {
               />
               {" Like"}
             </Text>
-          ) : null}
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.handleListTap(feedEventToDisplay, "comment")}
