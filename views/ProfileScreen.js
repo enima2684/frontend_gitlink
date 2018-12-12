@@ -4,6 +4,7 @@ import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-na
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
+import requestBuilder from "../lib/request";
 
 
 export default class ProfileScreen extends Component {
@@ -15,32 +16,30 @@ export default class ProfileScreen extends Component {
       isMyProfile: true,
     };
   }
+
   async componentDidMount() {
-    axios
-      .get(`https://api.github.com/users/nrlfrh`)
-      .then(response => {
-        this.setState({ oneUser: response.data });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    // check if render my profile or other's profile
-    let isMyProfile = await this.isItMyProfile();
-    this.setState({isMyProfile});
-  }
-
-  logout = async ()=>{
     try{
-      await authService.logout();
-      Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
-      this.props.navigation.navigate("LoginPage");
-    } catch (err) {
-      console.log(err);
-      Alert.alert("error", 'Oups! Something went wrong on the logout');
-      throw err
+      const req = await requestBuilder();
+      // check if render my profile or other's profile
+      let isMyProfile = await this.isItMyProfile();
+      
+      let oneUser;
+      if (isMyProfile){
+        let response = await req.get('/users/current');
+        oneUser = response.data.user;
+      }else{
+        const otherUser = this.props.navigation.getParam('githubLogin');
+        let response = await req.get(`/users/${otherUser}`);
+        oneUser = response.data.otherUser;
+      }
+      this.setState({isMyProfile, oneUser});
     }
-  };
+    catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+
+  }
 
   async isItMyProfile(){
     const connectedUser = await authService.isLoggedIn();
@@ -56,6 +55,7 @@ export default class ProfileScreen extends Component {
       followers,
       following
     } = this.state.oneUser;
+
 
     return (
       <Container>
@@ -109,7 +109,7 @@ export default class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Button danger onPress={this.logout}><Text>Logout</Text></Button>
+        
       </Container>
     );
   }
