@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Container, H1, H3, Button } from "native-base";
+import { Container, H1, H3, Button, Spinner } from "native-base";
 import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
+import requestBuilder from "../lib/request";
 
 
 export default class ProfileScreen extends Component {
@@ -13,52 +14,62 @@ export default class ProfileScreen extends Component {
     this.state = {
       oneUser: {},
       isMyProfile: true,
+      isLoading: true,
     };
   }
-  async componentDidMount() {
-    axios
-      .get(`https://api.github.com/users/nrlfrh`)
-      .then(response => {
-        this.setState({ oneUser: response.data });
-      })
-      .catch(err => {
-        console.log(err);
-      });
 
-    // check if render my profile or other's profile
-    let isMyProfile = await this.isItMyProfile();
-    this.setState({isMyProfile});
+  async componentDidMount() {
+    try{
+      const req = await requestBuilder();
+      // check if render my profile or other's profile
+      let isMyProfile = await this.isItMyProfile();
+      let oneUser;
+      if (isMyProfile){
+        let response = await req.get('/users/current');
+        oneUser = response.data.user;
+      }else{
+        const otherUser = this.props.navigation.getParam('githubLogin');
+        let response = await req.get(`/users/${otherUser}`);
+        oneUser = response.data.otherUser;
+      }
+      this.setState({isMyProfile, oneUser, isLoading: false});
+    }
+    catch(err){
+      console.log(err);
+      alert(err.message);
+    }
   }
 
-  logout = async ()=>{
-    try{
-      await authService.logout();
-      Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
-      this.props.navigation.navigate("LoginPage");
-    } catch (err) {
-      console.log(err);
-      Alert.alert("error", 'Oups! Something went wrong on the logout');
-      throw err
-    }
-  };
-
   async isItMyProfile(){
-    const connectedUser = await authService.isLoggedIn();
-    const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
-    return connectedUser === usernameAskedProfile
+    try{
+      const connectedUser = await authService.isLoggedIn();
+      const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
+      return connectedUser === usernameAskedProfile
+    } catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+
   }
 
   handleOnPressRepos = async () => {
-    // const connectedUser = await authService.isLoggedIn();
-    // const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
-
     this.props.navigation.navigate("Repositories", {
       reposOwner: this.state.oneUser.login
-      // reposOwner: usernameAskedProfile
     });
   };
 
   render() {
+
+
+    if(this.state.isLoading){
+      return (
+        <Container>
+          <Spinner/>
+        </Container>
+      )
+    }
+
+
     const {
       avatar_url,
       login,
@@ -119,7 +130,7 @@ export default class ProfileScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Button danger onPress={this.logout}><Text>Logout</Text></Button>
+        
       </Container>
     );
   }

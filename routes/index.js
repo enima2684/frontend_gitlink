@@ -1,4 +1,5 @@
 import React from "react";
+import {Text, Alert, TouchableOpacity} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -6,6 +7,8 @@ import {
   createAppContainer
 } from "react-navigation";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
+// import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
 import FeedScreen from "../views/FeedScreen";
@@ -17,6 +20,17 @@ import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
+
+logout = async() =>{
+  try{
+    await authService.logout();
+    Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
+  } catch (err) {
+    console.log(err);
+    Alert.alert("error", 'Oups! Something went wrong on the logout');
+    throw err
+  }
+};
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -94,9 +108,13 @@ const NotificationsStack = createStackNavigator({
 const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
-    navigationOptions: {
-      title: "My Profile"
-    }
+    navigationOptions: ({navigation}) => ({
+      title: "My Profile",
+      headerRight:(
+        <TouchableOpacity><Octicons name="sign-out" size={15}
+        onPress={() => this.logout().then(() => navigation.navigate("LoginPage"))}><Text>Logout</Text></Octicons></TouchableOpacity>
+      )
+    })
   },
   Repositories: {
     screen: RepoListScreen,
