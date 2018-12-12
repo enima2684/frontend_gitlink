@@ -5,13 +5,13 @@ import {
   FlatList,
   ActivityIndicator,
   ScrollView,
-  TouchableOpacity,
-  Button,
-  Icon,
-  Platform,
   RefreshControl
 } from "react-native";
 import FeedPost from "./FeedPost";
+
+import {connect} from "react-redux";
+import {act__initializePostArray} from "../stateManagement/actions";
+
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
 
@@ -20,7 +20,7 @@ import Octicons from "@expo/vector-icons/Octicons";
 import requestBuilder from "../lib/request";
 
 
-export default class FeedScreen extends React.Component {
+class FeedScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired
   };
@@ -64,8 +64,8 @@ export default class FeedScreen extends React.Component {
 
   async updatePosts(){
     let posts = await this.fetchPosts();
+    this.props.dispatch(act__initializePostArray(posts));
     this.setState({
-      posts,
       loading: false,
       refreshing: false
     });
@@ -74,6 +74,17 @@ export default class FeedScreen extends React.Component {
 
   componentWillMount() {
     this.updatePosts();
+    // this listener will trigger render each time the component is focused
+    this.willFocusListener = this.props.navigation.addListener(
+      'willFocus',
+      () => {
+        this.setState({});
+      }
+    )
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove()
   }
 
   _onRefresh = async () => {
@@ -97,7 +108,7 @@ export default class FeedScreen extends React.Component {
         )}
         <FlatList
           ItemSeparatorComponent={() => <View style={styles.listItem} />}
-          data={this.state.posts}
+          data={this.props.posts}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <FeedPost feedEvent={item} navigation={this.props.navigation} />
@@ -116,3 +127,6 @@ const styles = StyleSheet.create({
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }
 });
+
+const mapStateToProps = ({posts}) => ({posts});
+export default connect(mapStateToProps)(FeedScreen);

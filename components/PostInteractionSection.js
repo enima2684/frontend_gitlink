@@ -5,31 +5,23 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import requestBuilder from "../lib/request";
 
+import {connect} from "react-redux";
+import {act__editPostArray} from "../stateManagement/actions";
+
 import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Font } from "expo";
 
-export default class PostInteractionSection extends React.Component {
+class PostInteractionSection extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     feedEvent: PropTypes.object.isRequired
   };
   constructor(props) {
     super(props);
-    let numberOfComments = props.feedEvent.comments
-      ? props.feedEvent.comments.length
-      : 0;
-    let numberOfLikes = props.feedEvent.likes
-      ? props.feedEvent.likes.length
-      : 0;
-    let userLiked = props.feedEvent.userLiked
-      ? props.feedEvent.userLiked
-      : false;
     this.state = {
-      numberOfLikes,
-      numberOfComments,
-      userLiked: userLiked,
-      fontLoaded: false
+      fontLoaded: false,
+      posts: []
     };
   }
 
@@ -43,21 +35,34 @@ export default class PostInteractionSection extends React.Component {
   handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
-      userAction: userAction
+      userAction: userAction,
     });
   }
 
   async handleLikeTap(feedEvent) {
     if (!this.state.userLiked) {
       try {
+        // Send like to the backend
         const req = await requestBuilder();
         await req.post("/posts/handleLike", {
           feedId: feedEvent.id
         });
-        this.setState({
-          userLiked: true,
-          numberOfLikes: this.state.numberOfLikes + 1
-        });
+        
+        // Get user details from the backend
+        const user = await req.get("/users/current");
+        const userName = user.data.user.login;
+        
+        // Save like data in feed event object for redux
+        if (!feedEvent.likes) feedEvent.likes = [];
+        feedEvent.likes.push(userName);
+        feedEvent.userLiked = true;
+
+        // Dispatch new feed event to redux
+        this.props.dispatch(act__editPostArray(feedEvent));
+
+        // Trigger rerender
+        this.setState({});
+
       } catch (err) {
         console.log(err);
         alert(err.message);
@@ -67,12 +72,17 @@ export default class PostInteractionSection extends React.Component {
 
   render() {
     const { feedEvent } = this.props;
-    const { numberOfLikes, numberOfComments, userLiked } = this.state;
+    const feedEventToDisplay = this.props.posts.find(post => post.id === feedEvent.id);
+    const numberOfComments = feedEventToDisplay.comments.length;
+    console.log('LENGTH INSIDE', feedEventToDisplay.comments.length);
+    const numberOfLikes = feedEventToDisplay.likes.length;
+    const userLiked = feedEventToDisplay.userLiked;
+    // console.log('INTERACTION', feedEvent);
     return (
       <View style={styles.postInteraction}>
         <TouchableOpacity
           style={styles.flexRow}
-          onPress={() => this.handleLikeTap(feedEvent)}
+          onPress={() => this.handleLikeTap(feedEventToDisplay)}
         >
           {this.state.fontLoaded ? (
             <Text>
@@ -86,7 +96,7 @@ export default class PostInteractionSection extends React.Component {
           ) : null}
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => this.handleListTap(feedEvent, "comment")}
+          onPress={() => this.handleListTap(feedEventToDisplay, "comment")}
           style={styles.flexRow}
         >
           <Text>{numberOfComments > 0 ? `${numberOfComments} ` : ""}</Text>
@@ -109,3 +119,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
+
+const mapStateToProps = ({posts}) => ({posts});
+export default connect(mapStateToProps)(PostInteractionSection);

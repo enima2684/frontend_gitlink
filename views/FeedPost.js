@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 
 import PostText from "../components/PostText";
-import PostInteractionSection from "../components/PostInteractionSections";
+import PostInteractionSection from "../components/PostInteractionSection";
 
 export default class FeedPost extends React.Component {
   static propTypes = {
