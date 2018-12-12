@@ -10,8 +10,8 @@ export default class CommentPost extends Component {
   };
 
   handleProfileTap(comment) {
-    const githubId = comment.actor.id;
-    const githubLogin = comment.actor.login;
+    const githubId = comment.id;
+    const githubLogin = comment.login;
     this.props.navigation.navigate("OtherUserProfile", {
       githubId: githubId,
       githubLogin
@@ -28,17 +28,17 @@ export default class CommentPost extends Component {
           <Image
             style={styles.picture}
             source={{
-              uri: comment.actor.avatar_url
+              uri: comment.avatar_url
             }}
           />
         </TouchableOpacity>
         <View style={styles.rightPost}>
           <View style={styles.postHeader}>
-            <Text style={styles.bold}>{comment.actor.login}</Text>
-            <Text>{moment(comment.createdAt, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
+            <Text style={styles.bold}>{comment.login}</Text>
+            <Text>{moment(comment.timestamp, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
           </View>
           <View style={styles.postText}>
-            <Text>{comment.commentText}</Text>
+            <Text>{comment.comment}</Text>
           </View>
         </View>
       </View>
@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     flexDirection: "row",
-    padding: "1%"
+    padding: "1%",
+    paddingBottom: 10
   },
   rightPost: {
     flexShrink: 1

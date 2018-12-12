@@ -1,16 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
-import Octicons from "@expo/vector-icons/Octicons";
 import moment from "moment";
 
 import PostText from "../components/PostText";
+import PostInteractionSection from "../components/PostInteractionSection";
 
 export default class FeedPost extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     feedEvent: PropTypes.object.isRequired
   };
+  state = {
+    feedEvent: this.props.feedEvent    
+  }
 
   /**
    *
@@ -20,7 +23,8 @@ export default class FeedPost extends React.Component {
   handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
-      userAction: userAction
+      userAction: userAction,
+      handleProfileTap: (feedEvent) => this.handleProfileTap(feedEvent),
     });
   }
 
@@ -34,86 +38,15 @@ export default class FeedPost extends React.Component {
     });
   }
 
+  updateFeedEvent(feedEvent) {
+    feedEvent.userLiked = true;
+    this.setState({
+      feedEvent
+    })
+  }
+
   render() {
-    const { feedEvent } = this.props;
-    // PLACEHOLDER FOR COMMENTS INSIDE AN EVENT (DATA COMES FROM FEEDEVENT IN THE FEEDLIST)
-    feedEvent.comments = [
-      {
-        actor: {
-          id: 18719688,
-          login: "griev04",
-          display_login: "griev04",
-          gravatar_id: "",
-          url: "https://api.github.com/users/griev04",
-          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
-        },
-        commentText:
-          "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
-        _id: "389ufj93u893ur8f3jhq89",
-        createdAt: "2018-12-09 19:00:10Z"
-      },
-      {
-        actor: {
-          id: 43408092,
-          login: "nrlfrh",
-          url: "https://api.github.com/users/nrlfrh",
-          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
-        },
-        commentText:
-          "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
-        _id: "389ufj93u893ur8f3jhq90",
-        createdAt: "2018-12-09 20:06:10Z"
-      },
-      {
-        actor: {
-          id: 18719688,
-          login: "griev04",
-          display_login: "griev04",
-          gravatar_id: "",
-          url: "https://api.github.com/users/griev04",
-          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
-        },
-        commentText:
-          "Wow, this is so cool! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
-        _id: "389ufj93u893ur8f3jhq96",
-        createdAt: "2018-12-09 20:15:10Z"
-      },
-      {
-        actor: {
-          id: 43408092,
-          login: "nrlfrh",
-          url: "https://api.github.com/users/nrlfrh",
-          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
-        },
-        commentText:
-          "Please, add more! oiafhsioasnhioasnhoifnh oiafsoijfpiaj oaijfspoasjfio japfjaspo jpaojsfpoasj pojapofjsapojpojpoas jmpofajspofjsap!",
-        _id: "389ufj93u893ur8f3jhq92",
-        createdAt: "2018-12-09 20:03:10Z"
-      }
-    ];
-    feedEvent.likes = [
-      {
-        actor: {
-          id: 18719688,
-          login: "griev04",
-          gravatar_id: "",
-          url: "https://api.github.com/users/griev04",
-          avatar_url: "https://avatars.githubusercontent.com/u/18719688?"
-        },
-        _id: "389ufj93u893ur9f3jhq98",
-        createdAt: "2018-12-09 20:02:10Z"
-      },
-      {
-        actor: {
-          id: 43408092,
-          login: "nrlfrh",
-          url: "https://api.github.com/users/nrlfrh",
-          avatar_url: "https://avatars1.githubusercontent.com/u/43408092?v=4"
-        },
-        _id: "389ufj93u893ur9f3jhq93",
-        createdAt: "2018-12-09 20:00:10Z"
-      }
-    ];
+    const {feedEvent} = this.state;
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
@@ -131,33 +64,15 @@ export default class FeedPost extends React.Component {
           <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>{moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
+              <Text>
+                {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+              </Text>
             </View>
             <View style={styles.postText}>
               <PostText feedEvent={feedEvent} />
             </View>
           </TouchableOpacity>
-          <View style={styles.postInteraction}>
-            <TouchableOpacity style={styles.flexRow}>
-              <Text>
-                {feedEvent.likes.length > 0 ? `${feedEvent.likes.length} ` : ""}
-              </Text>
-              <Octicons name="thumbsup" color={"#8cc342"} />
-              <Text> Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.handleListTap(feedEvent, "comment")}
-              style={styles.flexRow}
-            >
-              <Text>
-                {feedEvent.comments.length > 0
-                  ? `${feedEvent.comments.length} `
-                  : ""}
-              </Text>
-              <Octicons name="comment" color={"#8cc342"} />
-              <Text> Comment</Text>
-            </TouchableOpacity>
-          </View>
+          <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation} onLikePress={(feedEvent) => this.updateFeedEvent(feedEvent)}/>
         </View>
       </View>
     );
@@ -167,7 +82,7 @@ export default class FeedPost extends React.Component {
 const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   rightPost: {
     flexShrink: 1

@@ -8,102 +8,144 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  FlatList,
+  FlatList
 } from "react-native";
-import {Button} from "native-base";
+import { Button } from "native-base";
+
+import { connect } from "react-redux";
+import { act__editPostArray } from "../stateManagement/actions";
+
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
-import Octicons from "@expo/vector-icons/Octicons";
 import CommentPost from "../components/CommentPost";
 import moment from "moment";
+import PostInteractionSection from "../components/PostInteractionSection";
+import requestBuilder from "../lib/request";
+import Octicons from "@expo/vector-icons/Octicons";
 
-export default class PostScreen extends React.Component {
+class PostScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired
   };
-
   constructor(props) {
     super(props);
-    const feedEvent = this.props.navigation.getParam("feedEvent");
-    const { comments, likes } = feedEvent;
-    this.state = { commentBox: "", comments, likes };
+    this.state = {
+      commentContent: ""
+    };
   }
 
   componentWillMount() {
     const focusKeyboard =
-      this.props.navigation.getParam("userAction") == "comment" ? true : false;
-    this.setState({
-      focusKeyboard: focusKeyboard
-    });
+      this.props.navigation.getParam("userAction") === "comment";
+    this.setState({ focusKeyboard });
   }
 
-  handleProfileTap(feedEvent) {
-    // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
-    const githubId = feedEvent.actor.id;
-    const githubLogin = feedEvent.actor.login;
-    this.props.navigation.navigate("OtherUserProfile", {
-      githubId: githubId,
-      githubLogin
-    });
-  }
+  async submitComment(feedEvent) {
+    if (this.state.commentContent !== "") {
+      try {
+        let { commentContent } = this.state;
+        this.setState({ commentContent: "" });
 
-  submitComment = () => {};
+        const feedId = feedEvent.id;
+        console.log("Id in postScreen", feedId);
+        // Send comment to server and retrieve user data
+        const req = await requestBuilder();
+
+        let [response, user] = await Promise.all([
+          req.post("/posts/comments", {
+                feedId,
+                commentContent
+              }),
+          req.get("/users/current")
+        ]);
+
+        // Create comment for display
+        const { avatar_url, login, id } = user.data.user;
+        let newComment = {
+          avatar_url,
+          login,
+          userId: id,
+          timestamp: new Date(),
+          comment: commentContent
+        };
+
+        // Save like data in feed event object for redux
+        if (!feedEvent.comments) feedEvent.comments = [];
+        feedEvent.comments.unshift(newComment);
+        feedEvent.userLiked = true;
+
+        this.props.dispatch(act__editPostArray(feedEvent));
+
+        return response.data;
+      } catch (err) {
+        console.log(err);
+        alert(err.message);
+      }
+    }
+  }
 
   render() {
-    const { comments, likes } = this.state;
     const feedEvent = this.props.navigation.getParam("feedEvent");
+    const feedEventToDisplay = this.props.posts.find(
+      post => post.id === feedEvent.id
+    );
+
+    const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
         <View style={styles.postContainer}>
-          <TouchableOpacity onPress={() => this.handleProfileTap(feedEvent)}>
+          <TouchableOpacity
+            onPress={() => handleProfileTap(feedEventToDisplay)}
+          >
             <Image
               style={styles.profilePicture}
               source={{
-                uri: feedEvent.actor.avatar_url
+                uri: feedEventToDisplay.actor.avatar_url
               }}
             />
           </TouchableOpacity>
           <View style={styles.postBox}>
             <View style={styles.postHeader}>
-              <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>{moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
+              <Text style={styles.bold}>{feedEventToDisplay.actor.login}</Text>
+              <Text>
+                {moment(
+                  feedEventToDisplay.created_at,
+                  "YYYY-MM-DD HH:mm:ssZ"
+                ).fromNow()}
+              </Text>
             </View>
-            <PostText feedEvent={feedEvent} />
+            <PostText feedEvent={feedEventToDisplay} />
           </View>
         </View>
-
+        <PostInteractionSection
+          feedEvent={feedEventToDisplay}
+          navigation={this.props.navigation}
+        />
 
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
-
             <TextInput
               style={styles.input}
-              onChangeText={commentBox => this.setState({ commentBox })}
-              value={this.state.query}
+              placeholder="Type your comment here.."
+              onChangeText={commentContent => this.setState({ commentContent })}
+              value={this.state.commentContent}
               autoFocus={this.state.focusKeyboard}
-              onSubmitEditing={this.submitComment}
+              onSubmitEditing={() => this.submitComment(feedEventToDisplay)}
             />
-            <Button transparent onPress={this.submitComment}><Octicons size={24} name="pencil" color={"#8cc342"}/></Button>
+            <Button
+              transparent
+              onPress={() => this.submitComment(feedEventToDisplay)}
+            >
+              <Octicons size={24} name="pencil" color={"#8cc342"} />
+            </Button>
+          </View>
 
-          </View>
-          <View style={styles.postInteraction}>
-            <TouchableOpacity style={styles.flexRow}>
-              <Text>{likes.length > 0 ? `${likes.length} ` : ""}</Text>
-              <Octicons name="thumbsup" color={"#b8e9f7"} />
-              <Text> Like</Text>
-            </TouchableOpacity>
-            <View style={styles.flexRow}>
-              <Text>{comments.length > 0 ? `${comments.length} ` : ""}</Text>
-              <Octicons name="comment" color={"#b8e9f7"} />
-              <Text> Comment</Text>
-            </View>
-          </View>
           <ScrollView style={styles.commentSection}>
             <View>
               <FlatList
                 ItemSeparatorComponent={() => <View style={styles.listItem} />}
-                data={comments}
-                keyExtractor={item => item._id}
+                data={feedEventToDisplay.comments}
+                keyExtractor={item => item.timestamp.toString()}
                 renderItem={({ item }) => (
                   <CommentPost
                     comment={item}
@@ -128,16 +170,15 @@ const styles = StyleSheet.create({
     padding: "2%"
   },
   commentContainer: {
-    paddingTop: 10,
-    flexShrink: 1,
+    flexShrink: 1
   },
   commentSection: {
     flexShrink: 1,
-    flexGrow: 0,
+    flexGrow: 0
   },
   postContainer: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   },
   postBox: {
     flexShrink: 1,
@@ -171,12 +212,20 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center",
+    alignItems: "center"
   },
   input: {
-    width: "80%",
+    width: "80%"
   },
   button: {
     width: "20%"
   },
+  listItem: {
+    height: 1,
+    width: "100%",
+    backgroundColor: "lightgray",
+  }
 });
+
+const mapStateToProps = ({ posts }) => ({ posts });
+export default connect(mapStateToProps)(PostScreen);
