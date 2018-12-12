@@ -25,7 +25,7 @@ export function mySingleReducer(state = initialState, action){
       let feedArray = action.payload;
       feedArray.forEach((el, idx) => {
         feedArray[idx].comments = feedArray[idx].comments.reverse();
-      })
+      });
       return {
         ...state,
         posts: feedArray

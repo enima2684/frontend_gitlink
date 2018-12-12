@@ -114,7 +114,7 @@ class PostScreen extends React.Component {
                 ).fromNow()}
               </Text>
             </View>
-            <PostText feedEvent={feedEventToDisplay} />
+            <PostText feedEvent={feedEventToDisplay} parentComponent={"PostScreen"} />
           </View>
         </View>
         <PostInteractionSection
