@@ -36,28 +36,28 @@ class PostScreen extends React.Component {
 
   componentWillMount() {
     const focusKeyboard =
-      this.props.navigation.getParam("userAction") == "comment" ? true : false;
-    this.setState({
-      focusKeyboard: focusKeyboard
-    });
+      this.props.navigation.getParam("userAction") === "comment";
+    this.setState({ focusKeyboard });
   }
 
   async submitComment(feedEvent) {
     if (this.state.commentContent !== "") {
       try {
+        let { commentContent } = this.state;
         this.setState({ commentContent: "" });
 
-        let { commentContent } = this.state;
         const feedId = feedEvent.id;
         console.log("Id in postScreen", feedId);
         // Send comment to server and retrieve user data
         const req = await requestBuilder();
 
-        let response = await req.post("/posts/comments", {
-          feedId,
-          commentContent
-        });
-        let user = await req.get("/users/current");
+        let [response, user] = await Promise.all([
+          req.post("/posts/comments", {
+                feedId,
+                commentContent
+              }),
+          req.get("/users/current")
+        ]);
 
         // Create comment for display
         const { avatar_url, login, id } = user.data.user;
