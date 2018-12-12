@@ -66,6 +66,33 @@ export default class PostText extends React.Component {
         );
         break;
 
+      case "IssuesEvent":
+        iconName = "issue-opened";
+        console.log(Object.keys(feedEvent.payload.issue));
+        displayText = (
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text>{" "}
+                the issue {" "}
+                <Text style={styles.bold}>#{feedEvent.payload.issue.number}</Text>{" "}
+                inside the repo{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>{":\n"}
+                {feedEvent.payload.issue.title}
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
+        );
+        break;
+
       case "IssueCommentEvent":
         iconName = "comment-discussion";
         displayText = (
@@ -158,7 +185,7 @@ export default class PostText extends React.Component {
           <View style={styles.outerContainer}>
             <View style={styles.textContainer}>
               <Text>
-                committed to the{" "}
+                <Text style={styles.bold}>committed</Text> to the{" "}
                 <Text style={styles.bold}>
                   {feedEvent.payload.ref.split("/").pop()}
                 </Text>{" "}
