@@ -29,8 +29,6 @@ export default class OneRepositoryScreen extends Component {
       const repoName       = this.props.navigation.getParam('repoName');
       const repoOwnerLogin = this.props.navigation.getParam('repoOwnerLogin');
 
-      console.log("🐳🐳🐳🐳🐳🐳  " + repoName);
-
       let req = await requestBuilder();
       const [repo, contributors] = await Promise.all([
         req.get(`/repos/${repoOwnerLogin}/${repoName}`),
