@@ -102,17 +102,17 @@ export default class OneRepositoryScreen extends Component {
             <View style={styles.stats}>
 
               <View style={styles.stat}>
-                <Text style={{fontWeight: "700"}}>{repo.watchers_count}</Text>
+                <Text style={styles.stat__text}>{repo.watchers_count}</Text>
                 <Octicons name="eye" size={20} color={"#8cc342"}/>
               </View>
 
               <View style={styles.stat}>
-                <Text style={{fontWeight: "700"}}>{repo.forks_count}</Text>
+                <Text style={styles.stat__text}>{repo.forks_count}</Text>
                 <Octicons name="repo-forked" size={20} color={"#8cc342"}/>
               </View>
 
               <View style={styles.stat}>
-                <Text style={{fontWeight: "700"}}>{repo.stargazers_count}</Text>
+                <Text style={styles.stat__text}>{repo.stargazers_count}</Text>
                 <Octicons name="star" size={20} color={"#8cc342"}/>
               </View>
 
@@ -210,6 +210,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: "#8cc342"
+  },
+  stat__text:{
+    fontWeight: "700"
   },
 
   body: {
