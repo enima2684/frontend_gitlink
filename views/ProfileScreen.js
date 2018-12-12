@@ -18,8 +18,9 @@ export default class ProfileScreen extends Component {
     };
   }
 
-  async componentDidMount() {
-    try{
+  fetchData = async () => {
+     try{
+      this.setState({isLoading: true, oneUser:{}});
       const req = await requestBuilder();
       // check if render my profile or other's profile
       let isMyProfile = await this.isItMyProfile();
@@ -38,7 +39,16 @@ export default class ProfileScreen extends Component {
       console.log(err);
       alert(err.message);
     }
+  };
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
 
   async isItMyProfile(){
     try{

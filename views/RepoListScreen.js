@@ -15,9 +15,9 @@ export default class RepoListScreen extends Component {
     };
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
     try{
-
+      this.setState({loading: true, oneUserRepos: []});
       const currentUser = await authService.isLoggedIn();
       const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
 
@@ -30,6 +30,15 @@ export default class RepoListScreen extends Component {
       console.log(err);
       Alert.alert('Oups! Something went wrong!', err.message);
     }
+  };
+
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
 

@@ -146,7 +146,13 @@ const ProfileStack = createStackNavigator({
     navigationOptions:{
       title: 'Readme'
     }
-  }
+  },
+  OtherUserProfile: {
+    screen: ProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubLogin}'s profile`
+    })
+  },
 });
 
 // Tab navigation: 4 tabs
