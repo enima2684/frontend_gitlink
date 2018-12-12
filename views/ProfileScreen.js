@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, H1, H3, Button } from "native-base";
+import { Container, H1, H3, Button, Spinner } from "native-base";
 import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
 import axios from "axios";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -14,6 +14,7 @@ export default class ProfileScreen extends Component {
     this.state = {
       oneUser: {},
       isMyProfile: true,
+      isLoading: true,
     };
   }
 
@@ -22,7 +23,6 @@ export default class ProfileScreen extends Component {
       const req = await requestBuilder();
       // check if render my profile or other's profile
       let isMyProfile = await this.isItMyProfile();
-      
       let oneUser;
       if (isMyProfile){
         let response = await req.get('/users/current');
@@ -32,22 +32,38 @@ export default class ProfileScreen extends Component {
         let response = await req.get(`/users/${otherUser}`);
         oneUser = response.data.otherUser;
       }
-      this.setState({isMyProfile, oneUser});
+      this.setState({isMyProfile, oneUser, isLoading: false});
     }
     catch(err){
+      console.log(err);
+      alert(err.message);
+    }
+  }
+
+  async isItMyProfile(){
+    try{
+      const connectedUser = await authService.isLoggedIn();
+      const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
+      return connectedUser === usernameAskedProfile
+    } catch(err){
       console.log(err);
       alert(err.message);
     }
 
   }
 
-  async isItMyProfile(){
-    const connectedUser = await authService.isLoggedIn();
-    const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
-    return connectedUser === usernameAskedProfile
-  }
-
   render() {
+
+
+    if(this.state.isLoading){
+      return (
+        <Container>
+          <Spinner/>
+        </Container>
+      )
+    }
+
+
     const {
       avatar_url,
       login,
@@ -56,6 +72,7 @@ export default class ProfileScreen extends Component {
       following
     } = this.state.oneUser;
 
+    console.log("🐙🐙🐙🐙🐙 "+ this.state.oneUser);
 
     return (
       <Container>
