@@ -15,14 +15,14 @@ export default class RepoListScreen extends Component {
     };
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
     try{
-
+      this.setState({loading: true, oneUserRepos: []});
       const currentUser = await authService.isLoggedIn();
       const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
 
       const req         = await requestBuilder();
-      const response     = await req.get(`/users/${reposOwner}/repos`);
+      const response    = await req.get(`/users/${reposOwner}/repos`);
 
       this.setState({ oneUserRepos: response.data, loading: false });
 
@@ -30,8 +30,24 @@ export default class RepoListScreen extends Component {
       console.log(err);
       Alert.alert('Oups! Something went wrong!', err.message);
     }
+  };
+
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
 
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+
+  handleOnPressOneRepo = (oneRepo) => {
+    this.props.navigation.navigate("OneRepository", {
+        repoOwnerLogin : oneRepo.owner.login,
+        repoName: oneRepo.name,
+    })
+  };
 
   render() {
     const { oneUserRepos } = this.state;
@@ -46,10 +62,7 @@ export default class RepoListScreen extends Component {
               return (
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
-                  onPress={() => this.props.navigation.navigate("OneRepository", {
-                      repoOwnerLogin : oneRepo.owner.login,
-                      repoName: oneRepo.name,
-                  })}>
+                  onPress={()=>this.handleOnPressOneRepo(oneRepo)}>
                       <View style={styles.repoList}>
                         <View>
                           <Octicons name="repo" size={50} color="#9cdaef" />

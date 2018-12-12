@@ -20,6 +20,7 @@ import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
+import ReadmeScreen from "../views/ReadmeScreen";
 
 logout = async() =>{
   try{
@@ -73,6 +74,12 @@ const FeedStack = createStackNavigator({
       title: `Code`
     }
   },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme'
+    }
+  }
 });
 
 const MessagesStack = createStackNavigator({
@@ -133,6 +140,18 @@ const ProfileStack = createStackNavigator({
     navigationOptions: {
       title: `Code`
     }
+  },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme'
+    }
+  },
+  OtherUserProfile: {
+    screen: ProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubLogin}'s profile`
+    })
   },
 });
 
