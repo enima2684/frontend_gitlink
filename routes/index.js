@@ -54,7 +54,19 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubLogin}'s profile`
     })
-  }
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
+  },
 });
 
 const MessagesStack = createStackNavigator({
@@ -93,7 +105,7 @@ const ProfileStack = createStackNavigator({
     navigationOptions: ({navigation}) => ({
       title: "My Profile",
       headerRight:(
-        <TouchableOpacity><Octicons name="sign-out" size={15} 
+        <TouchableOpacity><Octicons name="sign-out" size={15}
         onPress={() => this.logout().then(() => navigation.navigate("LoginPage"))}><Text>Logout</Text></Octicons></TouchableOpacity>
       )
     })
