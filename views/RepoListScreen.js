@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import { Container, H1, List, ListItem  } from "native-base";
+import { Container, H1, List, ListItem, Spinner  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
 import requestBuilder from "../lib/request";
@@ -38,7 +38,7 @@ export default class RepoListScreen extends Component {
     return (
       <Container>
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="20%" />
+          <Spinner/>
         )}
         <ScrollView>
           <List>
