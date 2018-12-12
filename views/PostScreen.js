@@ -31,7 +31,6 @@ class PostScreen extends React.Component {
     super(props);
     this.state = {
       commentContent: "",
-      posts: [],
     };
   }
 
@@ -46,6 +45,7 @@ class PostScreen extends React.Component {
   async submitComment (feedEvent) {
     if (this.state.commentContent !== "") {
       try {        
+        this.setState({commentContent: ""});
         
         let { commentContent } = this.state;
         const feedId = feedEvent.id;
@@ -75,8 +75,7 @@ class PostScreen extends React.Component {
         feedEvent.userLiked = true;
 
         this.props.dispatch(act__editPostArray(feedEvent));
-
-        this.setState({commentContent: ""});
+        
         return response.data;
       } catch (err) {
         console.log(err);
@@ -88,8 +87,6 @@ class PostScreen extends React.Component {
   render() {
     const feedEvent = this.props.navigation.getParam("feedEvent");
     const feedEventToDisplay = this.props.posts.find(post => post.id === feedEvent.id);
-
-    console.log('LENGTH', feedEventToDisplay.comments.length);
 
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (

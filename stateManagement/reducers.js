@@ -12,7 +12,7 @@ export function mySingleReducer(state = initialState, action){
     case 'feedArray:edit':
       // update an element of the array
       let feedEvent = action.payload;
-      let postArray = state.posts;
+      let postArray = [...state.posts];
       let indexOfPostToUpdate = postArray.findIndex(post => post.id === feedEvent.id);
       postArray[indexOfPostToUpdate] = feedEvent;
       return {

@@ -40,18 +40,20 @@ class PostInteractionSection extends React.Component {
   }
 
   async handleLikeTap(feedEvent) {
-    if (!this.state.userLiked) {
+    if (!feedEvent.userLiked) {
       try {
-        // Send like to the backend
         const req = await requestBuilder();
-        await req.post("/posts/handleLike", {
-          feedId: feedEvent.id
-        });
         
-        // Get user details from the backend
-        const user = await req.get("/users/current");
+        const [likeResponse, user] = await Promise.all([
+          // Send like to the backend
+          req.post("/posts/handleLike", {
+            feedId: feedEvent.id
+          }),
+          // Get user details from the backend
+          req.get("/users/current")
+        ]);
         const userName = user.data.user.login;
-        
+
         // Save like data in feed event object for redux
         if (!feedEvent.likes) feedEvent.likes = [];
         feedEvent.likes.push(userName);
@@ -59,9 +61,6 @@ class PostInteractionSection extends React.Component {
 
         // Dispatch new feed event to redux
         this.props.dispatch(act__editPostArray(feedEvent));
-
-        // Trigger rerender
-        this.setState({});
 
       } catch (err) {
         console.log(err);
@@ -74,10 +73,8 @@ class PostInteractionSection extends React.Component {
     const { feedEvent } = this.props;
     const feedEventToDisplay = this.props.posts.find(post => post.id === feedEvent.id);
     const numberOfComments = feedEventToDisplay.comments.length;
-    console.log('LENGTH INSIDE', feedEventToDisplay.comments.length);
     const numberOfLikes = feedEventToDisplay.likes.length;
     const userLiked = feedEventToDisplay.userLiked;
-    // console.log('INTERACTION', feedEvent);
     return (
       <View style={styles.postInteraction}>
         <TouchableOpacity

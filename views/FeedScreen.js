@@ -74,17 +74,6 @@ class FeedScreen extends React.Component {
 
   componentWillMount() {
     this.updatePosts();
-    // this listener will trigger render each time the component is focused
-    this.willFocusListener = this.props.navigation.addListener(
-      'willFocus',
-      () => {
-        this.setState({});
-      }
-    )
-  }
-
-  componentWillUnmount() {
-    this.willFocusListener.remove()
   }
 
   _onRefresh = async () => {
