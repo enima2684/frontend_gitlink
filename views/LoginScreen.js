@@ -19,9 +19,8 @@ export default class LoginScreen extends Component {
       this.props.navigation.navigate("MainApp");
     } catch(err){
       console.log(err);
-      alert(err);
-    } finally {
       this.setState({isLoading: false});
+      alert(err);
     }
   };
 
