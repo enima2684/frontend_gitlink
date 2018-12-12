@@ -32,6 +32,14 @@ export default class RepoListScreen extends Component {
     }
   }
 
+
+  handleOnPressOneRepo = (oneRepo) => {
+    this.props.navigation.navigate("OneRepository", {
+        repoOwnerLogin : oneRepo.owner.login,
+        repoName: oneRepo.name,
+    })
+  };
+
   render() {
     const { oneUserRepos } = this.state;
     return (
@@ -45,10 +53,7 @@ export default class RepoListScreen extends Component {
               return (
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
-                  onPress={() => this.props.navigation.navigate("OneRepository", {
-                      repoOwnerLogin : oneRepo.owner.login,
-                      repoName: oneRepo.name,
-                  })}>
+                  onPress={()=>this.handleOnPressOneRepo(oneRepo)}>
                       <View style={styles.repoList}>
                         <View>
                           <Octicons name="repo" size={50} color="#9cdaef" />

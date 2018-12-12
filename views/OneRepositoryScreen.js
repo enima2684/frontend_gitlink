@@ -20,19 +20,25 @@ export default class OneRepositoryScreen extends Component {
       isLoading: true
     };
   }
-  async componentWillMount() {
+
+
+  fetchData = async () => {
     try {
+      this.setState({isLoading: true});
+
       const repoName       = this.props.navigation.getParam('repoName');
       const repoOwnerLogin = this.props.navigation.getParam('repoOwnerLogin');
 
+      console.log("🐳🐳🐳🐳🐳🐳  " + repoName);
+
       let req = await requestBuilder();
-      const [repos, contributors] = await Promise.all([
+      const [repo, contributors] = await Promise.all([
         req.get(`/repos/${repoOwnerLogin}/${repoName}`),
         req.get(`/repos/${repoOwnerLogin}/${repoName}/contributors`)
       ]);
 
       this.setState({
-        repo: repos.data.repo,
+        repo: repo.data.repo,
         contributors: contributors.data.contributors,
         isLoading: false
       });
@@ -40,6 +46,14 @@ export default class OneRepositoryScreen extends Component {
       Alert.alert('Oups, Something went wrong', err.message);
       console.log(err);
     }
+  };
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
   handleOnPressContributor(githubLogin){
