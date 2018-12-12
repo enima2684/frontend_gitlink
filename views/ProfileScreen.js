@@ -53,12 +53,8 @@ export default class ProfileScreen extends Component {
   }
 
   handleOnPressRepos = async () => {
-    // const connectedUser = await authService.isLoggedIn();
-    // const usernameAskedProfile = this.props.navigation.getParam("githubLogin", connectedUser);
-
     this.props.navigation.navigate("Repositories", {
       reposOwner: this.state.oneUser.login
-      // reposOwner: usernameAskedProfile
     });
   };
 
