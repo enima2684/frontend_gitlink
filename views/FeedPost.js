@@ -33,7 +33,7 @@ export default class FeedPost extends React.Component {
     const githubId = feedEvent.actor.id;
     const githubLogin = feedEvent.actor.login;
     this.props.navigation.navigate("OtherUserProfile", {
-      githubId: githubId,
+      githubId,
       githubLogin
     });
   }

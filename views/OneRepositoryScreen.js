@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import {
   ScrollView,
   View,
-  TouchableOpacity,
-  Text,
   StyleSheet,
   ActivityIndicator,
-  Image,
   Alert
 } from "react-native";
-import axios from "axios";
-import { Container, H1, List, ListItem, H2, Thumbnail } from "native-base";
+import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3, Card, CardItem, Text, Body, Right, Icon, Content } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
-import { MarkdownView } from "react-native-markdown-view";
+import requestBuilder from "../lib/request";
 
 export default class OneRepositoryScreen extends Component {
   constructor(props) {
@@ -21,155 +17,214 @@ export default class OneRepositoryScreen extends Component {
     this.state = {
       repo: {},
       contributors: [],
-      //   readme: "",
-      loading: true
+      isLoading: true
     };
   }
-  async componentWillMount() {
+
+
+  fetchData = async () => {
     try {
-      const repos = await axios.get(
-        `https://api.github.com/repos/griev04/backend_gitlink`
-      );
-      const contributors = await axios.get(
-        `https://api.github.com/repos/griev04/backend_gitlink/contributors`
-      );
-      //   const readme = await axios.post(
-      //     `https://api.github.com/markdown`
-      //   );
+      this.setState({isLoading: true});
+
+      const repoName       = this.props.navigation.getParam('repoName');
+      const repoOwnerLogin = this.props.navigation.getParam('repoOwnerLogin');
+
+      let req = await requestBuilder();
+      const [repo, contributors] = await Promise.all([
+        req.get(`/repos/${repoOwnerLogin}/${repoName}`),
+        req.get(`/repos/${repoOwnerLogin}/${repoName}/contributors`)
+      ]);
+
       this.setState({
-        repo: repos.data,
-        contributors: contributors.data,
-        // readme: readme.data,
-        loading: false
+        repo: repo.data.repo,
+        contributors: contributors.data.contributors,
+        isLoading: false
       });
-    } catch (err) {
+    } catch(err) {
       Alert.alert('Oups, Something went wrong', err.message);
       console.log(err);
     }
+  };
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+  handleOnPressContributor(githubLogin){
+    this.props.navigation.navigate('OtherUserProfile', {
+      githubLogin
+    })
+  }
+
+  goToCode = ()=>{
+    this.props.navigation.navigate("Code",{repo_html_url: this.state.repo.html_url});
+  };
+  goToReadme = ()=>{
+    this.props.navigation.navigate("Readme",{repo_html_url: this.state.repo.html_url});
+  };
+
+  handleOnPressOwner = (githubLogin) => {
+    this.props.navigation.navigate("OtherUserProfile", {githubLogin})
+  };
+
   render() {
-    const oneRepo = this.state.repo;
-    const oneRepoContributors = this.state.contributors;
-    // const oneReadMe = this.state.readme;
+    let {repo} = this.state;
+    repo.contributors = this.state.contributors;
+
+    if(this.state.isLoading){
+      return <Spinner/>
+    }
+
 
     return (
       <Container>
-        {this.state.loading ? (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
-        ) : (
-          <ScrollView>
-            <Container>
-              <View style={styles.ownerWrapper}>
-                <H1 style={styles.textStyleOwner}>Owner</H1>
-                <View style={styles.ownerHeader}>
-                  <View style={styles.oneHeader}>
-                    <Thumbnail
-                      round
-                      large
-                      source={{ uri: oneRepo.owner.avatar_url }}
-                    />
-                  </View>
-                  <View style={styles.oneHeader}>
-                    <H2> {oneRepo.owner.login}</H2>
-                  </View>
-                  <View style={styles.ownerBottom}>
-                    <View style={styles.styleIcon}>
-                      <Octicons name="repo-forked" size={20}/>
-                      <Text>{oneRepo.forks_count}</Text>
-                    </View>
-                    <View>
-                      <Octicons name="eye" size={20}/>
-                      <Text>{oneRepo.watchers_count}</Text>
-                    </View>
-                    <View>
-                      <Octicons name="star" size={20}/>
-                      <Text>{oneRepo.stargazers_count}</Text>
-                    </View>
-                  </View>
-                </View>
+        <ScrollView>
+
+          <View style={styles.header}>
+
+            <View style={styles.title}>
+              <H1>{repo.name}</H1>
+              <H3>{(repo.language) && repo.language}</H3>
+            </View>
+
+            <View style={styles.titleContainer}>
+              <Button transparent style={styles.title} onPress={()=>this.handleOnPressOwner(repo.owner.login)}>
+                <Thumbnail large source={{uri: repo.owner.avatar_url}} />
+                <H3>{repo.owner.login}</H3>
+              </Button>
+            </View>
+
+
+            <View style={styles.stats}>
+
+              <View style={styles.stat}>
+                <Text style={styles.stat__text}>{repo.watchers_count}</Text>
+                <Octicons name="eye" size={20} color={"#8cc342"}/>
               </View>
-              <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>Source</H1>
-                <View style={styles.oneHeader}>
-                  <Octicons name="file-symlink-directory" size={40} />
-                  <Text>Code</Text>
-                </View>
+
+              <View style={styles.stat}>
+                <Text style={styles.stat__text}>{repo.forks_count}</Text>
+                <Octicons name="repo-forked" size={20} color={"#8cc342"}/>
               </View>
-              <View style={styles.wrapper}>
-                <H1 style={styles.textStyle}>Contributors</H1>
-                <List>
-                  {oneRepoContributors.map(oneContributor => {
-                    return (
-                      <ListItem key={oneContributor.id}>
-                        <View>
-                          <Thumbnail
-                            round
-                            small
-                            source={{ uri: oneContributor.avatar_url }}
-                          />
-                        </View>
-                        <H2 style={styles.textSize}> {oneContributor.login}</H2>
-                      </ListItem>
-                    );
-                  })}
-                </List>
+
+              <View style={styles.stat}>
+                <Text style={styles.stat__text}>{repo.stargazers_count}</Text>
+                <Octicons name="star" size={20} color={"#8cc342"}/>
               </View>
-            </Container>
-          </ScrollView>
-        )}
+
+            </View>
+
+          </View>
+
+          <View style={styles.body}>
+
+            <Card style={styles.source}>
+              <CardItem header>
+                <Text>Source</Text>
+              </CardItem>
+              <CardItem button onPress={this.goToReadme}>
+                <Body style={styles.source__element}>
+                  <Octicons name="file" size={20}/>
+                  <Text style={styles.source__element__text}>Readme</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
+
+              <CardItem button onPress={this.goToCode}>
+                <Body style={styles.source__element}>
+                  <Octicons name="code" size={20}/>
+                  <Text style={styles.source__element__text}>Code</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
+          </Card>
+
+          <Card style={styles.collaborators}>
+            <CardItem header>
+              <Text>Collaborators ({repo.contributors.length})</Text>
+            </CardItem>
+            {repo.contributors.map(contributor => (
+              <CardItem key={contributor.id} button onPress={() => this.handleOnPressContributor(contributor.login)}>
+                <Body style={styles.source__element}>
+                  <Thumbnail round small source={{uri: contributor.avatar_url}}/>
+                  <Text style={styles.source__element__text}>{contributor.login}</Text>
+                </Body>
+                <Right>
+                  <Octicons name="chevron-right" size={20}/>
+                </Right>
+              </CardItem>
+
+            ))}
+          </Card>
+          </View>
+        </ScrollView>
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  ownerWrapper: {
+
+  header: {
+    height: 300,
     width: "100%",
-    height: "35%",
-    resizeMode: "contain",
+    backgroundColor: "#9cdaee4d",
     display: "flex",
     flexDirection: "column",
-    paddingBottom: "5%",
-    paddingLeft: "3%",
-    backgroundColor: "#9cdaee4d"
-  },
-  wrapper: {
-    display: "flex",
-    flexDirection: "column",
-    paddingBottom: "5%",
-    paddingLeft: "3%"
-  },
-  ownerHeader: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: "10%"
-  },
-  textStyleOwner: {
-    color: "#47a9ff",
-    alignSelf: "center"
-  },
-  oneHeader: {
-    paddingBottom: "5%"
-  },
-  ownerBottom: {
-    display: "flex",
-    flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center",
-    width: "100%"
+    alignItems:'center',
   },
-  textStyle: {
-    color: "#47a9ff"
+
+  titleContainer: {
+    // height: "40%",
+    paddingBottom: 10,
+    paddingTop: 10,
   },
-  styleIcon:{
-      display:"flex",
-      flexDirection:"column",
-      justifyContent:"center",
-      alignItems:"center"
+  title: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 80,
   },
-  textSize: {
-    fontSize: 15,
-    lineHeight: 30
+
+  stats: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: "100%",
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+
+  stat: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: "#8cc342"
+  },
+  stat__text:{
+    fontWeight: "700"
+  },
+
+  body: {
+    paddingBottom: 20
+  },
+  source__element:{
+    display: "flex",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+
+  source__element__text:{
+    paddingLeft: 10
   }
 });

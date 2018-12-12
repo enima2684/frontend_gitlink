@@ -65,6 +65,36 @@ export default class PostText extends React.Component {
         );
         break;
 
+      case "DeleteEvent":
+        iconName = "trashcan";
+        displayText = (
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                deleted the{" "}
+                <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.payload.ref}
+                </Text>{" "}
+                inside the repo{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={30}
+            />
+          </View>
+        );
+        break;
+
+
+
       case "ForkEvent":
         iconName = "repo-forked";
         displayText = (

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
-import axios from "axios";
-import { Container, H1, List, ListItem  } from "native-base";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { Container, H1, List, ListItem, Spinner  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
+import requestBuilder from "../lib/request";
 
 export default class RepoListScreen extends Component {
   constructor(props) {
@@ -13,19 +14,39 @@ export default class RepoListScreen extends Component {
       loading: true,
     };
   }
-  componentDidMount() {
-    axios
-      .get(`https://api.github.com/users/nrlfrh/repos`)
-      .then(response => {
-        this.setState({ oneUserRepos: response.data, loading: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+  fetchData = async () => {
+    try{
+      this.setState({loading: true, oneUserRepos: []});
+      const currentUser = await authService.isLoggedIn();
+      const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
+
+      const req         = await requestBuilder();
+      const response    = await req.get(`/users/${reposOwner}/repos`);
+
+      this.setState({ oneUserRepos: response.data, loading: false });
+
+    } catch(err){
+      console.log(err);
+      Alert.alert('Oups! Something went wrong!', err.message);
+    }
+  };
+
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
 
-  goToCode = (repo_html_url)=>{
-    this.props.navigation.navigate("Code",{repo_html_url});
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+
+  handleOnPressOneRepo = (oneRepo) => {
+    this.props.navigation.navigate("OneRepository", {
+        repoOwnerLogin : oneRepo.owner.login,
+        repoName: oneRepo.name,
+    })
   };
 
   render() {
@@ -33,7 +54,7 @@ export default class RepoListScreen extends Component {
     return (
       <Container>
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+          <Spinner/>
         )}
         <ScrollView>
           <List>
@@ -41,10 +62,7 @@ export default class RepoListScreen extends Component {
               return (
                   <ListItem key={oneRepo.id}>
                   <TouchableOpacity style={styles.oneRepo}
-                  onPress={() => this.props.navigation.navigate("OneRepository", {
-                      repoId : oneRepo.id,
-                      repoName: oneRepo.name,
-                  })}>
+                  onPress={()=>this.handleOnPressOneRepo(oneRepo)}>
                       <View style={styles.repoList}>
                         <View>
                           <Octicons name="repo" size={50} color="#9cdaef" />

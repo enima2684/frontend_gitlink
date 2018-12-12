@@ -1,5 +1,5 @@
 import React from "react";
-import {Text} from "react-native"
+import {Text, Alert, TouchableOpacity} from "react-native"
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -7,6 +7,7 @@ import {
   createAppContainer
 } from "react-navigation";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
 // import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
@@ -19,6 +20,18 @@ import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
+import ReadmeScreen from "../views/ReadmeScreen";
+
+logout = async() =>{
+  try{
+    await authService.logout();
+    Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
+  } catch (err) {
+    console.log(err);
+    Alert.alert("error", 'Oups! Something went wrong on the logout');
+    throw err
+  }
+};
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -42,6 +55,30 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubLogin}'s profile`
     })
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
+  },
+  Repositories: {
+    screen: RepoListScreen,
+    navigationOptions: {
+      title: `Repositories`
+    }
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
+  },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme'
+    }
   }
 });
 
@@ -78,11 +115,15 @@ const NotificationsStack = createStackNavigator({
 const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
-    navigationOptions: {
-      title: "My Profile"
-    }
+    navigationOptions: ({navigation}) => ({
+      title: "My Profile",
+      headerRight:(
+        <TouchableOpacity><Octicons name="sign-out" size={15}
+        onPress={() => this.logout().then(() => navigation.navigate("LoginPage"))}><Text>Logout</Text></Octicons></TouchableOpacity>
+      )
+    })
   },
-  UserRepositories: {
+  Repositories: {
     screen: RepoListScreen,
     navigationOptions: {
       title: `Repositories`
@@ -99,6 +140,18 @@ const ProfileStack = createStackNavigator({
     navigationOptions: {
       title: `Code`
     }
+  },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme'
+    }
+  },
+  OtherUserProfile: {
+    screen: ProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubLogin}'s profile`
+    })
   },
 });
 
