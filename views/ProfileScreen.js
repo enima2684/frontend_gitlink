@@ -52,6 +52,12 @@ export default class ProfileScreen extends Component {
 
   }
 
+  handleOnPressRepos = async () => {
+    this.props.navigation.navigate("Repositories", {
+      reposOwner: this.state.oneUser.login
+    });
+  };
+
   render() {
 
 
@@ -103,7 +109,7 @@ export default class ProfileScreen extends Component {
         </View>
         <View style={styles.profileIconContainer}>
           <View>
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigation.navigate("UserRepositories")}>
+            <TouchableOpacity style={styles.oneProfileIcon} onPress={this.handleOnPressRepos}>
               <Octicons name="repo" size={50} color="#0080FF" />
               <Text>Repositories</Text>
               <H1>{public_repos}</H1>
