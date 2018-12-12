@@ -13,7 +13,7 @@ export default class FeedPost extends React.Component {
   };
   state = {
     feedEvent: this.props.feedEvent    
-  }
+  };
 
   /**
    *
@@ -69,7 +69,7 @@ export default class FeedPost extends React.Component {
               </Text>
             </View>
             <View style={styles.postText}>
-              <PostText feedEvent={feedEvent} />
+              <PostText feedEvent={feedEvent} parentComponent={"FeedPost"}/>
             </View>
           </TouchableOpacity>
           <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation} onLikePress={(feedEvent) => this.updateFeedEvent(feedEvent)}/>
