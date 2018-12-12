@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import { Button } from "native-base";
 
-import {connect} from "react-redux";
-import {act__editPostArray} from "../stateManagement/actions";
+import { connect } from "react-redux";
+import { act__editPostArray } from "../stateManagement/actions";
 
 import PropTypes from "prop-types";
 import PostText from "../components/PostText";
@@ -30,7 +30,7 @@ class PostScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentContent: "",
+      commentContent: ""
     };
   }
 
@@ -42,14 +42,14 @@ class PostScreen extends React.Component {
     });
   }
 
-  async submitComment (feedEvent) {
+  async submitComment(feedEvent) {
     if (this.state.commentContent !== "") {
-      try {        
-        this.setState({commentContent: ""});
-        
+      try {
+        this.setState({ commentContent: "" });
+
         let { commentContent } = this.state;
         const feedId = feedEvent.id;
-        console.log('Id in postScreen', feedId);
+        console.log("Id in postScreen", feedId);
         // Send comment to server and retrieve user data
         const req = await requestBuilder();
 
@@ -75,24 +75,28 @@ class PostScreen extends React.Component {
         feedEvent.userLiked = true;
 
         this.props.dispatch(act__editPostArray(feedEvent));
-        
+
         return response.data;
       } catch (err) {
         console.log(err);
         alert(err.message);
       }
     }
-  };
+  }
 
   render() {
     const feedEvent = this.props.navigation.getParam("feedEvent");
-    const feedEventToDisplay = this.props.posts.find(post => post.id === feedEvent.id);
+    const feedEventToDisplay = this.props.posts.find(
+      post => post.id === feedEvent.id
+    );
 
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
         <View style={styles.postContainer}>
-          <TouchableOpacity onPress={() => handleProfileTap(feedEventToDisplay)}>
+          <TouchableOpacity
+            onPress={() => handleProfileTap(feedEventToDisplay)}
+          >
             <Image
               style={styles.profilePicture}
               source={{
@@ -104,7 +108,10 @@ class PostScreen extends React.Component {
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEventToDisplay.actor.login}</Text>
               <Text>
-                {moment(feedEventToDisplay.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+                {moment(
+                  feedEventToDisplay.created_at,
+                  "YYYY-MM-DD HH:mm:ssZ"
+                ).fromNow()}
               </Text>
             </View>
             <PostText feedEvent={feedEventToDisplay} />
@@ -125,7 +132,10 @@ class PostScreen extends React.Component {
               autoFocus={this.state.focusKeyboard}
               onSubmitEditing={() => this.submitComment(feedEventToDisplay)}
             />
-            <Button transparent onPress={() => this.submitComment(feedEventToDisplay)}>
+            <Button
+              transparent
+              onPress={() => this.submitComment(feedEventToDisplay)}
+            >
               <Octicons size={24} name="pencil" color={"#8cc342"} />
             </Button>
           </View>
@@ -209,8 +219,13 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "20%"
+  },
+  listItem: {
+    height: 1,
+    width: "100%",
+    backgroundColor: "lightgray",
   }
 });
 
-const mapStateToProps = ({posts}) => ({posts});
+const mapStateToProps = ({ posts }) => ({ posts });
 export default connect(mapStateToProps)(PostScreen);
