@@ -72,8 +72,6 @@ export default class ProfileScreen extends Component {
       following
     } = this.state.oneUser;
 
-    console.log("🐙🐙🐙🐙🐙 "+ this.state.oneUser);
-
     return (
       <Container>
         <View style={styles.oneProfile}>
