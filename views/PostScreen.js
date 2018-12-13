@@ -52,10 +52,11 @@ class PostScreen extends React.Component {
         const req = await requestBuilder();
 
         let [response, user] = await Promise.all([
-          req.post("/posts/comments", {
-                feedId,
-                commentContent
-              }),
+          req.post("/posts/comment", {
+            feedId,
+            feedEvent,
+            commentContent
+          }),
           req.get("/users/current")
         ]);
 
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
   listItem: {
     height: 1,
     width: "100%",
-    backgroundColor: "lightgray",
+    backgroundColor: "lightgray"
   }
 });
 

@@ -28,13 +28,13 @@ export default class CommentPost extends Component {
           <Image
             style={styles.picture}
             source={{
-              uri: comment.avatar_url
+              uri: comment.userAvatar
             }}
           />
         </TouchableOpacity>
         <View style={styles.rightPost}>
           <View style={styles.postHeader}>
-            <Text style={styles.bold}>{comment.login}</Text>
+            <Text style={styles.bold}>{comment.userName}</Text>
             <Text>{moment(comment.timestamp, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
           </View>
           <View style={styles.postText}>

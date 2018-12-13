@@ -45,8 +45,9 @@ class PostInteractionSection extends React.Component {
         
         const [likeResponse, user] = await Promise.all([
           // Send like to the backend
-          req.post("/posts/handleLike", {
-            feedId: feedEvent.id
+          req.post("/posts/like", {
+            feedId: feedEvent.id,
+            feedEvent
           }),
           // Get user details from the backend
           req.get("/users/current")

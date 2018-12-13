@@ -69,7 +69,6 @@ class FeedScreen extends React.Component {
       loading: false,
       refreshing: false
     });
-
   }
 
   componentWillMount() {
