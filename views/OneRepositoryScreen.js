@@ -4,11 +4,15 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  Alert
+  Alert,
+  ImageBackground
 } from "react-native";
 import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3, Card, CardItem, Text, Body, Right, Icon, Content } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
+import {LinearGradient} from 'expo';
+
 import requestBuilder from "../lib/request";
+import colors from "../colors";
 
 export default class OneRepositoryScreen extends Component {
   constructor(props) {
@@ -81,120 +85,176 @@ export default class OneRepositoryScreen extends Component {
 
 
     return (
-      <Container>
-        <ScrollView>
-
-          <View style={styles.header}>
-
-            <View style={styles.title}>
-              <H1>{repo.name}</H1>
-              <H3>{(repo.language) && repo.language}</H3>
-            </View>
-
-            <View style={styles.titleContainer}>
-              <Button transparent style={styles.title} onPress={()=>this.handleOnPressOwner(repo.owner.login)}>
-                <Thumbnail large source={{uri: repo.owner.avatar_url}} />
-                <H3>{repo.owner.login}</H3>
-              </Button>
-            </View>
+      <ScrollView>
 
 
-            <View style={styles.stats}>
 
-              <View style={styles.stat}>
-                <Text style={styles.stat__text}>{repo.watchers_count}</Text>
-                <Octicons name="eye" size={20} color={"#8cc342"}/>
-              </View>
 
-              <View style={styles.stat}>
-                <Text style={styles.stat__text}>{repo.forks_count}</Text>
-                <Octicons name="repo-forked" size={20} color={"#8cc342"}/>
-              </View>
+      <View style={{...styles.buttonsRow, ...styles.stats}}>
 
-              <View style={styles.stat}>
-                <Text style={styles.stat__text}>{repo.stargazers_count}</Text>
-                <Octicons name="star" size={20} color={"#8cc342"}/>
-              </View>
-
-            </View>
-
+        <Button transparent rounded style={styles.buttonElement}>
+          <View style={styles.oneButton}>
+            <Text style={styles.stat__text}>{repo.watchers_count}</Text>
+           <Octicons name="eye" size={20} color={colors.whiteFont}/>
           </View>
+        </Button>
 
-          <View style={styles.body}>
 
-            <Card style={styles.source}>
-              <CardItem header>
-                <Text>Source</Text>
-              </CardItem>
-              <CardItem button onPress={this.goToReadme}>
-                <Body style={styles.source__element}>
-                  <Octicons name="file" size={20}/>
-                  <Text style={styles.source__element__text}>Readme</Text>
-                </Body>
-                <Right>
-                  <Octicons name="chevron-right" size={20}/>
-                </Right>
-              </CardItem>
+        <Button transparent rounded style={styles.buttonElement}>
+          <View style={styles.oneButton}>
+            <Text style={styles.stat__text}>{repo.forks_count}</Text>
+           <Octicons name="repo-forked" size={20} color={colors.whiteFont}/>
+          </View>
+        </Button>
 
-              <CardItem button onPress={this.goToCode}>
-                <Body style={styles.source__element}>
-                  <Octicons name="code" size={20}/>
-                  <Text style={styles.source__element__text}>Code</Text>
-                </Body>
-                <Right>
-                  <Octicons name="chevron-right" size={20}/>
-                </Right>
-              </CardItem>
-          </Card>
+        <Button transparent rounded style={styles.buttonElement}>
+          <View style={styles.oneButton}>
+            <Text style={styles.stat__text}>{repo.stargazers_count}</Text>
+           <Octicons name="star" size={20} color={colors.whiteFont}/>
+          </View>
+        </Button>
 
-          <Card style={styles.collaborators}>
+      </View>
+
+
+      <View style={styles.main}>
+
+
+        <ImageBackground source={{uri: repo.owner.avatar_url}} style={styles.imageZone}>
+
+          {/* ------ USERNAME ------- */}
+          <View style={styles.usernameRow}>
+            <View style={styles.usernameContainer}>
+              <Text style={styles.usernameText}>{repo.name}</Text>
+            </View>
+            <View style={styles.complementUsernameText}><Text>{" "}</Text></View>
+          </View>
+        </ImageBackground>
+
+
+        <View style={styles.body}>
+
+          <Card style={styles.source}>
             <CardItem header>
-              <Text>Collaborators ({repo.contributors.length})</Text>
+              <Text>Source</Text>
             </CardItem>
-            {repo.contributors.map(contributor => (
-              <CardItem key={contributor.id} button onPress={() => this.handleOnPressContributor(contributor.login)}>
-                <Body style={styles.source__element}>
-                  <Thumbnail round small source={{uri: contributor.avatar_url}}/>
-                  <Text style={styles.source__element__text}>{contributor.login}</Text>
-                </Body>
-                <Right>
-                  <Octicons name="chevron-right" size={20}/>
-                </Right>
-              </CardItem>
+            <CardItem button onPress={this.goToReadme}>
+              <Body style={styles.source__element}>
+                <Octicons name="file" size={20}/>
+                <Text style={styles.source__element__text}>Readme</Text>
+              </Body>
+              <Right>
+                <Octicons name="chevron-right" size={20}/>
+              </Right>
+            </CardItem>
 
-            ))}
-          </Card>
-          </View>
-        </ScrollView>
-      </Container>
+            <CardItem button onPress={this.goToCode}>
+              <Body style={styles.source__element}>
+                <Octicons name="code" size={20}/>
+                <Text style={styles.source__element__text}>Code</Text>
+              </Body>
+              <Right>
+                <Octicons name="chevron-right" size={20}/>
+              </Right>
+            </CardItem>
+            </Card>
+
+         <Card style={styles.collaborators}>
+          <CardItem header>
+            <Text>Collaborators ({repo.contributors.length})</Text>
+          </CardItem>
+          {repo.contributors.map(contributor => (
+            <CardItem key={contributor.id} button onPress={() => this.handleOnPressContributor(contributor.login)}>
+              <Body style={styles.source__element}>
+                <Thumbnail round small source={{uri: contributor.avatar_url}}/>
+                <Text style={styles.source__element__text}>{contributor.login}</Text>
+              </Body>
+              <Right>
+                <Octicons name="chevron-right" size={20}/>
+              </Right>
+            </CardItem>
+
+          ))}
+        </Card>
+        </View>
+
+      </View>
+
+    </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
 
-  header: {
-    height: 300,
-    width: "100%",
-    backgroundColor: "#9cdaee4d",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems:'center',
+    main:{
+    display:'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    height: '100%',
+    flex: 1,
   },
 
-  titleContainer: {
-    // height: "40%",
-    paddingBottom: 10,
-    paddingTop: 10,
-  },
-  title: {
+
+  imageZone:{
+    width: '100%',
+    height: 250,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 80,
+    justifyContent: 'space-between',
+
+    shadowColor: colors.GrayDark,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+    flexGrow:1
+
   },
+
+  usernameRow:{
+    display: 'flex',
+    flexDirection: 'row',
+  },
+
+  usernameContainer:{
+
+    marginLeft: -15,
+    marginTop: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 15,
+    backgroundColor: colors.BlueTransparent,
+
+    flexShrink: 1,
+  },
+
+  usernameText:{
+    fontWeight: '700',
+    color: 'white',
+    fontSize: 20,
+    backgroundColor: 'transparent',
+    letterSpacing: 1.7
+  },
+  complementUsernameText:{
+    backgroundColor: 'transparent',
+  },
+
+
+  body: {
+    paddingBottom: 20
+  },
+  source__element:{
+    display: "flex",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+
+  source__element__text:{
+    paddingLeft: 10
+  },
+
 
   stats: {
     display: 'flex',
@@ -209,22 +269,53 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    color: "#8cc342"
-  },
-  stat__text:{
-    fontWeight: "700"
+    color: "#8cc342",
+    backgroundColor: colors.whiteFont
   },
 
-  body: {
-    paddingBottom: 20
+
+
+  buttonElement:{
+    width: '20%',
+    display:'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: colors.BlueTransparent
   },
-  source__element:{
-    display: "flex",
+
+
+  buttonsRow:{
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    position: 'absolute',
+    width:'100%',
+    top: 225,
+    zIndex:4,
+    elevation:4,
   },
 
-  source__element__text:{
-    paddingLeft: 10
+  stat__text:{
+    fontWeight: "700",
+    color: colors.whiteFont,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+
+  oneButton:{
+    backgroundColor: colors.BlueTransparent,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 15,
+    paddingBottom: 5,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10
   }
+
+
 });
