@@ -38,7 +38,7 @@ export default class LoginScreen extends Component {
       <Container>
         <View style={styles.login}>
           <View style={styles.loginHeader}>
-            <Octicons name="squirrel" size={150} color="#fff" />
+            <Octicons name="octoface" size={150} color="#fff" />
           </View>
           <View>
           <H1 style={styles.loginH1}>GitLink</H1>
