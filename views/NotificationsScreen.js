@@ -36,7 +36,6 @@ export default class NotificationsScreen extends React.Component {
       loading: false,
       refreshing: false
     });
-    console.log(this.state.notifs);
   }
 
   componentDidMount() {

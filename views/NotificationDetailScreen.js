@@ -36,7 +36,6 @@ export default class NotificationDetailScreen extends React.Component {
     if (feedEventToDisplay.type.includes("GitLink")){
       feedEventToDisplay = feedEventToDisplay.githubPost;
     }
-    let feedEventToDisplay;
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <View style={styles.mainContainer}>
