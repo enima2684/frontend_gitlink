@@ -85,6 +85,7 @@ class PostScreen extends React.Component {
 
   render() {
     const feedEvent = this.props.navigation.getParam("feedEvent");
+    console.log('COME ON!!!!', feedEvent);
     const feedEventToDisplay = this.props.posts.find(
       post => post.id === feedEvent.id
     );
@@ -114,7 +115,7 @@ class PostScreen extends React.Component {
                 <Text style={styles.bold}>
                   {feedEventToDisplay.actor.login}
                 </Text>
-                <PostText feedEvent={feedEventToDisplay} />
+                <PostText feedEvent={feedEventToDisplay} parentComponent=""/>
               </View>
               <View style={styles.postBottom}>
                 <PostInteractionSection

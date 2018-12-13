@@ -140,7 +140,7 @@ const NotificationsStack = createStackNavigator({
   NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Notification BLAH details`
+      title: `${navigation.state.params.feedEvent.actor.login}'s profile`
     })
   }
 });
