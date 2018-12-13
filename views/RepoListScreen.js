@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
 import { Container, H1, List, ListItem, Spinner  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
@@ -65,7 +65,7 @@ export default class RepoListScreen extends Component {
                   onPress={()=>this.handleOnPressOneRepo(oneRepo)}>
                       <View style={styles.repoList}>
                         <View>
-                          <Octicons name="repo" size={50} color="#9cdaef" />
+                          <Octicons name="repo" size={50} color="#313b72" />
                         </View>
                         <View style={styles.repoMidlle}>
                           <Text style={styles.repoName}> {oneRepo.name}</Text>
@@ -75,7 +75,7 @@ export default class RepoListScreen extends Component {
                             <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
                           </View>
                         </View>
-                        <Octicons name="chevron-right" size={25} color="#b8e9f7"/>
+                        <Octicons name="chevron-right" size={25} color="#313b72"/>
                       </View>
                     </TouchableOpacity>
                   </ListItem>

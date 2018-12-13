@@ -193,13 +193,9 @@ export default class FeedPost extends React.Component {
     });
   }
 
-  handleProfileTap(feedEvent) {
-    // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
-    const githubId = feedEvent.actor.id;
-    const githubLogin = feedEvent.actor.login;
+  handleProfileTap(login) {
     this.props.navigation.navigate("OtherUserProfile", {
-      githubId,
-      githubLogin
+      githubLogin: login
     });
   }
 
@@ -256,7 +252,7 @@ export default class FeedPost extends React.Component {
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
-          onPress={() => this.handleProfileTap(feedEventforTap)}
+          onPress={() => this.handleProfileTap(login)}
         >
           <Thumbnail
             round

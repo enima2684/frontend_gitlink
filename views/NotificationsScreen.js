@@ -31,6 +31,7 @@ export default class NotificationsScreen extends React.Component {
 
   async updateNotifs() {
     let notifs = await this.fetchNotifs();
+    console.log(notifs);
     this.setState({
       notifs,
       loading: false,
