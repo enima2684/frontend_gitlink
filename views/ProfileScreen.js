@@ -99,10 +99,35 @@ export default class ProfileScreen extends Component {
       <Container>
         <StatusBar barStyle={"light-content"}/>
 
-        <Content style={{height:"100%"}}>
+
+
+          {/* ------ BUTTONS ------- */}
+
+
+          <View style={styles.buttonsRow}>
+
+            <LinearGradient
+              colors={[colors.GreenFlashyBis, colors.GreenFlashy]}
+              start={[0.0, 1.0]}
+              end={[1.0, 0.5]}
+              locations={[0.0,  1.0]}
+              style={styles.btnContainer}>
+
+              <Button transparent style={styles.buttonElement} onPress={this.handleOnPressFollow}>
+                <Octicons name={'telescope'} size={24} color={colors.whiteFont}/>
+                <Text style={styles.actionButton_text}>Follow</Text>
+              </Button>
+
+            </LinearGradient>
+
+          </View>
+
+
+          <View style={styles.main}>
+
 
           {/* ------ BACKGROUND IMAGE + USERNAME ------- */}
-          {/*<View >*/}
+          <View>
             <ImageBackground source={{uri: avatar_url}} style={styles.imageZone}>
 
               {/* ------ USERNAME ------- */}
@@ -114,38 +139,6 @@ export default class ProfileScreen extends Component {
               </View>
 
             </ImageBackground>
-          {/*</View>*/}
-
-          {/* ------ BUTTONS ------- */}
-          <View style={styles.buttonsRow}>
-
-            <LinearGradient
-              colors={[colors.GreenFlashyBis, colors.GreenFlashy]}
-              start={[0.0, 1.0]}
-              end={[1.0, 0.5]}
-              locations={[0.0,  1.0]}
-              style={styles.btnContainer}>
-
-              <Button transparent style={styles.buttonElement} onPress={this.handleOnPressFollow}>
-                <Text style={styles.actionButton_text}>Follow</Text>
-              </Button>
-
-            </LinearGradient>
-
-            {/*<LinearGradient*/}
-              {/*colors={[colors.GreenFlashyBis, colors.GreenFlashy]}*/}
-              {/*start={[0.0, 1.0]}*/}
-              {/*end={[1.0, 0.5]}*/}
-              {/*locations={[0.0,  1.0]}*/}
-              {/*style={styles.btnContainer}>*/}
-
-              {/*<Button transparent style={styles.buttonElement} onPress={this.handleOnPressRepos}>*/}
-                {/*<Text style={styles.actionButton_text}>Repositories</Text>*/}
-              {/*</Button>*/}
-
-            {/*</LinearGradient>*/}
-
-
           </View>
 
           {/*/!* ———————   BOTTOM CARD ————————*!/*/}
@@ -196,13 +189,22 @@ export default class ProfileScreen extends Component {
 
           </View>
 
-        </Content>
+        </View>
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
+
+  main:{
+    display:'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    height: '100%',
+    // backgroundColor: 'tomato',
+    flex: 1,
+  },
 
   imageZone:{
     width: '100%',
@@ -215,8 +217,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.7,
     shadowRadius: 2,
-    // zIndex:1,
-    // elevation: 1,
+    flexGrow:1
 
   },
 
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     width:'100%',
-    top: 217.5,
+    top: 225,
     zIndex:4,
     elevation:4,
   },
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 5,
     paddingRight: 5,
-    width: "66%",
+    width: "55%",
 
     shadowColor: colors.GrayDark,
     shadowOffset: { width: 1, height: 1 },
@@ -284,30 +285,27 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     textAlign: 'center',
-    letterSpacing: 1.2
+    letterSpacing: 1.2,
+    paddingLeft: 10,
   },
   body:{
-    height: "110%",
     width: "100%",
-    position: 'absolute',
-    top: 235,
-    zIndex: 3,
-    elevation:3,
     shadowColor: colors.whiteFont,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
+    flexGrow: 2,
 
-    // backgroundColor: colors.whiteFont,
-    backgroundColor: colors.BlueLight,
+    backgroundColor: colors.whiteFont,
     borderRadius: 15,
   },
 
   list:{
+    flex:1,
     marginTop: 30,
     paddingLeft: "20%",
     paddingRight: "20%",
-    height: '100%',
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
@@ -326,7 +324,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
-
   list__key:{
     paddingLeft: 15,
     fontSize: 16,
