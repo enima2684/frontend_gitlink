@@ -113,7 +113,7 @@ class PostScreen extends React.Component {
                 <Text style={styles.bold}>
                   {feedEventToDisplay.actor.login}
                 </Text>
-                <PostText feedEvent={feedEventToDisplay} />
+                <PostText feedEvent={feedEventToDisplay} parentComponent={"PostScreen"}/>
               </View>
               <View style={styles.postBottom}>
                 <PostInteractionSection

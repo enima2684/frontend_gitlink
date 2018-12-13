@@ -68,7 +68,6 @@ export default class PostText extends React.Component {
 
       case "IssuesEvent":
         iconName = "issue-opened";
-        console.log(Object.keys(feedEvent.payload.issue));
         displayText = (
           <View style={styles.outerContainer}>
             <View style={styles.textContainer}>
