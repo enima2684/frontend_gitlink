@@ -8,6 +8,7 @@ import {
 } from "react-navigation";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
+import colors from '../colors';
 // import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
@@ -195,15 +196,15 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: ProfileStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Octicons name="octoface" color={tintColor} size={24} />
-        )
+          <Octicons name="octoface" color={tintColor} size={20} />
+        ),
       })
     },
     Feed: {
       screen: FeedStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Octicons name="mark-github" color={tintColor} size={24} />
+          <Octicons name="mark-github" color={tintColor} size={20} />
         )
       })
     },
@@ -211,7 +212,7 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: SearchStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Octicons name="search" color={tintColor} size={24} />
+          <Octicons name="search" color={tintColor} size={20} />
         )
       })
     },
@@ -219,18 +220,25 @@ const AppTabNavigator = createBottomTabNavigator(
       screen: NotificationsStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Octicons name="bell" color={tintColor} size={24} />
-        )
+          <Octicons name="bell" color={tintColor} size={20} />
+        ),
       })
     },
 
   },
   {
     tabBarOptions: {
-      activeTintColor: "#8cc342",
-      inactiveTintColor: "black",
-      style: {
-        // height: 50,
+      activeTintColor: colors.GrayDark,
+      inactiveTintColor: colors.whiteFont,
+      inactiveBackgroundColor: colors.GrayDark,
+      labelStyle:{
+        fontSize: 12,
+        fontWeight: "700"
+      },
+      tabStyle: {
+        borderLeftWidth: 0.5,
+        borderLeftColor: colors.whiteFont,
+        borderLeftStyle: 'solid',
       },
     }
   }

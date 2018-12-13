@@ -148,10 +148,6 @@ export default class ProfileScreen extends Component {
 
           </View>
 
-          <View>
-
-          </View>
-
         </Content>
       </Container>
     );
