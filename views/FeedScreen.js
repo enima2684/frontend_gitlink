@@ -2,6 +2,7 @@ import React from "react";
 import {
   StyleSheet,
   View,
+  Text,
   FlatList,
   ActivityIndicator,
   ScrollView,
@@ -14,6 +15,7 @@ import {act__initializePostArray} from "../stateManagement/actions";
 
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
+import { Card, CardItem, Thumbnail } from "native-base";
 
 // Temporary mockdata for development used in componentWillMount()
 // import data from "../mockData";
@@ -31,20 +33,20 @@ class FeedScreen extends React.Component {
     posts: []
   };
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Feed List",
-      headerRight: (
-        <Octicons
-          name="search"
-          color="black"
-          size={24}
-          style={styles.searchIcon}
-          onPress={() => navigation.navigate("Search")}
-        />
-      )
-    };
-  };
+  // static navigationOptions = ({ navigation }) => {
+  //   return {
+  //     title: "Feed List",
+  //     headerRight: (
+  //       <Octicons
+  //         name="search"
+  //         color="black"
+  //         size={24}
+  //         style={styles.searchIcon}
+  //         onPress={() => navigation.navigate("Search")}
+  //       />
+  //     )
+  //   };
+  // };
 
   /**
    * Fetches from the server all the feeds of the user
@@ -81,6 +83,7 @@ class FeedScreen extends React.Component {
   };
 
   render() {
+    const { posts } = this.props;
     return (
       <ScrollView
         style={styles.container}
@@ -94,14 +97,15 @@ class FeedScreen extends React.Component {
         {this.state.loading && (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
-        <FlatList
-          ItemSeparatorComponent={() => <View style={styles.listItem} />}
-          data={this.props.posts}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <FeedPost feedEvent={item} navigation={this.props.navigation} />
-          )}
-        />
+        {posts.map(onePost =>{
+          return(
+            <Card key={onePost.id}>
+            <CardItem>
+              <FeedPost feedEvent={onePost} navigation={this.props.navigation} />
+            </CardItem>
+          </Card>
+          )
+        })}
       </ScrollView>
     );
   }
@@ -110,7 +114,9 @@ class FeedScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff", padding: "2%"
+    backgroundColor: "#fff",
+    marginRight: "2%",
+    marginLeft: "2%",
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }

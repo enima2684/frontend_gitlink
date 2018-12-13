@@ -5,13 +5,14 @@ import PropTypes from "prop-types";
 
 export default class PostText extends React.Component {
   static propTypes = {
-    feedEvent: PropTypes.object.isRequired
+    feedEvent: PropTypes.object.isRequired,
+    parentComponent: PropTypes.string.isRequired, // component that calls the component
   };
 
   buildPostSpecificText(feedEvent) {
     let displayText;
     let iconName;
-    const iconColor = "#8cc342";
+    const iconColor = "#28A745";
     switch (feedEvent.type) {
       case "WatchEvent":
         iconName = "eye";
@@ -31,7 +32,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -59,7 +60,67 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
+            />
+          </View>
+        );
+        break;
+
+      case "IssuesEvent":
+        iconName = "issue-opened";
+        console.log(Object.keys(feedEvent.payload.issue));
+        displayText = (
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text>{" "}
+                the issue {" "}
+                <Text style={styles.bold}>#{feedEvent.payload.issue.number}</Text>{" "}
+                inside the repo{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>{":\n"}
+                {feedEvent.payload.issue.title}
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={40}
+            />
+          </View>
+        );
+        break;
+
+      case "IssueCommentEvent":
+        iconName = "comment-discussion";
+        displayText = (
+          <View style={styles.outerContainer}>
+            <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>commented </Text> on the issue{" "}
+                <Text style={styles.bold}>#{feedEvent.payload.issue.number}</Text>{" "}
+                in the repo{" "}
+                <Text style={styles.bold}>
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>{" :\n"}
+                <Text>
+                  {this.props.parentComponent!=="FeedPost" ?
+                    (feedEvent.payload.comment.body) :
+                    (
+                      feedEvent.payload.comment.body.substring(0,144) + (
+                        feedEvent.payload.comment.body.length >= 144 && " ..."
+                    ))
+                  }
+                </Text>
+              </Text>
+            </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={40}
             />
           </View>
         );
@@ -87,7 +148,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -112,7 +173,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -124,7 +185,7 @@ export default class PostText extends React.Component {
           <View style={styles.outerContainer}>
             <View style={styles.textContainer}>
               <Text>
-                committed to the{" "}
+                <Text style={styles.bold}>committed</Text> to the{" "}
                 <Text style={styles.bold}>
                   {feedEvent.payload.ref.split("/").pop()}
                 </Text>{" "}
@@ -139,7 +200,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -163,7 +224,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -183,7 +244,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -209,11 +270,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   outerContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+    width: "100%",
+    paddingLeft: "2%",
+    paddingBottom: "4%"
   },
   textContainer: {
     flexWrap: "wrap",
-    width: "88%"
+    width: "80%"
   },
-  icon: {}
+  icon: {
+    paddingLeft: "5%"
+  }
 });
