@@ -10,8 +10,8 @@ export default class CommentPost extends Component {
   };
 
   handleProfileTap(comment) {
-    const githubId = comment.id;
-    const githubLogin = comment.login;
+    const githubId = comment.userId;
+    const githubLogin = comment.userName;
     this.props.navigation.navigate("OtherUserProfile", {
       githubId: githubId,
       githubLogin
@@ -20,6 +20,7 @@ export default class CommentPost extends Component {
 
   render() {
     const {comment} = this.props;
+    console.log(comment);
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity

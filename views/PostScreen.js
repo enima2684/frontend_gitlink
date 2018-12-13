@@ -62,8 +62,8 @@ class PostScreen extends React.Component {
         // Create comment for display
         const { avatar_url, login, id } = user.data.user;
         let newComment = {
-          avatar_url,
-          login,
+          userAvatar: avatar_url,
+          userName: login,
           userId: id,
           timestamp: new Date(),
           comment: commentContent
@@ -99,7 +99,7 @@ class PostScreen extends React.Component {
         <ScrollView>
           <View style={styles.postContainer}>
             <TouchableOpacity
-              onPress={feedEventToDisplay =>
+              onPress={() =>
                 handleProfileTap(feedEventToDisplay)
               }
             >
