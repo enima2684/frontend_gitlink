@@ -53,9 +53,9 @@ class PostScreen extends React.Component {
 
         let [response, user] = await Promise.all([
           req.post("/posts/comments", {
-                feedId,
-                commentContent
-              }),
+            feedId,
+            commentContent
+          }),
           req.get("/users/current")
         ]);
 
@@ -107,6 +107,13 @@ class PostScreen extends React.Component {
           <View style={styles.postBox}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEventToDisplay.actor.login}</Text>
+              <PostText feedEvent={feedEventToDisplay} />
+            </View>
+            <View style={styles.postBottom}>
+            <PostInteractionSection
+                feedEvent={feedEventToDisplay}
+                navigation={this.props.navigation}
+              />
               <Text>
                 {moment(
                   feedEventToDisplay.created_at,
@@ -114,14 +121,8 @@ class PostScreen extends React.Component {
                 ).fromNow()}
               </Text>
             </View>
-            <PostText feedEvent={feedEventToDisplay} />
           </View>
         </View>
-        <PostInteractionSection
-          feedEvent={feedEventToDisplay}
-          navigation={this.props.navigation}
-        />
-
         <View style={styles.commentContainer}>
           <View style={styles.commentBar}>
             <TextInput
@@ -184,11 +185,13 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexWrap: "wrap"
   },
-  postHeader: { flexDirection: "row", justifyContent: "space-between" },
-  postInteraction: {
+  postHeader: { 
+    flexDirection: "column", 
+    justifyContent: "space-between" 
+  },
+  postBottom:{
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: "1%"
+    justifyContent: "space-evenly"
   },
   bold: {
     fontWeight: "bold"
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
   listItem: {
     height: 1,
     width: "100%",
-    backgroundColor: "lightgray",
+    backgroundColor: "lightgray"
   }
 });
 

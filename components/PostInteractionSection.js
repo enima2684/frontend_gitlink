@@ -85,7 +85,7 @@ class PostInteractionSection extends React.Component {
               {numberOfLikes > 0 ? `${numberOfLikes} ` : ""}
               <FontAwesome
                 name={userLiked ? "thumbs-up" : "thumbs-o-up"}
-                color={"#8cc342"}
+                color={"#28A745"} size={17}
               />
               {" Like"}
             </Text>
@@ -96,7 +96,7 @@ class PostInteractionSection extends React.Component {
           style={styles.flexRow}
         >
           <Text>{numberOfComments > 0 ? `${numberOfComments} ` : ""}</Text>
-          <Octicons name="comment" color={"#8cc342"} />
+          <Octicons name="comment" color={"#28A745"} size={17}/>
           <Text> Comment</Text>
         </TouchableOpacity>
       </View>
@@ -107,12 +107,11 @@ class PostInteractionSection extends React.Component {
 const styles = StyleSheet.create({
   postInteraction: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
+    justifyContent: "space-between"
   },
   flexRow: {
     flexDirection: "row",
-    alignItems: "center"
+    justifyContent: "space-between"
   }
 });
 

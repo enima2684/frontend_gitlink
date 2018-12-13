@@ -12,8 +12,8 @@ export default class FeedPost extends React.Component {
     feedEvent: PropTypes.object.isRequired
   };
   state = {
-    feedEvent: this.props.feedEvent    
-  }
+    feedEvent: this.props.feedEvent
+  };
 
   /**
    *
@@ -24,7 +24,7 @@ export default class FeedPost extends React.Component {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
       userAction: userAction,
-      handleProfileTap: (feedEvent) => this.handleProfileTap(feedEvent),
+      handleProfileTap: feedEvent => this.handleProfileTap(feedEvent)
     });
   }
 
@@ -42,11 +42,11 @@ export default class FeedPost extends React.Component {
     feedEvent.userLiked = true;
     this.setState({
       feedEvent
-    })
+    });
   }
 
   render() {
-    const {feedEvent} = this.state;
+    const { feedEvent } = this.state;
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
@@ -64,15 +64,21 @@ export default class FeedPost extends React.Component {
           <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
             <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>
-                {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
-              </Text>
             </View>
             <View style={styles.postText}>
               <PostText feedEvent={feedEvent} />
             </View>
           </TouchableOpacity>
-          <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation} onLikePress={(feedEvent) => this.updateFeedEvent(feedEvent)}/>
+          <View>
+            <PostInteractionSection
+              feedEvent={feedEvent}
+              navigation={this.props.navigation}
+              onLikePress={feedEvent => this.updateFeedEvent(feedEvent)}
+            />
+            <Text>
+              {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+            </Text>
+          </View>
         </View>
       </View>
     );
