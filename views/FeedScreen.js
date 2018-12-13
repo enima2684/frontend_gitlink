@@ -32,21 +32,6 @@ class FeedScreen extends React.Component {
     posts: []
   };
 
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     title: "Feed List",
-  //     headerRight: (
-  //       <Octicons
-  //         name="search"
-  //         color="black"
-  //         size={24}
-  //         style={styles.searchIcon}
-  //         onPress={() => navigation.navigate("Search")}
-  //       />
-  //     )
-  //   };
-  // };
-
   /**
    * Fetches from the server all the feeds of the user
    * @return {Promise<void>}

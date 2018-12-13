@@ -274,20 +274,20 @@ const AppTabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: colors.GrayDark,
-      inactiveTintColor: colors.whiteFont,
-      inactiveBackgroundColor: colors.GrayDark,
+      activeTintColor: colors.Blue,
+      inactiveTintColor: colors.BlueLight,
+      inactiveBackgroundColor: colors.whiteFont,
       labelStyle:{
         fontSize: 12,
-        fontWeight: "700"
+        fontWeight: "400"
       },
       tabStyle: {
-        borderLeftWidth: 0.5,
-        borderLeftColor: colors.whiteFont,
-        borderLeftStyle: 'solid',
-        borderTopWidth : 0.5,
-        borderTopColor : colors.GrayDark,
-        borderTopStyle : 'solid',
+        // borderLeftWidth: 0.5,
+        // borderLeftColor: colors.whiteFont,
+        // borderLeftStyle: 'solid',
+        // borderTopWidth : 0.5,
+        // borderTopColor : colors.GrayDark,
+        // borderTopStyle : 'solid',
       },
     }
   }
