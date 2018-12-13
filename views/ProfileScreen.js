@@ -72,6 +72,10 @@ export default class ProfileScreen extends Component {
     });
   };
 
+  handleOnPressFollow = () => {
+    alert('Following user');
+  };
+
   render() {
 
 
@@ -112,7 +116,6 @@ export default class ProfileScreen extends Component {
 
           </ImageBackground>
 
-
           {/* ------ BUTTONS ------- */}
           <View style={styles.buttonsRow}>
 
@@ -123,12 +126,11 @@ export default class ProfileScreen extends Component {
               locations={[0.0,  1.0]}
               style={styles.btnContainer}>
 
-              <Button transparent style={styles.buttonElement}>
+              <Button transparent style={styles.buttonElement} onPress={this.handleOnPressFollow}>
                 <Text style={styles.actionButton_text}>Follow</Text>
               </Button>
 
             </LinearGradient>
-
 
             <LinearGradient
               colors={['#28A745', '#7EE981']}
@@ -137,12 +139,16 @@ export default class ProfileScreen extends Component {
               locations={[0.0,  1.0]}
               style={styles.btnContainer}>
 
-              <Button transparent style={styles.buttonElement}>
+              <Button transparent style={styles.buttonElement} onPress={this.handleOnPressRepos}>
                 <Text style={styles.actionButton_text}>Repositories</Text>
               </Button>
 
             </LinearGradient>
 
+
+          </View>
+
+          <View>
 
           </View>
 
