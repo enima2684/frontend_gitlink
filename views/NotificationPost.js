@@ -43,40 +43,50 @@ export default class NotificationPost extends React.Component {
 
   render() {
     const { feedEvent } = this.props;
-    let avatar_url;
-    let gitLinkText;
-    if (feedEvent.type === "GitLinkLike") {
-      const { likes } = feedEvent;
-      avatar_url = likes[0].userAvatar;
-      gitLinkText = (
-        <Text>
-          <Text style={styles.bold}>
-            {`${likes[0].userName} ${
-              likes.length > 1 ? `and other ${likes.length - 1} ` : " "
-            }`}
+    let gitFeedEvent = feedEvent;
+    let avatar_url, login, created_at, feedEventforTap;
+    if (feedEvent.type.includes("GitLink")) {
+      created_at = feedEvent.created_at;
+      feedEventforTap = feedEvent.githubPost;
+      let gitLinkText;
+      if (feedEvent.type === "GitLinkLike") {
+        const { likes } = feedEvent;
+        avatar_url = likes[0].userAvatar;
+        login = likes[0].userName;
+        gitLinkText = (
+          <Text>
+            <Text style={styles.bold}>
+              {`${likes[0].userName} ${
+                likes.length > 1 ? `and other ${likes.length - 1} ` : " "
+              }`}
+            </Text>
+            liked a post
           </Text>
-          liked a post
-        </Text>
-      );
-    } else if (feedEvent.type === "GitLinkComment") {
-      const { comments } = feedEvent;
-      avatar_url = comments[0].userAvatar;
-      let commenterNames = comments.map(comment => comment.userName);
-      commenterNames = Array.from(new Set(commenterNames))
-        .slice(0, 3)
-        .join(", ");
-      gitLinkText = (
-        <Text>
-          <Text style={styles.bold}>{commenterNames}</Text> commented a post
-        </Text>
-      );
+        );
+      } else {
+        const { comments } = feedEvent;
+        avatar_url = comments[0].userAvatar;
+        login = comments[0].userName;
+        let commenterNames = comments.map(comment => comment.userName);
+        commenterNames = Array.from(new Set(commenterNames))
+          .slice(0, 3)
+          .join(", ");
+        gitLinkText = (
+          <Text>
+            <Text style={styles.bold}>{commenterNames}</Text> commented on a post
+          </Text>
+        );
+      }
     } else {
       avatar_url = feedEvent.actor.avatar_url;
+      login = feedEvent.actor.login;
+      created_at = feedEvent.created_at;
+      feedEventforTap = feedEvent;
     }
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
-          onPress={() => this.handleProfileTap(feedEvent)}
+          onPress={() => this.handleProfileTap(feedEventforTap)}
           style={styles.pictureContainer}
         >
           <Image
@@ -87,24 +97,17 @@ export default class NotificationPost extends React.Component {
           />
         </TouchableOpacity>
         <View style={styles.rightPost}>
-          {feedEvent.type.includes("GitLink") ? (
-            <Text>{gitLinkText}</Text>
-          ) : (
-            <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
-              <View style={styles.postHeader}>
-                <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-                <Text>
-                  {moment(
-                    feedEvent.created_at,
-                    "YYYY-MM-DD HH:mm:ssZ"
-                  ).fromNow()}
-                </Text>
-              </View>
-              <View style={styles.postText}>
-                <PostText feedEvent={feedEvent} />
-              </View>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={() => this.handleListTap(feedEventforTap)}>
+            <View style={styles.postHeader}>
+              <Text style={styles.bold}>{login}</Text>
+              <Text>
+                {moment(created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+              </Text>
+            </View>
+            <View style={styles.postText}>
+              <PostText feedEvent={feedEvent} />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
