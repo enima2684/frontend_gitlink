@@ -38,7 +38,9 @@ export default class LoginScreen extends Component {
       <Container>
         <View style={styles.login}>
           <View style={styles.loginHeader}>
-            <Octicons name="octoface" size={150} color="#fff" />
+            <Octicons name="hubot" size={100} color="#fff" />
+            <Octicons name="pulse" size={70} color="#fff" />
+            <Octicons name="squirrel" size={100} color="#fff" />
           </View>
           <View>
           <H1 style={styles.loginH1}>GitLink</H1>
@@ -117,9 +119,9 @@ const styles = StyleSheet.create({
   },
   loginHeader: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     width: "100%",
     height: "60%",
     paddingTop: "40%"
