@@ -5,6 +5,7 @@ import moment from "moment";
 
 import PostText from "../components/PostText";
 import PostInteractionSection from "../components/PostInteractionSection";
+import { Thumbnail } from "native-base";
 
 export default class FeedPost extends React.Component {
   static propTypes = {
@@ -24,7 +25,7 @@ export default class FeedPost extends React.Component {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
       userAction: userAction,
-      handleProfileTap: (feedEvent) => this.handleProfileTap(feedEvent),
+      handleProfileTap: feedEvent => this.handleProfileTap(feedEvent)
     });
   }
 
@@ -51,10 +52,8 @@ export default class FeedPost extends React.Component {
       <View style={styles.postContainer}>
         <TouchableOpacity
           onPress={() => this.handleProfileTap(feedEvent)}
-          style={styles.pictureContainer}
         >
-          <Image
-            style={styles.picture}
+          <Thumbnail round
             source={{
               uri: feedEvent.actor.avatar_url
             }}
@@ -62,17 +61,19 @@ export default class FeedPost extends React.Component {
         </TouchableOpacity>
         <View style={styles.rightPost}>
           <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
-            <View style={styles.postHeader}>
               <Text style={styles.bold}>{feedEvent.actor.login}</Text>
-              <Text>
-                {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
-              </Text>
-            </View>
-            <View style={styles.postText}>
               <PostText feedEvent={feedEvent} parentComponent={"FeedPost"}/>
-            </View>
           </TouchableOpacity>
-          <PostInteractionSection feedEvent={feedEvent} navigation={this.props.navigation} onLikePress={(feedEvent) => this.updateFeedEvent(feedEvent)}/>
+          <View style={styles.postBottom}>
+            <PostInteractionSection
+              feedEvent={feedEvent}
+              navigation={this.props.navigation}
+              onLikePress={feedEvent => this.updateFeedEvent(feedEvent)}
+            />
+            <Text>
+              {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -82,48 +83,27 @@ export default class FeedPost extends React.Component {
 const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
-    flexDirection: "row"
-  },
-  rightPost: {
-    flexShrink: 1
-  },
-
-  topPart: {
-    flex: 1,
-    flexDirection: "row"
-  },
-  pictureContainer: {
-    paddingTop: 15
-  },
-  picture: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginLeft: 5,
-    marginRight: 10
-  },
-  postHeader: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 10,
-    paddingBottom: 5,
-    width: "100%"
+  },
+  rightPost: {
+    flexShrink: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+
   },
   postText: {
     flexShrink: 1,
-    flexWrap: "wrap"
-  },
-  postInteraction: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
+    flexWrap: "wrap",
   },
   bold: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    paddingBottom: "2%",
+    paddingLeft: "2%"
   },
-  flexRow: {
+  postBottom:{
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center"
+    justifyContent: "space-between"
   }
 });

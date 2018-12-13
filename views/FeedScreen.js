@@ -2,6 +2,7 @@ import React from "react";
 import {
   StyleSheet,
   View,
+  Text,
   FlatList,
   ActivityIndicator,
   ScrollView,
@@ -14,6 +15,7 @@ import {act__initializePostArray} from "../stateManagement/actions";
 
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
+import { Card, CardItem, Thumbnail } from "native-base";
 
 // Temporary mockdata for development used in componentWillMount()
 // import data from "../mockData";
@@ -82,6 +84,7 @@ class FeedScreen extends React.Component {
   };
 
   render() {
+    const { posts } = this.props;
     return (
       <ScrollView
         style={styles.container}
@@ -95,14 +98,15 @@ class FeedScreen extends React.Component {
         {this.state.loading && (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
-        <FlatList
-          ItemSeparatorComponent={() => <View style={styles.listItem} />}
-          data={this.props.posts}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <FeedPost feedEvent={item} navigation={this.props.navigation} />
-          )}
-        />
+        {posts.map(onePost =>{
+          return(
+            <Card key={onePost.id}>
+            <CardItem>
+              <FeedPost feedEvent={onePost} navigation={this.props.navigation} />
+            </CardItem>
+          </Card>
+          )
+        })}
       </ScrollView>
     );
   }

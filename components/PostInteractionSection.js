@@ -81,11 +81,11 @@ class PostInteractionSection extends React.Component {
           onPress={() => this.handleLikeTap(feedEventToDisplay)}
         >
           {this.state.fontLoaded && (
-            <Text>
+            <Text style={styles.fontbold}>
               {numberOfLikes > 0 ? `${numberOfLikes} ` : ""}
               <FontAwesome
                 name={userLiked ? "thumbs-up" : "thumbs-o-up"}
-                color={"#8cc342"}
+                color={"#28A745"} size={20}
               />
               {" Like"}
             </Text>
@@ -96,8 +96,8 @@ class PostInteractionSection extends React.Component {
           style={styles.flexRow}
         >
           <Text>{numberOfComments > 0 ? `${numberOfComments} ` : ""}</Text>
-          <Octicons name="comment" color={"#8cc342"} />
-          <Text> Comment</Text>
+          <Octicons name="comment" color={"#28A745"} size={20} />
+          <Text style={styles.fontbold}> Comment</Text>
         </TouchableOpacity>
       </View>
     );
@@ -107,12 +107,16 @@ class PostInteractionSection extends React.Component {
 const styles = StyleSheet.create({
   postInteraction: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
+    justifyContent: "space-between",
+    width: "50%",
+    paddingLeft: "2%"
   },
   flexRow: {
     flexDirection: "row",
-    alignItems: "center"
+    justifyContent: "space-between",
+  },
+  fontbold:{
+    fontWeight: "bold"
   }
 });
 
