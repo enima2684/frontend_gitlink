@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   FlatList
 } from "react-native";
-import { Button } from "native-base";
+import { Button, Thumbnail, Card, CardItem } from "native-base";
 
 import { connect } from "react-redux";
 import { act__editPostArray } from "../stateManagement/actions";
@@ -47,15 +47,14 @@ class PostScreen extends React.Component {
         this.setState({ commentContent: "" });
 
         const feedId = feedEvent.id;
-        console.log("Id in postScreen", feedId);
         // Send comment to server and retrieve user data
         const req = await requestBuilder();
 
         let [response, user] = await Promise.all([
           req.post("/posts/comments", {
-                feedId,
-                commentContent
-              }),
+            feedId,
+            commentContent
+          }),
           req.get("/users/current")
         ]);
 
@@ -92,69 +91,85 @@ class PostScreen extends React.Component {
     const handleProfileTap = this.props.navigation.getParam("handleProfileTap");
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
-        <View style={styles.postContainer}>
-          <TouchableOpacity
-            onPress={() => handleProfileTap(feedEventToDisplay)}
-          >
-            <Image
-              style={styles.profilePicture}
-              source={{
-                uri: feedEventToDisplay.actor.avatar_url
-              }}
-            />
-          </TouchableOpacity>
-          <View style={styles.postBox}>
-            <View style={styles.postHeader}>
-              <Text style={styles.bold}>{feedEventToDisplay.actor.login}</Text>
-              <Text>
-                {moment(
-                  feedEventToDisplay.created_at,
-                  "YYYY-MM-DD HH:mm:ssZ"
-                ).fromNow()}
-              </Text>
-            </View>
-            <PostText feedEvent={feedEventToDisplay} parentComponent={"PostScreen"} />
-          </View>
-        </View>
-        <PostInteractionSection
-          feedEvent={feedEventToDisplay}
-          navigation={this.props.navigation}
-        />
+      <Card>
+        <CardItem>
 
-        <View style={styles.commentContainer}>
-          <View style={styles.commentBar}>
-            <TextInput
-              style={styles.input}
-              placeholder="Type your comment here.."
-              onChangeText={commentContent => this.setState({ commentContent })}
-              value={this.state.commentContent}
-              autoFocus={this.state.focusKeyboard}
-              onSubmitEditing={() => this.submitComment(feedEventToDisplay)}
-            />
-            <Button
-              transparent
-              onPress={() => this.submitComment(feedEventToDisplay)}
+        <ScrollView>
+          <View style={styles.postContainer}>
+            <TouchableOpacity
+              onPress={feedEventToDisplay =>
+                handleProfileTap(feedEventToDisplay)
+              }
             >
-              <Octicons size={24} name="pencil" color={"#8cc342"} />
-            </Button>
-          </View>
-
-          <ScrollView style={styles.commentSection}>
-            <View>
-              <FlatList
-                ItemSeparatorComponent={() => <View style={styles.listItem} />}
-                data={feedEventToDisplay.comments}
-                keyExtractor={item => item.timestamp.toString()}
-                renderItem={({ item }) => (
-                  <CommentPost
-                    comment={item}
-                    navigation={this.props.navigation}
-                  />
-                )}
+              <Thumbnail
+                round
+                source={{
+                  uri: feedEventToDisplay.actor.avatar_url
+                }}
               />
+            </TouchableOpacity>
+            <View style={styles.postBox}>
+              <View style={styles.postHeader}>
+                <Text style={styles.bold}>
+                  {feedEventToDisplay.actor.login}
+                </Text>
+                <PostText feedEvent={feedEventToDisplay} />
+              </View>
+              <View style={styles.postBottom}>
+                <PostInteractionSection
+                  feedEvent={feedEventToDisplay}
+                  navigation={this.props.navigation}
+                />
+                <Text>
+                  {moment(
+                    feedEventToDisplay.created_at,
+                    "YYYY-MM-DD HH:mm:ssZ"
+                  ).fromNow()}
+                </Text>
+              </View>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+          <View style={styles.commentContainer}>
+            <View style={styles.commentBar}>
+              <TextInput
+                style={styles.input}
+                placeholder="Type your comment here.."
+                onChangeText={commentContent =>
+                  this.setState({ commentContent })
+                }
+                value={this.state.commentContent}
+                autoFocus={this.state.focusKeyboard}
+                onSubmitEditing={() => this.submitComment(feedEventToDisplay)}
+              />
+              <Button
+                transparent
+                onPress={() => this.submitComment(feedEventToDisplay)}
+              >
+                <Octicons size={24} name="pencil" color={"#28A745"} />
+              </Button>
+            </View>
+
+            <ScrollView style={styles.commentSection}>
+              <View>
+                <FlatList
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.listItem} />
+                  )}
+                  data={feedEventToDisplay.comments}
+                  keyExtractor={item => item.timestamp.toString()}
+                  renderItem={({ item }) => (
+                    <CommentPost
+                      comment={item}
+                      navigation={this.props.navigation}
+                    />
+                  )}
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </ScrollView>
+        </CardItem>
+      </Card>
       </KeyboardAvoidingView>
     );
   }
@@ -163,13 +178,15 @@ class PostScreen extends React.Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: "100%",
+    height: "100%",
+    // width: "100%",
     paddingTop: 10,
     backgroundColor: "#fff",
     padding: "2%"
   },
   commentContainer: {
-    flexShrink: 1
+    flexShrink: 1,
+    paddingTop: 10
   },
   commentSection: {
     flexShrink: 1,
@@ -181,27 +198,22 @@ const styles = StyleSheet.create({
   },
   postBox: {
     flexShrink: 1,
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   },
-  postHeader: { flexDirection: "row", justifyContent: "space-between" },
-  postInteraction: {
+  postHeader: {
+    flexDirection: "column",
+    justifyContent: "space-evenly"
+  },
+  postBottom: {
+    width: "100%",
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: "1%"
+    justifyContent: "space-between"
   },
   bold: {
-    fontWeight: "bold"
-  },
-  flexRow: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  profilePicture: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginLeft: 5,
-    marginRight: 10
+    fontWeight: "bold",
+    paddingBottom: "2%",
+    paddingLeft: "2%"
   },
   commentBar: {
     borderColor: "gray",
@@ -214,15 +226,13 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   input: {
-    width: "80%"
-  },
-  button: {
-    width: "20%"
+    width: "80%",
+    marginBottom: 5,
   },
   listItem: {
     height: 1,
     width: "100%",
-    backgroundColor: "lightgray",
+    backgroundColor: "lightgray"
   }
 });
 
