@@ -115,7 +115,9 @@ class FeedScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff", padding: "2%"
+    backgroundColor: "#fff",
+    marginRight: "2%",
+    marginLeft: "2%",
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }

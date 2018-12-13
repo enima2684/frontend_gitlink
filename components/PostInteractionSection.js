@@ -106,14 +106,16 @@ class PostInteractionSection extends React.Component {
 
 const styles = StyleSheet.create({
   postInteraction: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    // justifyContent: "space-between",
     width: "50%",
-    paddingLeft: "2%"
+    height: 55,
+    justifyContent: "space-between"
+    // paddingLeft: "2%"
   },
   flexRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start"
   },
   fontbold:{
     fontWeight: "bold"
