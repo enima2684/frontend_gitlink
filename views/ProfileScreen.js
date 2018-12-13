@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import { Container, H1, Spinner } from "native-base";
-import { Image, TouchableOpacity, StyleSheet, Text, View, Alert } from "react-native";
+import { Image, TouchableOpacity, StyleSheet, Text, View, Alert, ImageBackground } from "react-native";
 import Octicons from "@expo/vector-icons/Octicons";
+import {LinearGradient} from 'expo';
+import { Container, H1, Spinner, Content } from "native-base";
+
+
+
+
 import {authService} from "../lib/Authentication";
 import requestBuilder from "../lib/request";
 
@@ -78,7 +83,6 @@ export default class ProfileScreen extends Component {
       )
     }
 
-
     const {
       avatar_url,
       login,
@@ -89,136 +93,87 @@ export default class ProfileScreen extends Component {
 
     return (
       <Container>
-        <View style={styles.oneProfile}>
-          <View style={styles.profileHeader}>
-            <Image
-              style={styles.oneProfilePicture}
-              source={{ uri: avatar_url }}
-            />
-          </View>
-          <H1 style={styles.H1}>{login}</H1>
+        <Content>
 
-          {
-            (!this.state.isMyProfile) &&
-            (
-              <View style={styles.profileHeaderButton}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Thread")}
-                  style={styles.profileButton}
-                >
-                  <Text>Follow</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.profileButton}>
-                  <Text>Send Message</Text>
-                </TouchableOpacity>
-              </View>
-            )
-          }
+          <ImageBackground source={{uri: avatar_url}} style={styles.imageZone}>
 
-        </View>
-        <View style={styles.profileIconContainer}>
-          <View>
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={this.handleOnPressRepos}>
-              <Octicons name="repo" size={50} color="#0080FF" />
-              <Text>Repositories</Text>
-              <H1>{public_repos}</H1>
-            </TouchableOpacity>
-          </View>
-          <View >
-            <TouchableOpacity style={styles.oneProfileIcon}onPress={() => this.props.navigation.navigate("Followers")}>
-              <Octicons name="broadcast" size={50} color="#0080FF" />
-              <Text>Followers</Text>
-              <H1>{followers}</H1>
-            </TouchableOpacity>
-          </View>
-          <View >
-            <TouchableOpacity style={styles.oneProfileIcon} onPress={() => this.props.navigation.navigate("Following")}>
-              <Octicons name="organization" size={50} color="#0080FF" />
-              <Text>Following</Text>
-              <H1>{following}</H1>
-            </TouchableOpacity>
-          </View>
-        </View>
+            {/* ------ USERNAME ------- */}
 
+            <View style={styles.usernameRow}>
+              <LinearGradient
+                colors={['#28A745', '#7EE981']}
+                start={[0.0, 1.0]}
+                end={[1.0, 0.5]}
+                locations={[0.0,  1.0]}
+                style={styles.usernameContainer}>
+                <Text style={styles.usernameText}>{login}</Text>
+              </LinearGradient>
+              <View style={styles.complementUsernameText}><Text>{" "}</Text></View>
+            </View>
+
+
+
+            {/* ------ BUTTONS ------- */}
+            <View>
+              <Text>BUTTONS</Text>
+            </View>
+
+          </ImageBackground>
+
+        </Content>
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  oneProfile: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#9cdaee4d",
-    height: "50%",
-    width: "100%"
+
+  imageZone:{
+    width: '100%',
+    height: 300,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   },
-  profileIconContainer:{
-    flexDirection: "row",
-    flexGrow: 1,
-    flexWrap: "wrap",
-    width: "100%",
-    justifyContent: "space-around"
+
+  usernameRow:{
+    display: 'flex',
+    flexDirection: 'row',
   },
-  profileHeader: {
-    marginTop: 10,
-    width: "40%",
-    height: "60%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+
+  usernameContainer:{
+
+    marginLeft: -15,
+    marginTop: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+
+    borderRadius: 15,
+    shadowColor: '#23292D',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+    elevation: 1,
+
+    flexShrink: 1,
   },
-  oneProfilePicture: {
-    resizeMode: "cover",
-    height: "70%",
-    width: "100%",
-    borderRadius: 50,
-    borderColor: "#8cc342",
-    borderLeftWidth: 3,
-    borderRightWidth: 3,
-    borderTopWidth: 3,
-    borderBottomWidth: 3
+
+  usernameText:{
+    fontWeight: '700',
+    color: 'white',
+    fontSize: 20,
+    backgroundColor: 'transparent',
   },
-  H1: {
-    fontSize: 50,
-    lineHeight: 90
-  },
-  profileHeaderButton: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%"
-  },
-  profileButton: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#b9de7c",
-    borderRadius: 20,
-    borderColor: "#8cc342",
-    borderLeftWidth: 2,
-    borderRightWidth: 2,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    width: "40%",
-    height: "40%"
-  },
-  profileIcon: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    height: "50%"
-  },
-  oneProfileIcon: {
-    paddingTop: "10%",
-    paddingLeft:"10%",
-    paddingRight:"10%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%"
+  complementUsernameText:{
+    backgroundColor: 'transparent',
   }
+
+
+
+
+
+
+
 });

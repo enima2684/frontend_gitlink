@@ -1,5 +1,6 @@
-#b8e9f7 - GitHub image blue
-#9cdaef - GitHub image border blue
-#b9de7c - GitHub image green
-#8cc342 - GitHub image border green
-#9cdaee4d - background colour very light blue
+
+#23292D - Gray
+#313B72 - Blue
+#28A745 - Flashy Green
+#62A87C - mat green
+#7EE981 - Lighter green
