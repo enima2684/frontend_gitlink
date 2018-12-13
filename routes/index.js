@@ -14,7 +14,6 @@ import LoginScreen from "../views/LoginScreen";
 import FeedScreen from "../views/FeedScreen";
 import SearchScreen from "../views/SearchScreen";
 import PostScreen from "../views/PostScreen";
-import MessagesScreen from "../views/MessagesScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
@@ -36,7 +35,17 @@ logout = async() =>{
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
   FeedList: {
-    screen: FeedScreen
+    screen: FeedScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: "Latest news on GitHub",
+      headerRight: (
+        <Octicons
+          name="mark-github"
+          color="black"
+          size={24}
+          style={{marginRight: 20}}
+        />)
+    })
   },
   Post: {
     screen: PostScreen,
@@ -82,18 +91,42 @@ const FeedStack = createStackNavigator({
   }
 });
 
-const MessagesStack = createStackNavigator({
-  Messages: {
-    screen: MessagesScreen,
+const SearchStack = createStackNavigator({
+  Search: {
+    screen: SearchScreen,
     navigationOptions: {
-      title: "Messages"
+      title: "Search"
     }
   },
-  Thread: {
-    screen: PostScreen,
+    OtherUserProfile: {
+    screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Conversation with BLAH`
+      title: `${navigation.state.params.githubLogin}'s profile`
     })
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`
+    })
+  },
+  Repositories: {
+    screen: RepoListScreen,
+    navigationOptions: {
+      title: `Repositories`
+    }
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`
+    }
+  },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme'
+    }
   }
 });
 
@@ -166,11 +199,11 @@ const AppTabNavigator = createBottomTabNavigator(
         )
       })
     },
-    Messages: {
-      screen: MessagesStack,
+    Search: {
+      screen: SearchStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
-          <Octicons name="comment-discussion" color={tintColor} size={24} />
+          <Octicons name="search" color={tintColor} size={24} />
         )
       })
     },
