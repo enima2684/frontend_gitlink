@@ -47,7 +47,6 @@ class PostScreen extends React.Component {
         this.setState({ commentContent: "" });
 
         const feedId = feedEvent.id;
-        console.log("Id in postScreen", feedId);
         // Send comment to server and retrieve user data
         const req = await requestBuilder();
 
