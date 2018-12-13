@@ -1,19 +1,12 @@
 import React from "react";
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert
-} from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from "react-native";
 
 import PropTypes from "prop-types";
 import requestBuilder from "../lib/request";
 
-import { connect } from "react-redux";
-import { act__editPostArray } from "../stateManagement/actions";
+import {connect} from "react-redux";
+import {act__editPostArray} from "../stateManagement/actions";
 
 import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -41,7 +34,7 @@ class PostInteractionSection extends React.Component {
   handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
-      userAction: userAction
+      userAction: userAction,
     });
   }
 
@@ -49,7 +42,7 @@ class PostInteractionSection extends React.Component {
     if (!feedEvent.userLiked) {
       try {
         const req = await requestBuilder();
-
+        
         const [likeResponse, user] = await Promise.all([
           // Send like to the backend
           req.post("/posts/handleLike", {
@@ -67,6 +60,7 @@ class PostInteractionSection extends React.Component {
 
         // Dispatch new feed event to redux
         this.props.dispatch(act__editPostArray(feedEvent));
+
       } catch (err) {
         console.log(err);
         Alert.alert("Oups, something went wrong !", err.message);
@@ -76,9 +70,7 @@ class PostInteractionSection extends React.Component {
 
   render() {
     const { feedEvent } = this.props;
-    const feedEventToDisplay = this.props.posts.find(
-      post => post.id === feedEvent.id
-    );
+    const feedEventToDisplay = this.props.posts.find(post => post.id === feedEvent.id);
     const numberOfComments = feedEventToDisplay.comments.length;
     const numberOfLikes = feedEventToDisplay.likes.length;
     const userLiked = feedEventToDisplay.userLiked;
@@ -93,8 +85,7 @@ class PostInteractionSection extends React.Component {
               {numberOfLikes > 0 ? `${numberOfLikes} ` : ""}
               <FontAwesome
                 name={userLiked ? "thumbs-up" : "thumbs-o-up"}
-                color={"#28A745"}
-                size={20}
+                color={"#28A745"} size={20}
               />
               {" Like"}
             </Text>
@@ -115,19 +106,21 @@ class PostInteractionSection extends React.Component {
 
 const styles = StyleSheet.create({
   postInteraction: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: "column",
+    // justifyContent: "space-between",
     width: "50%",
-    paddingLeft: "2%"
+    height: 55,
+    justifyContent: "space-between"
+    // paddingLeft: "2%"
   },
   flexRow: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "flex-start"
   },
-  fontbold: {
+  fontbold:{
     fontWeight: "bold"
   }
 });
 
-const mapStateToProps = ({ posts }) => ({ posts });
+const mapStateToProps = ({posts}) => ({posts});
 export default connect(mapStateToProps)(PostInteractionSection);
