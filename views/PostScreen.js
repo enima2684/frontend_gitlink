@@ -72,7 +72,6 @@ class PostScreen extends React.Component {
         // Save like data in feed event object for redux
         if (!feedEvent.comments) feedEvent.comments = [];
         feedEvent.comments.unshift(newComment);
-        feedEvent.userLiked = true;
 
         this.props.dispatch(act__editPostArray(feedEvent));
 
