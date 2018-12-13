@@ -20,7 +20,6 @@ export default class CommentPost extends Component {
 
   render() {
     const {comment} = this.props;
-    console.log(comment);
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity

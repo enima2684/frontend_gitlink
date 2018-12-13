@@ -15,6 +15,7 @@ import FeedScreen from "../views/FeedScreen";
 import SearchScreen from "../views/SearchScreen";
 import PostScreen from "../views/PostScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
+import NotificationDetailScreen from "../views/NotificationDetailScreen";
 import ProfileScreen from "../views/ProfileScreen";
 import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
@@ -138,9 +139,9 @@ const NotificationsStack = createStackNavigator({
     }
   },
   NotificationDetail: {
-    screen: PostScreen,
+    screen: NotificationDetailScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.feedEvent.actor.login}'s profile`
+      title: `${navigation.state.params.feedEvent.actor.login}'s notification`
     })
   }
 });

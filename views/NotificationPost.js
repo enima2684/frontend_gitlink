@@ -178,7 +178,7 @@ export default class FeedPost extends React.Component {
     feedEvent: PropTypes.object.isRequired
   };
   state = {
-    feedEvent: this.props.feedEvent    
+    feedEvent: this.props.feedEvent
   };
 
   /**
@@ -195,7 +195,6 @@ export default class FeedPost extends React.Component {
 
   handleProfileTap(feedEvent) {
     // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
-    console.log('IN', feedEvent);
     const githubId = feedEvent.actor.id;
     const githubLogin = feedEvent.actor.login;
     this.props.navigation.navigate("OtherUserProfile", {
@@ -208,7 +207,7 @@ export default class FeedPost extends React.Component {
     feedEvent.userLiked = true;
     this.setState({
       feedEvent
-    })
+    });
   }
 
   render() {
@@ -243,7 +242,8 @@ export default class FeedPost extends React.Component {
           .join(", ");
         gitLinkText = (
           <Text>
-            <Text style={styles.bold}>{commenterNames}</Text> commented on a post
+            <Text style={styles.bold}>{commenterNames}</Text> commented on a
+            post
           </Text>
         );
       }
@@ -253,13 +253,13 @@ export default class FeedPost extends React.Component {
       created_at = feedEvent.created_at;
       feedEventforTap = feedEvent;
     }
-    console.log('BEFORE', feedEventforTap);
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
           onPress={() => this.handleProfileTap(feedEventforTap)}
         >
-          <Thumbnail round
+          <Thumbnail
+            round
             source={{
               uri: avatar_url
             }}
@@ -267,8 +267,8 @@ export default class FeedPost extends React.Component {
         </TouchableOpacity>
         <View style={styles.rightPost}>
           <TouchableOpacity onPress={() => this.handleListTap(feedEventforTap)}>
-              <Text style={styles.bold}>{login}</Text>
-              <PostText feedEvent={feedEvent} parentComponent={"FeedPost"}/>
+            <Text style={styles.bold}>{login}</Text>
+            <PostText feedEvent={feedEvent} parentComponent={"FeedPost"} />
           </TouchableOpacity>
           <View style={styles.postBottom}>
             {/* <PostInteractionSection
@@ -276,9 +276,7 @@ export default class FeedPost extends React.Component {
               navigation={this.props.navigation}
               onLikePress={feedEvent => this.updateFeedEvent(feedEventforTap)}
             /> */}
-            <Text>
-              {moment(created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
-            </Text>
+            <Text>{moment(created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}</Text>
           </View>
         </View>
       </View>
@@ -290,24 +288,23 @@ const styles = StyleSheet.create({
   postContainer: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   rightPost: {
     flexShrink: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
-
+    justifyContent: "flex-start"
   },
   postText: {
     flexShrink: 1,
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   bold: {
     fontWeight: "bold",
     paddingBottom: "2%",
     paddingLeft: "2%"
   },
-  postBottom:{
+  postBottom: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between"
