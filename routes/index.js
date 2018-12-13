@@ -33,6 +33,17 @@ logout = async() =>{
   }
 };
 
+const headerStyle = {
+    headerStyle: {
+      backgroundColor: colors.GrayDark,
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    }
+};
+
+
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
   FeedList: {
@@ -42,52 +53,61 @@ const FeedStack = createStackNavigator({
       headerRight: (
         <Octicons
           name="mark-github"
-          color="black"
+          color={colors.whiteFont}
           size={24}
           style={{marginRight: 20}}
-        />)
+        />),
+      ...headerStyle
     })
   },
   Post: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.feedEvent.actor.login}'s post`
-    })
+      title: `${navigation.state.params.feedEvent.actor.login}'s post`,
+      ...headerStyle
+    }),
+
   },
   Search: {
     screen: SearchScreen,
     navigationOptions: {
-      title: "Search"
+      title: "Search",
+      ...headerStyle
     }
   },
   OtherUserProfile: {
     screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubLogin}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`,
+      ...headerStyle
     })
   },
   OneRepository: {
     screen: OneRepositoryScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.repoName}`
+      title: `${navigation.state.params.repoName}`,
+      ...headerStyle
     })
   },
   Repositories: {
     screen: RepoListScreen,
     navigationOptions: {
-      title: `Repositories`
+      title: `Repositories`,
+      ...headerStyle
     }
   },
   Code: {
     screen: CodeScreen,
     navigationOptions: {
-      title: `Code`
+      title: `Code`,
+      ...headerStyle
     }
   },
   Readme: {
     screen: ReadmeScreen,
     navigationOptions:{
-      title: 'Readme'
+      title: 'Readme',
+      ...headerStyle
     }
   }
 });
@@ -96,37 +116,43 @@ const SearchStack = createStackNavigator({
   Search: {
     screen: SearchScreen,
     navigationOptions: {
-      title: "Search"
+      title: "Search",
+      ...headerStyle
     }
   },
     OtherUserProfile: {
     screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubLogin}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`,
+      ...headerStyle
     })
   },
   OneRepository: {
     screen: OneRepositoryScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.repoName}`
+      title: `${navigation.state.params.repoName}`,
+      ...headerStyle
     })
   },
   Repositories: {
     screen: RepoListScreen,
     navigationOptions: {
-      title: `Repositories`
+      title: `Repositories`,
+      ...headerStyle
     }
   },
   Code: {
     screen: CodeScreen,
     navigationOptions: {
-      title: `Code`
+      title: `Code`,
+      ...headerStyle
     }
   },
   Readme: {
     screen: ReadmeScreen,
     navigationOptions:{
-      title: 'Readme'
+      title: 'Readme',
+      ...headerStyle
     }
   }
 });
@@ -135,13 +161,15 @@ const NotificationsStack = createStackNavigator({
   Notification: {
     screen: NotificationsScreen,
     navigationOptions: {
-      title: "Notifications"
+      title: "Notifications",
+      ...headerStyle
     }
   },
   NotificationDetail: {
     screen: PostScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `Notification BLAH details`
+      title: `Notification details`,
+      ...headerStyle
     })
   }
 });
@@ -152,39 +180,53 @@ const ProfileStack = createStackNavigator({
     navigationOptions: ({navigation}) => ({
       title: "My Profile",
       headerRight:(
-        <TouchableOpacity><Octicons name="sign-out" size={15}
-        onPress={() => this.logout().then(() => navigation.navigate("LoginPage"))}><Text>Logout</Text></Octicons></TouchableOpacity>
-      )
+        <TouchableOpacity
+          onPress={ async () => {
+              await this.logout();
+              navigation.navigate("LoginPage");
+          }}
+        style={{display: 'flex', flexDirection: 'row', paddingRight: 10}}
+        >
+          <Text style={{fontWeight: '700', color: colors.whiteFont, paddingRight: 5}}>Logout</Text>
+          <Octicons name="sign-out" size={15} color={colors.whiteFont}/>
+        </TouchableOpacity>
+      ),
+      ...headerStyle
     })
   },
   Repositories: {
     screen: RepoListScreen,
     navigationOptions: {
-      title: `Repositories`
+      title: `Repositories`,
+      ...headerStyle
     }
   },
   OneRepository: {
     screen: OneRepositoryScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.repoName}`
+      title: `${navigation.state.params.repoName}`,
+      ...headerStyle
     })
   },
   Code: {
     screen: CodeScreen,
     navigationOptions: {
-      title: `Code`
+      title: `Code`,
+      ...headerStyle
     }
   },
   Readme: {
     screen: ReadmeScreen,
     navigationOptions:{
-      title: 'Readme'
+      title: 'Readme',
+      ...headerStyle
     }
   },
   OtherUserProfile: {
     screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
-      title: `${navigation.state.params.githubLogin}'s profile`
+      title: `${navigation.state.params.githubLogin}'s profile`,
+      ...headerStyle
     })
   },
 });
@@ -198,6 +240,7 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="octoface" color={tintColor} size={20} />
         ),
+      ...headerStyle
       })
     },
     Feed: {
@@ -205,7 +248,8 @@ const AppTabNavigator = createBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="mark-github" color={tintColor} size={20} />
-        )
+        ),
+      ...headerStyle
       })
     },
     Search: {
@@ -213,7 +257,8 @@ const AppTabNavigator = createBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="search" color={tintColor} size={20} />
-        )
+        ),
+      ...headerStyle
       })
     },
     Notifications: {
@@ -222,6 +267,7 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="bell" color={tintColor} size={20} />
         ),
+      ...headerStyle
       })
     },
 
@@ -239,6 +285,9 @@ const AppTabNavigator = createBottomTabNavigator(
         borderLeftWidth: 0.5,
         borderLeftColor: colors.whiteFont,
         borderLeftStyle: 'solid',
+        borderTopWidth : 0.5,
+        borderTopColor : colors.GrayDark,
+        borderTopStyle : 'solid',
       },
     }
   }

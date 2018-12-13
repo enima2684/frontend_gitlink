@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, StyleSheet, Text, View, Alert, ImageBackground
 import Octicons from "@expo/vector-icons/Octicons";
 import {LinearGradient} from 'expo';
 import { Container, H1, Spinner, Content, Button } from "native-base";
-
+import {StatusBar} from "react-native";
 
 
 
@@ -97,6 +97,7 @@ export default class ProfileScreen extends Component {
 
     return (
       <Container>
+        <StatusBar barStyle={"light-content"}/>
         <Content>
 
           <ImageBackground source={{uri: avatar_url}} style={styles.imageZone}>

@@ -5,7 +5,8 @@ import {
   FlatList,
   ActivityIndicator,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  StatusBar
 } from "react-native";
 import FeedPost from "./FeedPost";
 
@@ -92,6 +93,8 @@ class FeedScreen extends React.Component {
           />
         }
       >
+        <StatusBar barStyle="light-content"/>
+
         {this.state.loading && (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
