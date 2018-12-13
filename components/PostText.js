@@ -12,7 +12,7 @@ export default class PostText extends React.Component {
   buildPostSpecificText(feedEvent) {
     let displayText;
     let iconName;
-    const iconColor = "#8cc342";
+    const iconColor = "#28A745";
     switch (feedEvent.type) {
       case "WatchEvent":
         iconName = "eye";
@@ -32,7 +32,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -60,7 +60,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -87,7 +87,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -120,7 +120,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -148,7 +148,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -173,7 +173,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -200,7 +200,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -224,7 +224,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -244,7 +244,7 @@ export default class PostText extends React.Component {
               style={styles.icon}
               name={iconName}
               color={iconColor}
-              size={30}
+              size={40}
             />
           </View>
         );
@@ -270,11 +270,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   outerContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+    width: "100%",
+    paddingLeft: "2%",
+    paddingBottom: "4%"
   },
   textContainer: {
     flexWrap: "wrap",
-    width: "88%"
+    width: "80%"
   },
-  icon: {}
+  icon: {
+    paddingLeft: "5%"
+  }
 });
