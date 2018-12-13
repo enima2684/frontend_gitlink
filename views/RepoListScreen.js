@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
 import { Container, H1, List, ListItem, Spinner  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import {authService} from "../lib/Authentication";
