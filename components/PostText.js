@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 export default class PostText extends React.Component {
   static propTypes = {
     feedEvent: PropTypes.object.isRequired,
-    parentComponent: PropTypes.string.isRequired, // component that calls the component
+    parentComponent: PropTypes.string.isRequired // component that calls the component
   };
 
   buildPostSpecificText(feedEvent) {
@@ -72,13 +72,16 @@ export default class PostText extends React.Component {
           <View style={styles.outerContainer}>
             <View style={styles.textContainer}>
               <Text>
-                <Text style={styles.bold}>{feedEvent.payload.action}</Text>{" "}
-                the issue {" "}
-                <Text style={styles.bold}>#{feedEvent.payload.issue.number}</Text>{" "}
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text> the
+                issue{" "}
+                <Text style={styles.bold}>
+                  #{feedEvent.payload.issue.number}
+                </Text>{" "}
                 inside the repo{" "}
                 <Text style={styles.bold}>
                   {feedEvent.repo.name.split("/").pop()}
-                </Text>{":\n"}
+                </Text>
+                {":\n"}
                 {feedEvent.payload.issue.title}
               </Text>
             </View>
@@ -99,19 +102,19 @@ export default class PostText extends React.Component {
             <View style={styles.textContainer}>
               <Text>
                 <Text style={styles.bold}>commented </Text> on the issue{" "}
-                <Text style={styles.bold}>#{feedEvent.payload.issue.number}</Text>{" "}
+                <Text style={styles.bold}>
+                  #{feedEvent.payload.issue.number}
+                </Text>{" "}
                 in the repo{" "}
                 <Text style={styles.bold}>
                   {feedEvent.repo.name.split("/").pop()}
-                </Text>{" :\n"}
+                </Text>
+                {" :\n"}
                 <Text>
-                  {this.props.parentComponent!=="FeedPost" ?
-                    (feedEvent.payload.comment.body) :
-                    (
-                      feedEvent.payload.comment.body.substring(0,144) + (
-                        feedEvent.payload.comment.body.length >= 144 && " ..."
-                    ))
-                  }
+                  {this.props.parentComponent !== "FeedPost"
+                    ? feedEvent.payload.comment.body
+                    : feedEvent.payload.comment.body.substring(0, 144) +
+                      (feedEvent.payload.comment.body.length >= 144 && " ...")}
                 </Text>
               </Text>
             </View>
@@ -133,10 +136,8 @@ export default class PostText extends React.Component {
               <Text>
                 deleted the{" "}
                 <Text style={styles.bold}>{feedEvent.payload.ref_type}</Text>{" "}
-                <Text style={styles.bold}>
-                  {feedEvent.payload.ref}
-                </Text>{" "}
-                inside the repo{" "}
+                <Text style={styles.bold}>{feedEvent.payload.ref}</Text> inside
+                the repo{" "}
                 <Text style={styles.bold}>
                   {" "}
                   {feedEvent.repo.name.split("/").pop()}
@@ -152,8 +153,6 @@ export default class PostText extends React.Component {
           </View>
         );
         break;
-
-
 
       case "ForkEvent":
         iconName = "repo-forked";
@@ -219,6 +218,54 @@ export default class PostText extends React.Component {
                 </Text>
               </Text>
             </View>
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={40}
+            />
+          </View>
+        );
+        break;
+
+      case "GitLinkLike":
+        iconName = "thumbsup";
+        displayText = (
+          <View style={styles.outerContainer}>
+            {/* <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text> a
+                pull request inside the repo{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View> */}
+            <Octicons
+              style={styles.icon}
+              name={iconName}
+              color={iconColor}
+              size={40}
+            />
+          </View>
+        );
+        break;
+
+        case "GitLinkComment":
+        iconName = "comment";
+        displayText = (
+          <View style={styles.outerContainer}>
+            {/* <View style={styles.textContainer}>
+              <Text>
+                <Text style={styles.bold}>{feedEvent.payload.action}</Text> a
+                pull request inside the repo{" "}
+                <Text style={styles.bold}>
+                  {" "}
+                  {feedEvent.repo.name.split("/").pop()}
+                </Text>
+              </Text>
+            </View> */}
             <Octicons
               style={styles.icon}
               name={iconName}

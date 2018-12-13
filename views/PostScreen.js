@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
   },
   commentSection: {
     flexShrink: 1,
-    flexGrow: 0
+    flexGrow: 0,
+    paddingTop: 5,
   },
   postContainer: {
     flexDirection: "row",
@@ -232,7 +233,6 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "80%",
-    marginBottom: 5
   },
   listItem: {
     height: 1,

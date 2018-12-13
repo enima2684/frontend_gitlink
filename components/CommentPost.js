@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     padding: "1%",
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingTop: 5,
   },
   rightPost: {
     flexShrink: 1
