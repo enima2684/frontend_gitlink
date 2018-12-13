@@ -53,7 +53,6 @@ export default class ProfileScreen extends Component {
     this.willFocusListener.remove();
   }
 
-
   async isItMyProfile(){
     try{
       const connectedUser = await authService.isLoggedIn();
@@ -63,7 +62,6 @@ export default class ProfileScreen extends Component {
       console.log(err);
       alert(err.message);
     }
-
   }
 
   handleOnPressRepos = async () => {
@@ -99,10 +97,7 @@ export default class ProfileScreen extends Component {
       <Container>
         <StatusBar barStyle={"light-content"}/>
 
-
-
           {/* ------ BUTTONS ------- */}
-
 
           <View style={styles.buttonsRow}>
 
@@ -121,7 +116,6 @@ export default class ProfileScreen extends Component {
             </LinearGradient>
 
           </View>
-
 
           <View style={styles.main}>
 
@@ -146,7 +140,7 @@ export default class ProfileScreen extends Component {
 
             <View style={styles.list}>
 
-              <ListItem button noBorder={true}  style={styles.listItem} onPress={() => alert('hey')}>
+              <ListItem button noBorder={true}  style={styles.listItem} onPress={this.handleOnPressRepos}>
 
                 <View style={styles.listItem__left}>
                   <Octicons name={"repo"} size={40} color={colors.Blue}/>
