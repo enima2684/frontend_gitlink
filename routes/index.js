@@ -234,15 +234,7 @@ const ProfileStack = createStackNavigator({
 // Tab navigation: 4 tabs
 const AppTabNavigator = createBottomTabNavigator(
   {
-    Profile: {
-      screen: ProfileStack,
-      navigationOptions: () => ({
-        tabBarIcon: ({ tintColor }) => (
-          <Octicons name="octoface" color={tintColor} size={20} />
-        ),
-      ...headerStyle
-      })
-    },
+
     Feed: {
       screen: FeedStack,
       navigationOptions: () => ({
@@ -266,6 +258,15 @@ const AppTabNavigator = createBottomTabNavigator(
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="bell" color={tintColor} size={20} />
+        ),
+      ...headerStyle
+      })
+    },
+    Profile: {
+      screen: ProfileStack,
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => (
+          <Octicons name="octoface" color={tintColor} size={20} />
         ),
       ...headerStyle
       })

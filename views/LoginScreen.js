@@ -28,8 +28,7 @@ export default class LoginScreen extends Component {
     const loggedIn = await authService.isLoggedIn();
     if(loggedIn){
       console.log("user already logged in");
-      // Alert.alert("Already logged in", `Welcome back ${loggedIn} ! 👏`);
-      console.log("👹👹👹👹👹👹👹👹👹👹  PLEASE UNCOMMENT THIS 👹👹👹👹👹👹👹👹👹👹");
+      Alert.alert("Already logged in", `Welcome back ${loggedIn} ! 👏`);
       this.props.navigation.navigate("MainApp");
     }
   }

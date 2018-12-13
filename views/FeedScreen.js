@@ -9,6 +9,8 @@ import {
   StatusBar
 } from "react-native";
 import FeedPost from "./FeedPost";
+import {Spinner} from 'native-base';
+
 
 import {connect} from "react-redux";
 import {act__initializePostArray} from "../stateManagement/actions";
@@ -81,7 +83,8 @@ class FeedScreen extends React.Component {
         <StatusBar barStyle="light-content"/>
 
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+          <Spinner/>
+          // <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
         <FlatList
           ItemSeparatorComponent={() => <View style={styles.listItem} />}
