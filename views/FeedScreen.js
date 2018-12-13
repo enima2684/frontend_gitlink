@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import FeedPost from "./FeedPost";
 
-import { connect } from "react-redux";
-import { act__initializePostArray } from "../stateManagement/actions";
+import {connect} from "react-redux";
+import {act__initializePostArray} from "../stateManagement/actions";
 
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -20,6 +20,7 @@ import { Card, CardItem, Thumbnail } from "native-base";
 // Temporary mockdata for development used in componentWillMount()
 // import data from "../mockData";
 import requestBuilder from "../lib/request";
+
 
 class FeedScreen extends React.Component {
   static propTypes = {
@@ -52,23 +53,25 @@ class FeedScreen extends React.Component {
    * @return {Promise<void>}
    */
   async fetchPosts() {
-    try {
+    try{
       const req = await requestBuilder();
-      let response = await req.get("/posts/currentUser");
-      return response.data.posts;
-    } catch (err) {
+      let response = await req.get('/posts/currentUser');
+      return response.data.posts
+    }
+    catch(err){
       console.log(err);
       alert(err.message);
     }
   }
 
-  async updatePosts() {
+  async updatePosts(){
     let posts = await this.fetchPosts();
     this.props.dispatch(act__initializePostArray(posts));
     this.setState({
       loading: false,
       refreshing: false
     });
+
   }
 
   componentWillMount() {
@@ -95,17 +98,14 @@ class FeedScreen extends React.Component {
         {this.state.loading && (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
-        {posts.map(onePost => {
-          return (
+        {posts.map(onePost =>{
+          return(
             <Card key={onePost.id}>
-              <CardItem>
-                <FeedPost
-                  feedEvent={onePost}
-                  navigation={this.props.navigation}
-                />
-              </CardItem>
-            </Card>
-          );
+            <CardItem>
+              <FeedPost feedEvent={onePost} navigation={this.props.navigation} />
+            </CardItem>
+          </Card>
+          )
         })}
       </ScrollView>
     );
@@ -116,11 +116,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: "2%"
+    marginRight: "2%",
+    marginLeft: "2%",
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }
 });
 
-const mapStateToProps = ({ posts }) => ({ posts });
+const mapStateToProps = ({posts}) => ({posts});
 export default connect(mapStateToProps)(FeedScreen);

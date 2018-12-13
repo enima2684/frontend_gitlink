@@ -6,6 +6,7 @@ import moment from "moment";
 import PostText from "../components/PostText";
 import PostInteractionSection from "../components/PostInteractionSection";
 import { Thumbnail } from "native-base";
+
 export default class FeedPost extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -24,7 +25,7 @@ export default class FeedPost extends React.Component {
     this.props.navigation.navigate("Post", {
       feedEvent: feedEvent,
       userAction: userAction,
-      handleProfileTap: feedEvent => this.handleProfileTap(feedEvent),
+      handleProfileTap: feedEvent => this.handleProfileTap(feedEvent)
     });
   }
 
@@ -52,7 +53,7 @@ export default class FeedPost extends React.Component {
         <TouchableOpacity
           onPress={() => this.handleProfileTap(feedEvent)}
         >
-        <Thumbnail round
+          <Thumbnail round
             source={{
               uri: feedEvent.actor.avatar_url
             }}
@@ -74,7 +75,7 @@ export default class FeedPost extends React.Component {
             </Text>
           </View>
         </View>
-        </View>
+      </View>
     );
   }
 }
@@ -89,10 +90,11 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
+
   },
   postText: {
     flexShrink: 1,
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   bold: {
     fontWeight: "bold",
