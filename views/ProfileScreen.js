@@ -19,6 +19,7 @@ export default class ProfileScreen extends Component {
       oneUser: {},
       isMyProfile: true,
       isLoading: true,
+      amIFollowing: false,
     };
   }
 
@@ -29,6 +30,7 @@ export default class ProfileScreen extends Component {
       // check if render my profile or other's profile
       let isMyProfile = await this.isItMyProfile();
       let oneUser;
+      let amIFollowing = false;
       if (isMyProfile){
         let response = await req.get('/users/current');
         oneUser = response.data.user;
@@ -36,8 +38,13 @@ export default class ProfileScreen extends Component {
         const otherUser = this.props.navigation.getParam('githubLogin');
         let response = await req.get(`/users/${otherUser}`);
         oneUser = response.data.otherUser;
+
+        // check if I am following this user
+        const amIFollowingResponse = await req.get(`/users/following/${otherUser}`);
+        amIFollowing = amIFollowingResponse.data.following;
+
       }
-      this.setState({isMyProfile, oneUser, isLoading: false});
+      this.setState({isMyProfile, oneUser, amIFollowing, isLoading: false});
     }
     catch(err){
       console.log(err);
@@ -112,11 +119,12 @@ export default class ProfileScreen extends Component {
 
               <Button transparent style={styles.buttonElement} onPress={this.handleOnPressFollow}>
                 <Octicons name={'telescope'} size={24} color={colors.whiteFont}/>
-                <Text style={styles.actionButton_text}>Follow</Text>
+                <Text style={styles.actionButton_text}>
+                  { this.state.amIFollowing ? "Unfollow" : "Follow" }
+                </Text>
               </Button>
 
             </LinearGradient>
-
           </View>
 
         )}
