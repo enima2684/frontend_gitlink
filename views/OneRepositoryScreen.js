@@ -87,9 +87,6 @@ export default class OneRepositoryScreen extends Component {
     return (
       <ScrollView>
 
-
-
-
       <View style={{...styles.buttonsRow, ...styles.stats}}>
 
         <Button transparent rounded style={styles.buttonElement}>
