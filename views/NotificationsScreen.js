@@ -31,7 +31,6 @@ export default class NotificationsScreen extends React.Component {
 
   async updateNotifs() {
     let notifs = await this.fetchNotifs();
-    console.log(notifs);
     this.setState({
       notifs,
       loading: false,
@@ -63,9 +62,9 @@ export default class NotificationsScreen extends React.Component {
         {this.state.loading && (
           <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
-        {notifs.map(oneNotif =>{
+        {notifs.map((oneNotif, idx) =>{
           return(
-            <Card key={oneNotif.created_at}>
+            <Card key={idx}>
             <CardItem>
               <NotificationPost feedEvent={oneNotif} navigation={this.props.navigation} />
             </CardItem>

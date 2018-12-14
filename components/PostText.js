@@ -230,18 +230,19 @@ export default class PostText extends React.Component {
 
       case "GitLinkLike":
         iconName = "thumbsup";
+        const { likes } = feedEvent;
+
         displayText = (
           <View style={styles.outerContainer}>
-            {/* <View style={styles.textContainer}>
+            <View style={styles.textContainer}>
               <Text>
-                <Text style={styles.bold}>{feedEvent.payload.action}</Text> a
-                pull request inside the repo{" "}
-                <Text style={styles.bold}>
-                  {" "}
-                  {feedEvent.repo.name.split("/").pop()}
-                </Text>
+                {likes.length > 1
+                  ? `and other ${likes.length - 1} people `
+                  : " "}
+                <Text style={styles.bold}>liked</Text> a post
               </Text>
-            </View> */}
+            </View>
+
             <Octicons
               style={styles.icon}
               name={iconName}
@@ -252,20 +253,20 @@ export default class PostText extends React.Component {
         );
         break;
 
-        case "GitLinkComment":
+      case "GitLinkComment":
         iconName = "comment";
+        const { comments } = feedEvent;
         displayText = (
           <View style={styles.outerContainer}>
-            {/* <View style={styles.textContainer}>
+            <View style={styles.textContainer}>
               <Text>
-                <Text style={styles.bold}>{feedEvent.payload.action}</Text> a
-                pull request inside the repo{" "}
-                <Text style={styles.bold}>
-                  {" "}
-                  {feedEvent.repo.name.split("/").pop()}
-                </Text>
+                {comments.length > 1
+                  ? `and other ${comments.length - 1} people `
+                  : " "}
+                <Text style={styles.bold}>commented</Text> a post
               </Text>
-            </View> */}
+            </View>
+
             <Octicons
               style={styles.icon}
               name={iconName}
