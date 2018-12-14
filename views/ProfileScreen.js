@@ -93,12 +93,14 @@ export default class ProfileScreen extends Component {
       following
     } = this.state.oneUser;
 
+
     return (
       <Container>
         <StatusBar barStyle={"light-content"}/>
 
           {/* ------ BUTTONS ------- */}
 
+        { (!this.state.isMyProfile) && (
           <View style={styles.buttonsRow}>
 
             <LinearGradient
@@ -116,6 +118,8 @@ export default class ProfileScreen extends Component {
             </LinearGradient>
 
           </View>
+
+        )}
 
           <View style={styles.main}>
 
