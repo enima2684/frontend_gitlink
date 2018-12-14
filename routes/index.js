@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, Alert, TouchableOpacity} from "react-native"
+import { Text, Alert, TouchableOpacity } from "react-native";
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -7,8 +7,8 @@ import {
   createAppContainer
 } from "react-navigation";
 import Octicons from "@expo/vector-icons/Octicons";
-import {authService} from "../lib/Authentication";
-import colors from '../colors';
+import { authService } from "../lib/Authentication";
+import colors from "../colors";
 // import { Ionicons } from "@expo/vector-icons";
 
 import LoginScreen from "../views/LoginScreen";
@@ -17,32 +17,32 @@ import SearchScreen from "../views/SearchScreen";
 import PostScreen from "../views/PostScreen";
 import NotificationsScreen from "../views/NotificationsScreen";
 import ProfileScreen from "../views/ProfileScreen";
-import RepoListScreen from '../views/RepoListScreen';
+import RepoListScreen from "../views/RepoListScreen";
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
 import ReadmeScreen from "../views/ReadmeScreen";
+import FollowerScreen from "../views/FollowerScreen";
 
-logout = async() =>{
-  try{
+logout = async () => {
+  try {
     await authService.logout();
-    Alert.alert("Info", 'Logged out successfully. See you soon ! 👋');
+    Alert.alert("Info", "Logged out successfully. See you soon ! 👋");
   } catch (err) {
     console.log(err);
-    Alert.alert("error", 'Oups! Something went wrong on the logout');
-    throw err
+    Alert.alert("error", "Oups! Something went wrong on the logout");
+    throw err;
   }
 };
 
 const headerStyle = {
-    headerStyle: {
-      backgroundColor: colors.GrayDark,
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    }
+  headerStyle: {
+    backgroundColor: colors.GrayDark
+  },
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontWeight: "bold"
+  }
 };
-
 
 // Stack navigation for first tab, the Feed
 const FeedStack = createStackNavigator({
@@ -55,8 +55,9 @@ const FeedStack = createStackNavigator({
           name="mark-github"
           color={colors.whiteFont}
           size={24}
-          style={{marginRight: 20}}
-        />),
+          style={{ marginRight: 20 }}
+        />
+      ),
       ...headerStyle
     })
   },
@@ -65,8 +66,7 @@ const FeedStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.feedEvent.actor.login}'s post`,
       ...headerStyle
-    }),
-
+    })
   },
   Search: {
     screen: SearchScreen,
@@ -105,10 +105,20 @@ const FeedStack = createStackNavigator({
   },
   Readme: {
     screen: ReadmeScreen,
-    navigationOptions:{
-      title: 'Readme',
+    navigationOptions: {
+      title: "Readme",
       ...headerStyle
     }
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title:
+        navigation.getParam("userName") +
+        " - " +
+        navigation.getParam("screenType"),
+      ...headerStyle
+    })
   }
 });
 
@@ -120,7 +130,7 @@ const SearchStack = createStackNavigator({
       ...headerStyle
     }
   },
-    OtherUserProfile: {
+  OtherUserProfile: {
     screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
       title: `${navigation.state.params.githubLogin}'s profile`,
@@ -150,10 +160,20 @@ const SearchStack = createStackNavigator({
   },
   Readme: {
     screen: ReadmeScreen,
-    navigationOptions:{
-      title: 'Readme',
+    navigationOptions: {
+      title: "Readme",
       ...headerStyle
     }
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title:
+        navigation.getParam("userName") +
+        " - " +
+        navigation.getParam("screenType"),
+      ...headerStyle
+    })
   }
 });
 
@@ -195,28 +215,46 @@ const NotificationsStack = createStackNavigator({
   },
   Readme: {
     screen: ReadmeScreen,
-    navigationOptions:{
-      title: 'Readme',
+    navigationOptions: {
+      title: "Readme",
       ...headerStyle
     }
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title:
+        navigation.getParam("userName") +
+        " - " +
+        navigation.getParam("screenType"),
+      ...headerStyle
+    })
   }
 });
 
 const ProfileStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: ({ navigation }) => ({
       title: "My Profile",
-      headerRight:(
+      headerRight: (
         <TouchableOpacity
-          onPress={ async () => {
-              await this.logout();
-              navigation.navigate("LoginPage");
+          onPress={async () => {
+            await this.logout();
+            navigation.navigate("LoginPage");
           }}
-        style={{display: 'flex', flexDirection: 'row', paddingRight: 10}}
+          style={{ display: "flex", flexDirection: "row", paddingRight: 10 }}
         >
-          <Text style={{fontWeight: '700', color: colors.whiteFont, paddingRight: 5}}>Logout</Text>
-          <Octicons name="sign-out" size={15} color={colors.whiteFont}/>
+          <Text
+            style={{
+              fontWeight: "700",
+              color: colors.whiteFont,
+              paddingRight: 5
+            }}
+          >
+            Logout
+          </Text>
+          <Octicons name="sign-out" size={15} color={colors.whiteFont} />
         </TouchableOpacity>
       ),
       ...headerStyle
@@ -245,8 +283,8 @@ const ProfileStack = createStackNavigator({
   },
   Readme: {
     screen: ReadmeScreen,
-    navigationOptions:{
-      title: 'Readme',
+    navigationOptions: {
+      title: "Readme",
       ...headerStyle
     }
   },
@@ -257,19 +295,28 @@ const ProfileStack = createStackNavigator({
       ...headerStyle
     })
   },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title:
+        navigation.getParam("userName") +
+        " - " +
+        navigation.getParam("screenType"),
+      ...headerStyle
+    })
+  }
 });
 
 // Tab navigation: 4 tabs
 const AppTabNavigator = createBottomTabNavigator(
   {
-
     Feed: {
       screen: FeedStack,
       navigationOptions: () => ({
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="mark-github" color={tintColor} size={20} />
         ),
-      ...headerStyle
+        ...headerStyle
       })
     },
     Search: {
@@ -278,7 +325,7 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="search" color={tintColor} size={20} />
         ),
-      ...headerStyle
+        ...headerStyle
       })
     },
     Notifications: {
@@ -287,7 +334,7 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="bell" color={tintColor} size={20} />
         ),
-      ...headerStyle
+        ...headerStyle
       })
     },
     Profile: {
@@ -296,17 +343,16 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <Octicons name="octoface" color={tintColor} size={20} />
         ),
-      ...headerStyle
+        ...headerStyle
       })
-    },
-
+    }
   },
   {
     tabBarOptions: {
       activeTintColor: colors.Blue,
       inactiveTintColor: colors.BlueLight,
       inactiveBackgroundColor: colors.whiteFont,
-      labelStyle:{
+      labelStyle: {
         fontSize: 12,
         fontWeight: "400"
       },
@@ -317,7 +363,7 @@ const AppTabNavigator = createBottomTabNavigator(
         // borderTopWidth : 0.5,
         // borderTopColor : colors.GrayDark,
         // borderTopStyle : 'solid',
-      },
+      }
     }
   }
 );
