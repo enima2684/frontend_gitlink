@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {ScrollView, View} from 'react-native'
-import { Container, Spinner, List, ListItem, Left, Thumbnail, H1 } from "native-base";
+import { Container, Spinner, List, ListItem, Left, Thumbnail, H1, Alert } from "native-base";
 import { authService } from "../lib/Authentication";
 import requestBuilder from "../lib/request";
 
@@ -9,21 +9,53 @@ export default class FollowerScreen extends Component {
     super(props);
 
     this.state = {
-      followers: [],
+      usersToDisplay: [],
       isLoading: true
     };
   }
 
-  async componentDidMount(){
-
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+  fetchFollowers = async (login) => {
+    const req = await requestBuilder();
+    let response = await req.get(`/users/followers/${login}`);
+    console.log("🎈🎈🎈🎈🎈🎈");
+    console.log(response.data);
+    this.setState({usersToDisplay: response.data.followers});
+  };
+
+  fetchFollowing = async (login) => {
+    const req = await requestBuilder();
+    let response = await req.get(`/users/following/list/${login}`);
+    console.log("🎁🎁🎁🎁🎁🎁🎁");
+    console.log(response.data);
+    this.setState({usersToDisplay: response.data.following});
+  };
 
   fetchData = async () => {
       try{
-          this.setState{(isLoading: true, followers: [])}
-          await 
+
+        const userName = this.props.navigation.getParam('userName');
+        const screenType = this.props.navigation.getParam('screenType'); // followers or following
+
+        if (screenType === 'followers') {
+          return this.fetchFollowers(userName);
+        } else if (screenType === 'following') {
+          return this.fetchFollowing(userName);
+        } else {
+          throw new Error('screenType must be following or followers');
+        }
+
+      } catch(err){
+        Alert.alert('Oups! Something went wrong ..', err.message);
       }
-  }
+  };
 
 
   handleOnPress=(oneFollower) =>{
@@ -31,25 +63,27 @@ export default class FollowerScreen extends Component {
           githubLogin: oneFollower.login,
           githubId: oneFollower.id,  
       })
-  }
+  };
 
   render() {
-    const { followers } = this.state;
-    return <Container>
-    {this.state.loading && 
-    <Spinner/>}
-    <ScrollView>
-        <List>
-            {followers.map(oneFollower =>{
-                return(
-                    <ListItem button avatar key={oneFollower.id} onPress={this.handleOnPress(oneFollower)}>
-                <Thumbnail source={{uri: oneFollower.avatar_url}}/>
-                <H1>{oneFollower.login}</H1>
-            </ListItem>
-                )
-            })}
-        </List>
-    </ScrollView>
-    </Container>;
+
+    if (this.state.loading){
+      return (<Spinner/>)
+    }
+
+    const { usersToDisplay } = this.state;
+    return (
+      <Container>
+        <ScrollView>
+            <List>
+                {usersToDisplay.map(oneUser => (
+                    <ListItem button avatar key={oneUser.id} onPress={()=>this.handleOnPress(oneUser)}>
+                    <Thumbnail source={{uri: oneUser.avatar_url}}/>
+                    <H1>{oneUser.login}</H1>
+                </ListItem>)
+                )}
+            </List>
+        </ScrollView>
+    </Container>);
   }
 }

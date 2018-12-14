@@ -21,6 +21,7 @@ import RepoListScreen from '../views/RepoListScreen';
 import OneRepositoryScreen from "../views/OneRepositoryScreen";
 import CodeScreen from "../views/CodeScreen";
 import ReadmeScreen from "../views/ReadmeScreen";
+import FollowerScreen from "../views/FollowerScreen";
 
 logout = async() =>{
   try{
@@ -109,7 +110,15 @@ const FeedStack = createStackNavigator({
       title: 'Readme',
       ...headerStyle
     }
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.getParam('screenType'),
+      ...headerStyle
+    })
   }
+
 });
 
 const SearchStack = createStackNavigator({
@@ -154,7 +163,15 @@ const SearchStack = createStackNavigator({
       title: 'Readme',
       ...headerStyle
     }
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.getParam('screenType'),
+      ...headerStyle
+    })
   }
+
 });
 
 const NotificationsStack = createStackNavigator({
@@ -171,7 +188,15 @@ const NotificationsStack = createStackNavigator({
       title: `Notification details`,
       ...headerStyle
     })
+  },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.getParam('screenType'),
+      ...headerStyle
+    })
   }
+
 });
 
 const ProfileStack = createStackNavigator({
@@ -229,6 +254,14 @@ const ProfileStack = createStackNavigator({
       ...headerStyle
     })
   },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.getParam('screenType'),
+      ...headerStyle
+    })
+  }
+
 });
 
 // Tab navigation: 4 tabs
