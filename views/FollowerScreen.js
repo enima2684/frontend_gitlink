@@ -72,7 +72,7 @@ export default class FollowerScreen extends Component {
     return (
       <Container>
         <ScrollView>
-            <List style={{paddingTop: '5%'}}>
+            <List style={{paddingTop: 0}}>
                 {usersToDisplay.map(oneUser => (
                   <ListItem button thumbnail key={oneUser.id} onPress={()=>this.handleOnPress(oneUser)} style={{paddingTop: 20}}>
 
@@ -80,11 +80,11 @@ export default class FollowerScreen extends Component {
                       <Thumbnail source={{ uri: oneUser.avatar_url }} />
                     </Left>
 
-                    <Body style={{paddingBottom: 15, paddingTop: 15}}>
+                    <Body style={{paddingBottom: 15, paddingTop: 20}}>
                       <Text style={{color: colors.GrayDark, fontWeight: '700', fontSize: 16}}>{oneUser.login}</Text>
                     </Body>
 
-                    <Right style={{paddingBottom: 15, paddingTop: 15}}>
+                    <Right style={{paddingBottom: 15, paddingTop: 20}}>
                       <Octicons name="chevron-right" size={20} color={colors.GrayDark } />
                     </Right>
 
