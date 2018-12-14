@@ -75,7 +75,7 @@ export default class FollowerScreen extends Component {
             <List style={{paddingTop: 0}}>
                 {usersToDisplay.map(oneUser => (
                   <ListItem button thumbnail key={oneUser.id} onPress={()=>this.handleOnPress(oneUser)} style={{paddingTop: 20}}>
-
+rentC
                     <Left>
                       <Thumbnail source={{ uri: oneUser.avatar_url }} />
                     </Left>

@@ -114,7 +114,7 @@ class PostScreen extends React.Component {
                     </Text>
                     <PostText
                       feedEvent={feedEventToDisplay}
-                      parentComponent=""
+                      parentComponent="PostScreen"
                     />
                   </View>
 
