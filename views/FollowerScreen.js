@@ -69,13 +69,13 @@ export default class FollowerScreen extends Component {
     }
 
     const { usersToDisplay } = this.state;
+    console.log(usersToDisplay);
     return (
       <Container>
         <ScrollView>
             <List style={{paddingTop: 0}}>
                 {usersToDisplay.map(oneUser => (
                   <ListItem button thumbnail key={oneUser.id} onPress={()=>this.handleOnPress(oneUser)} style={{paddingTop: 20}}>
-rentC
                     <Left>
                       <Thumbnail source={{ uri: oneUser.avatar_url }} />
                     </Left>
@@ -87,7 +87,6 @@ rentC
                     <Right style={{paddingBottom: 15, paddingTop: 20}}>
                       <Octicons name="chevron-right" size={20} color={colors.GrayDark } />
                     </Right>
-
                 </ListItem>)
                 )}
             </List>

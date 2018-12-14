@@ -99,7 +99,7 @@ export default class FeedPost extends React.Component {
         <View style={styles.rightPost}>
           {/* <TouchableOpacity onPress={() => this.handleListTap(feedEventforTap)}> */}
             <Text style={styles.bold}>{login}</Text>
-            <PostText feedEvent={feedEvent} parentComponent={"FeedPost"} />
+            <PostText feedEvent={feedEvent} parentComponent={"NotificationPost"} />
           {/* </TouchableOpacity> */}
           <View style={styles.postBottom}>
             {/* <PostInteractionSection
