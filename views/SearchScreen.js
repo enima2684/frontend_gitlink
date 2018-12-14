@@ -142,7 +142,7 @@ export default class SearchScreen extends React.Component {
 
             {/*USERS RESULTS*/}
             <CardItem header bordered>
-              <Text>Users</Text>
+              <Text style={styles.headerCard}>Users</Text>
             </CardItem>
 
             <CardItem bordered>
@@ -156,7 +156,7 @@ export default class SearchScreen extends React.Component {
 
             {/*REPO RESULTS*/}
             <CardItem header bordered>
-              <Text>Repositories</Text>
+              <Text style={styles.headerCard}>Repositories</Text>
             </CardItem>
 
             <CardItem bordered>
@@ -222,5 +222,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#202020"
+  },
+  headerCard:{
+    color: "#313B72"
   }
 });
