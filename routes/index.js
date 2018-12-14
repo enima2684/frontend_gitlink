@@ -114,7 +114,7 @@ const FeedStack = createStackNavigator({
   Followers: {
     screen: FollowerScreen,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('screenType'),
+      title: navigation.getParam('userName')  +   " - " + navigation.getParam('screenType'),
       ...headerStyle
     })
   }
@@ -167,7 +167,7 @@ const SearchStack = createStackNavigator({
   Followers: {
     screen: FollowerScreen,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('screenType'),
+      title: navigation.getParam('userName')  +   " - " + navigation.getParam('screenType'),
       ...headerStyle
     })
   }
@@ -192,7 +192,7 @@ const NotificationsStack = createStackNavigator({
   Followers: {
     screen: FollowerScreen,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('screenType'),
+      title: navigation.getParam('userName')  +   " - " + navigation.getParam('screenType'),
       ...headerStyle
     })
   }
@@ -257,7 +257,7 @@ const ProfileStack = createStackNavigator({
   Followers: {
     screen: FollowerScreen,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('screenType'),
+      title: navigation.getParam('userName')  +   " - " + navigation.getParam('screenType'),
       ...headerStyle
     })
   }

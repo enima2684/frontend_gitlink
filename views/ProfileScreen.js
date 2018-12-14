@@ -81,14 +81,14 @@ export default class ProfileScreen extends Component {
   handleOnPressFollowers = async () => {
     this.props.navigation.navigate('Followers', {
       userName: this.state.oneUser.login,
-      screenType: 'followers',
+      screenType: 'Followers',
     })
   };
 
   handleOnPressFollowing = async () => {
     this.props.navigation.navigate('Followers', {
       userName: this.state.oneUser.login,
-      screenType: 'following',
+      screenType: 'Following',
     })
   };
 
