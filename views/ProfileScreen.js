@@ -20,6 +20,7 @@ export default class ProfileScreen extends Component {
       isMyProfile: true,
       isLoading: true,
       amIFollowing: false,
+      isLoadingFollow: false,
     };
   }
 
@@ -77,12 +78,48 @@ export default class ProfileScreen extends Component {
     });
   };
 
-  handleOnPressFollow = () => {
-    alert('Following user');
+  handleOnPressFollow =  async () => {
+    const otherUser = this.state.oneUser.login;
+
+    this.setState({isLoadingFollow: true});
+    const req = await requestBuilder();
+
+    try {
+
+      if (this.state.amIFollowing){
+        // then, I have to Unfollow
+        let response = await req.delete(`/users/following/${otherUser}`);
+        this.setState({
+          amIFollowing: false,
+          isLoadingFollow: false,
+          oneUser: {
+            ...this.state.oneUser,
+            followers: (this.state.oneUser.followers - 1)
+          }
+        });
+        Alert.alert('Following', `You unfollowed ${otherUser}`);
+      }  else {
+        // then I have to Follow
+        let response = await req.put(`/users/following/${otherUser}`);
+        this.setState({
+          amIFollowing: true,
+          isLoadingFollow: false,
+          oneUser: {
+            ...this.state.oneUser,
+            followers: (this.state.oneUser.followers + 1)
+          }
+        });
+        Alert.alert('Following', `You are now following ${otherUser} 🎊🎊`);
+      }
+
+    } catch (err) {
+      Alert.alert('Oups! Something went wrong !', err.message);
+      console.log(err);
+    }
+
   };
 
   render() {
-
 
     if(this.state.isLoading){
       return (
@@ -120,7 +157,14 @@ export default class ProfileScreen extends Component {
               <Button transparent style={styles.buttonElement} onPress={this.handleOnPressFollow}>
                 <Octicons name={'telescope'} size={24} color={colors.whiteFont}/>
                 <Text style={styles.actionButton_text}>
-                  { this.state.amIFollowing ? "Unfollow" : "Follow" }
+
+                  { this.state.isLoadingFollow ?
+                    "..." :
+                    (
+                      this.state.amIFollowing ? "Unfollow" : "Follow"
+                    )
+
+                  }
                 </Text>
               </Button>
 
