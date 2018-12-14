@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
 
 
   buttonElement:{
-    width: '20%',
+    width: '25%',
     display:'flex',
     justifyContent: 'center',
     alignItems: 'center',

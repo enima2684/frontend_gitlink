@@ -69,7 +69,6 @@ export default class FollowerScreen extends Component {
     }
 
     const { usersToDisplay } = this.state;
-    console.log(usersToDisplay);
     return (
       <Container>
         <ScrollView>
