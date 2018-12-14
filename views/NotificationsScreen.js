@@ -1,23 +1,89 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+  ScrollView,
+  RefreshControl
+} from "react-native";
+import NotificationPost from "./NotificationPost";
+import requestBuilder from "../lib/request";
+import { Card, CardItem, Thumbnail } from "native-base";
 
 export default class NotificationsScreen extends React.Component {
+  state = {
+    loading: true,
+    refreshing: false,
+    notifs: []
+  };
+
+  async fetchNotifs() {
+    try {
+      const req = await requestBuilder();
+      let response = await req.get("/notifs/currentUser");
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    }
+  }
+
+  async updateNotifs() {
+    let notifs = await this.fetchNotifs();
+    this.setState({
+      notifs,
+      loading: false,
+      refreshing: false
+    });
+  }
+
+  componentDidMount() {
+    this.updateNotifs();
+  }
+
+  _onRefresh = async () => {
+    this.setState({ refreshing: true });
+    this.updateNotifs();
+  };
+
   render() {
+    const { notifs } = this.state;
     return (
-      <View style={styles.container}>
-        <Text>THIS IS JUST THE NOTIFICATION PAGE!</Text>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("Feed")}>
-          <Text>CLICK HERE TO GO TO FEED</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
+        {this.state.loading && (
+          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+        )}
+        {notifs.map((oneNotif, idx) =>{
+          return(
+            <Card key={idx}>
+            <CardItem>
+              <NotificationPost feedEvent={oneNotif} navigation={this.props.navigation} />
+            </CardItem>
+          </Card>
+          )
+        })}
+      </ScrollView>
     );
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
-    backgroundColor: "#fff"
-  }
+    backgroundColor: "#fff",
+    marginRight: "2%",
+    marginLeft: "2%",
+  },
+  listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
+  searchIcon: { marginRight: 20 }
 });

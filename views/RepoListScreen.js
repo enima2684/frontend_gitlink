@@ -1,61 +1,86 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from "react-native";
-import axios from "axios";
-import { Container, H1, List, ListItem  } from "native-base";
+import { ScrollView, View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
+import { Container, H1, List, ListItem, Spinner  } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
+import {authService} from "../lib/Authentication";
+import requestBuilder from "../lib/request";
 
 export default class RepoListScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      oneUserRepo: [],
+      oneUserRepos: [],
       loading: true,
     };
   }
-  componentDidMount() {
-    axios
-      .get(`https://api.github.com/users/nrlfrh/repos`)
-      .then(response => {
-        console.log(response.data);
-        this.setState({ oneUserRepo: response.data, loading: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+  fetchData = async () => {
+    try{
+      this.setState({loading: true, oneUserRepos: []});
+      const currentUser = await authService.isLoggedIn();
+      const reposOwner  = this.props.navigation.getParam('reposOwner', currentUser);
+
+      const req         = await requestBuilder();
+      const response    = await req.get(`/users/${reposOwner}/repos`);
+
+      this.setState({ oneUserRepos: response.data, loading: false });
+
+    } catch(err){
+      console.log(err);
+      Alert.alert('Oups! Something went wrong!', err.message);
+    }
+  };
+
+
+  componentWillMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', this.fetchData);
   }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+
+  handleOnPressOneRepo = (oneRepo) => {
+    this.props.navigation.navigate("OneRepository", {
+        repoOwnerLogin : oneRepo.owner.login,
+        repoName: oneRepo.name,
+    })
+  };
+
   render() {
-    const { oneUserRepo } = this.state;
+    const { oneUserRepos } = this.state;
     return (
       <Container>
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+          <Spinner/>
         )}
         <ScrollView>
           <List>
-            {oneUserRepo.map(oneRepo => {
+            {oneUserRepos.map(oneRepo => {
               return (
-                  <ListItem key={oneRepo._id}>
-                  <TouchableOpacity style={styles.oneRepo} 
-                  onPress={() => this.props.navigation.navigate("Profile")}>
+                  <ListItem key={oneRepo.id}>
+                  <TouchableOpacity style={styles.oneRepo}
+                  onPress={()=>this.handleOnPressOneRepo(oneRepo)}>
                       <View style={styles.repoList}>
-                      <View>
-                      <Octicons name="repo" size={50} color="#9cdaef" />
-                    </View>
-                    <View style={styles.repoMidlle}>
-                      <Text style={styles.repoName}> {oneRepo.name}</Text>
-                      <View style={styles.repoMiddile2}>
-                        <Text> {oneRepo.created_at.slice(0, 10)}</Text>
-                        <Text> {oneRepo.language}</Text>
-                        <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
-                      </View>
-                    </View>
-                    <Octicons name="chevron-right" size={25} color="#b8e9f7"></Octicons>
+                        <View>
+                          <Octicons name="repo" size={50} color="#313b72" />
+                        </View>
+                        <View style={styles.repoMidlle}>
+                          <Text style={styles.repoName}> {oneRepo.name}</Text>
+                          <View style={styles.repoMiddile2}>
+                            <Text> {oneRepo.created_at.slice(0, 10)}</Text>
+                            <Text> {oneRepo.language}</Text>
+                            <Text><Octicons name="repo-forked"></Octicons> {oneRepo.forks_count}</Text>
+                          </View>
+                        </View>
+                        <Octicons name="chevron-right" size={25} color="#313b72"/>
                       </View>
                     </TouchableOpacity>
                   </ListItem>
-              );
-            })}
+                )}
+            )}
           </List>
         </ScrollView>
       </Container>

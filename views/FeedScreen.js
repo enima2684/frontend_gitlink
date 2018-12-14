@@ -2,25 +2,30 @@ import React from "react";
 import {
   StyleSheet,
   View,
+  Text,
   FlatList,
   ActivityIndicator,
   ScrollView,
-  TouchableOpacity,
-  Button,
-  Icon,
-  Platform,
-  RefreshControl
+  RefreshControl,
+  StatusBar
 } from "react-native";
 import FeedPost from "./FeedPost";
+import {Spinner} from 'native-base';
+
+
+import {connect} from "react-redux";
+import {act__initializePostArray} from "../stateManagement/actions";
+
 import PropTypes from "prop-types";
 import Octicons from "@expo/vector-icons/Octicons";
+import { Card, CardItem, Thumbnail } from "native-base";
 
 // Temporary mockdata for development used in componentWillMount()
 // import data from "../mockData";
 import requestBuilder from "../lib/request";
 
 
-export default class FeedScreen extends React.Component {
+class FeedScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired
   };
@@ -29,21 +34,6 @@ export default class FeedScreen extends React.Component {
     loading: true,
     refreshing: false,
     posts: []
-  };
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Feed List",
-      headerRight: (
-        <Octicons
-          name="search"
-          color="black"
-          size={24}
-          style={styles.searchIcon}
-          onPress={() => navigation.navigate("Search")}
-        />
-      )
-    };
   };
 
   /**
@@ -64,12 +54,11 @@ export default class FeedScreen extends React.Component {
 
   async updatePosts(){
     let posts = await this.fetchPosts();
+    this.props.dispatch(act__initializePostArray(posts));
     this.setState({
-      posts,
       loading: false,
       refreshing: false
     });
-
   }
 
   componentWillMount() {
@@ -82,6 +71,7 @@ export default class FeedScreen extends React.Component {
   };
 
   render() {
+    const { posts } = this.props;
     return (
       <ScrollView
         style={styles.container}
@@ -92,17 +82,21 @@ export default class FeedScreen extends React.Component {
           />
         }
       >
+        <StatusBar barStyle="light-content"/>
+
         {this.state.loading && (
-          <ActivityIndicator size="large" color="#00ff00" padding="10%" />
+          <Spinner/>
+          // <ActivityIndicator size="large" color="#00ff00" padding="10%" />
         )}
-        <FlatList
-          ItemSeparatorComponent={() => <View style={styles.listItem} />}
-          data={this.state.posts}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <FeedPost feedEvent={item} navigation={this.props.navigation} />
-          )}
-        />
+        {posts.map(onePost =>{
+          return(
+            <Card key={onePost.id}>
+            <CardItem>
+              <FeedPost feedEvent={onePost} navigation={this.props.navigation} />
+            </CardItem>
+          </Card>
+          )
+        })}
       </ScrollView>
     );
   }
@@ -110,8 +104,14 @@ export default class FeedScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#fff",
+    marginRight: "2%",
+    marginLeft: "2%",
   },
   listItem: { height: 1, width: "100%", backgroundColor: "lightgray" },
   searchIcon: { marginRight: 20 }
 });
+
+const mapStateToProps = ({posts}) => ({posts});
+export default connect(mapStateToProps)(FeedScreen);

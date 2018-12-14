@@ -5,6 +5,7 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+.env.js
 .DS_Store
 .idea/
-.env.js
+env.js

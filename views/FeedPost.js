@@ -1,58 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import moment from "moment";
 
-function buildPost(feedEvent) {
-  let displayText;
-  switch (feedEvent.type) {
-    case "WatchEvent":
-      displayText = `${feedEvent.actor.login} ${
-        feedEvent.payload.action
-      } watching ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-    case "CreateEvent":
-      displayText = `${feedEvent.actor.login} created ${
-        feedEvent.payload.ref_type
-      } ${feedEvent.payload.ref} in ${
-        feedEvent.payload.master_branch
-      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-
-    case "ForkEvent":
-      displayText = `${feedEvent.actor.login} forked ${
-        feedEvent.repo.name
-      } of ${feedEvent.org.login} at ${feedEvent.created_at}`;
-      break;
-    case "PushEvent":
-      displayText = `${
-        feedEvent.actor.login
-      } commited ${feedEvent.payload.before.substring(0, 7)} to ${
-        feedEvent.payload.ref
-      } in ${feedEvent.payload.master_branch} inside the repo ${
-        feedEvent.repo.name
-      } at ${feedEvent.created_at}`;
-      break;
-    case "PullRequestEvent":
-      displayText = `${feedEvent.actor.login} created ${
-        feedEvent.payload.ref_type
-      } ${feedEvent.payload.ref} in ${
-        feedEvent.payload.master_branch
-      } inside the repo ${feedEvent.repo.name} at ${feedEvent.created_at}`;
-      break;
-
-    default:
-      displayText = `${feedEvent.actor.login} did something else: ${
-        feedEvent.type
-      }`;
-      break;
-  }
-  return displayText;
-}
+import PostText from "../components/PostText";
+import PostInteractionSection from "../components/PostInteractionSection";
+import { Thumbnail } from "native-base";
 
 export default class FeedPost extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     feedEvent: PropTypes.object.isRequired
+  };
+  state = {
+    feedEvent: this.props.feedEvent    
   };
 
   /**
@@ -62,38 +23,57 @@ export default class FeedPost extends React.Component {
    */
   handleListTap(feedEvent, userAction = "details") {
     this.props.navigation.navigate("Post", {
-      displayText: buildPost(feedEvent),
-      item: feedEvent,
-      userAction: userAction
+      feedEvent: feedEvent,
+      userAction: userAction,
+      handleProfileTap: feedEvent => this.handleProfileTap(feedEvent)
     });
   }
 
+  handleProfileTap(feedEvent) {
+    // THIS SHOULD REDIRECT TO SOMEONE'S PROFILE
+    const githubId = feedEvent.actor.id;
+    const githubLogin = feedEvent.actor.login;
+    this.props.navigation.navigate("OtherUserProfile", {
+      githubId,
+      githubLogin
+    });
+  }
+
+  updateFeedEvent(feedEvent) {
+    feedEvent.userLiked = true;
+    this.setState({
+      feedEvent
+    })
+  }
+
   render() {
-    const { feedEvent } = this.props;
-    const displayText = buildPost(feedEvent);
+    const {feedEvent} = this.state;
     return (
-      <View style={styles.post}>
+      <View style={styles.postContainer}>
         <TouchableOpacity
-          style={styles.postData}
-          onPress={() => this.handleListTap(feedEvent)}
+          onPress={() => this.handleProfileTap(feedEvent)}
         >
-          <Image
-            style={styles.profilePicture}
+          <Thumbnail round
             source={{
               uri: feedEvent.actor.avatar_url
             }}
           />
-          <Text style={styles.postText}>{displayText}</Text>
         </TouchableOpacity>
-        <View style={styles.postInteraction}>
-          <TouchableOpacity>
-            <Text>Like</Text>
+        <View style={styles.rightPost}>
+          <TouchableOpacity onPress={() => this.handleListTap(feedEvent)}>
+              <Text style={styles.bold}>{feedEvent.actor.login}</Text>
+              <PostText feedEvent={feedEvent} parentComponent={"FeedPost"}/>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.handleListTap(feedEvent, "comment")}
-          >
-            <Text>Comment</Text>
-          </TouchableOpacity>
+          <View style={styles.postBottom}>
+            <PostInteractionSection
+              feedEvent={feedEvent}
+              navigation={this.props.navigation}
+              onLikePress={feedEvent => this.updateFeedEvent(feedEvent)}
+            />
+            <Text>
+              {moment(feedEvent.created_at, "YYYY-MM-DD HH:mm:ssZ").fromNow()}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -101,26 +81,29 @@ export default class FeedPost extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  post: {
+  postContainer: {
     flex: 1,
-    backgroundColor: "#fff"
-  },
-  postInteraction: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 5
+    justifyContent: "space-between",
   },
-  postData: {
+  rightPost: {
+    flexShrink: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+
+  },
+  postText: {
+    flexShrink: 1,
+    flexWrap: "wrap",
+  },
+  bold: {
+    fontWeight: "bold",
+    paddingBottom: "2%",
+    paddingLeft: "2%"
+  },
+  postBottom:{
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
-    padding: 5
-  },
-  profilePicture: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginLeft: 5,
-    marginRight: 10
-  },
-  postText: { width: "80%" }
+    justifyContent: "space-between"
+  }
 });
