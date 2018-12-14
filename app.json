@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend_gitlink",
-    "slug": "frontend_gitlink",
+    "name": "GitLink",
+    "slug": "gitlink",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -12,9 +12,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#23292D"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
