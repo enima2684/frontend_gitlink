@@ -5,9 +5,10 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  Text,
   ImageBackground
 } from "react-native";
-import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3, Card, CardItem, Text, Body, Right, Icon, Content } from "native-base";
+import { Container, H1, List, ListItem, H2, Thumbnail, Button, Spinner, H3, Card, CardItem, Body, Right, Icon, Content } from "native-base";
 import Octicons from "@expo/vector-icons/Octicons";
 import {LinearGradient} from 'expo';
 

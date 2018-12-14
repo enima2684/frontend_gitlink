@@ -164,6 +164,41 @@ const NotificationsStack = createStackNavigator({
       title: "Notifications",
       ...headerStyle
     }
+  },
+  OtherUserProfile: {
+    screen: ProfileScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.githubLogin}'s profile`,
+      ...headerStyle
+    })
+  },
+  OneRepository: {
+    screen: OneRepositoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.repoName}`,
+      ...headerStyle
+    })
+  },
+  Repositories: {
+    screen: RepoListScreen,
+    navigationOptions: {
+      title: `Repositories`,
+      ...headerStyle
+    }
+  },
+  Code: {
+    screen: CodeScreen,
+    navigationOptions: {
+      title: `Code`,
+      ...headerStyle
+    }
+  },
+  Readme: {
+    screen: ReadmeScreen,
+    navigationOptions:{
+      title: 'Readme',
+      ...headerStyle
+    }
   }
 });
 
