@@ -78,6 +78,20 @@ export default class ProfileScreen extends Component {
     });
   };
 
+  handleOnPressFollowers = async () => {
+    this.props.navigation.navigate('Followers', {
+      userName: this.state.oneUser.login,
+      screenType: 'Followers',
+    })
+  };
+
+  handleOnPressFollowing = async () => {
+    this.props.navigation.navigate('Followers', {
+      userName: this.state.oneUser.login,
+      screenType: 'Following',
+    })
+  };
+
   handleOnPressFollow =  async () => {
     const otherUser = this.state.oneUser.login;
 
@@ -209,7 +223,7 @@ export default class ProfileScreen extends Component {
 
               </ListItem>
 
-              <ListItem button noBorder={true}  style={styles.listItem}>
+              <ListItem button noBorder={true}  style={styles.listItem}  onPress={this.handleOnPressFollowers}>
 
                 <View style={styles.listItem__left}>
                   <Octicons name={"organization"} size={40} color={colors.Blue}/>
@@ -222,7 +236,7 @@ export default class ProfileScreen extends Component {
 
               </ListItem>
 
-              <ListItem button noBorder={true}  style={styles.listItem}>
+              <ListItem button noBorder={true}  style={styles.listItem}  onPress={this.handleOnPressFollowing}>
 
                 <View style={styles.listItem__left}>
                   <Octicons name={"screen-normal"} size={40} color={colors.Blue}/>
